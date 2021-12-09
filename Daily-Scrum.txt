@@ -3,6 +3,7 @@
 Chris
 1. Done / not done since last scrum:
 - Discussed and finished project proposal
+- Write user stories on Trello
 2. To do until next Scrum:
 - Load and save car data from API (if not manually add data) 
 - Start car list page 
@@ -13,8 +14,11 @@ Chris
 
 Nari
 1. Done / not done since last scrum:
--
+- Discussed and finished project proposal
+- Write user stories on Trello
+- create fragments for navbar and footer
 2. To do until next Scrum:
--
+- create user model
+- build register, login and logout logic and pages
 3. Need assistance / figure things out
-- 
+- Nothing for now
