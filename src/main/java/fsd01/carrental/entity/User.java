@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.Range;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -48,7 +49,8 @@ public class User implements UserDetails {
                             "one lowercase, one number, and one special character.")
     private String password;
 
-    private Integer phoneNumber;
+    @Range(min = 10,max= 10, message = "Phone number should be exact 10 characters" )
+    private String phoneNumber;
 
     @Enumerated
     private ApplicationUserRole role;
