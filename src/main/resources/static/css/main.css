@@ -1,0 +1,32 @@
+
+/*------/ Importing FontAwesome /------*/
+
+@import url('https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css');
+
+
+/*======================================
+//--//-->   STYLES GENERALS
+======================================*/
+
+.main-container {
+    margin-top: 150px;
+    margin-bottom: 200px;
+}
+
+
+/*======================================
+//--//-->  User Log In
+======================================*/
+
+#login .input-group:nth-of-type(1) {
+    margin-bottom: 10px;
+}
+
+#login .input-group:nth-of-type(2) {
+    margin-bottom: 30px;
+}
+
+#login button {
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
