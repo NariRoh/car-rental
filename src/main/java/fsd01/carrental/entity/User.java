@@ -50,7 +50,7 @@ public class User implements UserDetails {
     private String password;
 
     @Range(min = 10,max= 10, message = "Phone number should be exact 10 characters" )
-    private String phoneNumber;
+    private Integer phoneNumber;
 
     @Enumerated
     private ApplicationUserRole role;
@@ -63,7 +63,7 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return null;
+        return email;
     }
 
     @Override

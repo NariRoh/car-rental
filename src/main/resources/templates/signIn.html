@@ -40,9 +40,9 @@
 
                 <!--            <div class="alert alert-info text-center" th:if="${message}" th:text="${message}"></div>-->
 
-                <!--            <div class="alert alert-danger text-center" th:if="${param.error}">-->
-                <!--                Invalid username and password.-->
-                <!--            </div>-->
+                            <div class="alert alert-danger text-center" th:if="${param.error}">
+                                Invalid username and password.
+                            </div>
 
                 <!--            <div class="alert alert-success text-center" th:if="${param.logout}">-->
                 <!--                You have been logged out.-->
@@ -54,7 +54,7 @@
                             <i class="fa fa-user fa-lg text-info"></i>
                         </span>
                     </div>
-                    <input type="text" class="form-control" name="email" placeholder="email">
+                    <input type="email" class="form-control" name="email" placeholder="email" required>
                 </div>
 
                 <div class="input-group">
@@ -63,7 +63,7 @@
                             <i class="fa fa-lock fa-lg text-info"></i>
                         </span>
                     </div>
-                    <input type="password" class="form-control" name="password" placeholder="password">
+                    <input type="password" class="form-control" name="password" placeholder="password" required>
                 </div>
 
                 <button type="submit" class="btn btn-secondary btn-block">Sign In</button>
