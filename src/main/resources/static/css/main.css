@@ -27,6 +27,14 @@
     margin-bottom: 20px;
 }
 
+.capitalized {
+    text-transform: capitalize;
+}
+
+.uppercase {
+    text-transform: uppercase;
+}
+
 /*======================================
 //--//-->  User Log In
 ======================================*/

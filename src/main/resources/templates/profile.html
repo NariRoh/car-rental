@@ -11,41 +11,30 @@
 <div th:replace="fragments/navbar :: navbar"></div>
 <main id="profile">
 <div class="wrapper">
-    <!-- Sidebar  -->
-    <nav id="sidebar">
-        <div class="sidebar-header">
-            <h2 th:text="${user.firstName}"></h2>
-        </div>
 
-        <ul class="list-unstyled components">
-            <p>Welcome!</p>
-            <li class="active">
-                <a href="#myRentalsSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">My Rentals</a>
-                <ul class="collapse list-unstyled" id="myRentalsSubmenu">
-                    <li>
-                        <a href="#">Upcoming Rentals</a>
-                    </li>
-                    <li>
-                        <a href="#">Past Rentals</a>
-                    </li>
-                    <li>
-                        <a href="#">Cancelled Reservations</a>
-                    </li>
-                </ul>
-            </li>
-            <li>
-                <a href="#">Profile</a>
-            </li>
-            <li>
-                <a href="#">Reviews</a>
-            </li>
-        </ul>
-
-    </nav>
+    <div th:replace="fragments/renter-sidebar :: renterSidebar"></div>
 
     <!-- Page Content  -->
     <div id="content">
+        <h2>Welcome to your profile, <span th:text="${user.firstName}" class="capitalized"></span></h2>
+        <article>
+            <h2>Name</h2>
+            <p th:text="${user.firstName} +  ' ' + ${user.lastName}" class="capitalized"></p>
+            <button><a th:href="@{#}">Edit</a></button>
+        </article>
 
+        <article>
+            <h2>Email</h2>
+            <p th:text="${user.email}" class="uppercase"></p>
+            <button><a th:href="@{#}">Edit</a></button>
+        </article>
+
+        <article>
+            <h2>Telephone</h2>
+            <!--  TODO: format phone number (000) 000 -0000 -->
+            <p th:text="${user.phoneNumber}"></p>
+            <button><a th:href="@{#}">Edit</a></button>
+        </article>
 
     </div>
 </div>
@@ -60,13 +49,6 @@
 <!-- Bootstrap JS -->
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
 
-<script type="text/javascript">
-    $(document).ready(function () {
-        $('#sidebarCollapse').on('click', function () {
-            $('#sidebar').toggleClass('active');
-        });
-    });
-</script>
 </body>
 
 </html>

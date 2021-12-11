@@ -1,0 +1,32 @@
+
+<!-- Sidebar  -->
+<nav id="sidebar" th:fragment="renterSidebar">
+    <div class="sidebar-header">
+        <h2 th:text="${user.firstName}" class="capitalized"></h2>
+    </div>
+
+    <ul class="list-unstyled components">
+        <p>Welcome!</p>
+        <li class="active">
+            <a href="#userProfile">Profile</a>
+        </li>
+        <li>
+            <a href="#myRentalsSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">My Rentals</a>
+            <ul class="collapse list-unstyled" id="myRentalsSubmenu">
+                <li>
+                    <a href="#rentalHistory">Upcoming Rentals</a>
+                </li>
+                <li>
+                    <a href="#">Past Rentals</a>
+                </li>
+                <li>
+                    <a href="#">Cancelled Reservations</a>
+                </li>
+            </ul>
+        </li>
+        <li>
+            <a href="#">Reviews</a>
+        </li>
+    </ul>
+
+</nav>
