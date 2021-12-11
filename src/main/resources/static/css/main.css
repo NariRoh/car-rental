@@ -13,6 +13,19 @@
     margin-bottom: 200px;
 }
 
+/*a {*/
+/*    color: #0b0b0b;*/
+/*}*/
+
+.h1-heading {
+    margin-bottom: 50px;
+}
+
+.btn-form {
+    padding-top: 15px;
+    padding-bottom: 15px;
+    margin-bottom: 20px;
+}
 
 /*======================================
 //--//-->  User Log In
@@ -26,9 +39,11 @@
     margin-bottom: 30px;
 }
 
-#login button {
-    padding-top: 15px;
-    padding-bottom: 15px;
-    margin-bottom: 20px;
+/*======================================
+//--//-->  User Register
+======================================*/
+
+#register button {
+    margin-top: 20px;
 }
 

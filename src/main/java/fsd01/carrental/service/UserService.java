@@ -9,6 +9,11 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+
+import javax.validation.Valid;
+import javax.validation.constraints.Pattern;
 
 @Service
 @AllArgsConstructor
@@ -17,21 +22,31 @@ public class UserService implements UserDetailsService {
     @Autowired
     private final UserRepository userRepository;
 
-//    private final BCryptPasswordEncoder bCryptPasswordEncoder;
-//
-//    public void createUser(User user) {
-//        // encode user password
-//        String encodedPassword = bCryptPasswordEncoder.encode(user.getPassword());
-//        user.setPassword(encodedPassword);
-//
-//        // save user in db
-//        userRepository.save(user);
-//    }
-//
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    public boolean userEmailExists(String email) {
+        return userRepository.findByEmail(email).isPresent();
+    }
+
+    public boolean validatePhoneNumber(String phoneNumber) {
+        return phoneNumber.matches("^\\d{10}$");
+    }
+
+    public void saveUser(User user) {
+        // encode user password
+        String encodedPassword = bCryptPasswordEncoder.encode(user.getPassword());
+        user.setPassword(encodedPassword);
+
+        // save user in db
+        userRepository.save(user);
+    }
+
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         return userRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found."));
     }
+
+
 }
