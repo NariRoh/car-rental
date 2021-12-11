@@ -47,3 +47,153 @@
     margin-top: 20px;
 }
 
+/*======================================
+//--//-->  User(Renter?) Profile
+======================================*/
+
+main#profile {
+    margin-top: 106px;
+}
+
+#profile a,
+#profile a:hover,
+#profile a:focus {
+    color: inherit;
+    text-decoration: none;
+    transition: all 0.3s;
+}
+
+/*.line {*/
+/*    width: 100%;*/
+/*    height: 1px;*/
+/*    border-bottom: 1px dashed #ddd;*/
+/*    margin: 40px 0;*/
+/*}*/
+
+/*------/ Sidebar /------*/
+/* Source from https://bootstrapious.com/p/bootstrap-sidebar */
+
+/* ---------------------------------------------------
+    SIDEBAR STYLE
+----------------------------------------------------- */
+
+#profile .wrapper {
+    display: flex;
+    width: 100%;
+    align-items: stretch;
+}
+
+#profile #sidebar {
+    min-width: 250px;
+    max-width: 250px;
+    background: #7386D5;
+    color: #fff;
+    transition: all 0.3s;
+}
+
+#profile #sidebar.active {
+    margin-left: -250px;
+}
+
+#profile #sidebar .sidebar-header {
+    padding: 20px;
+    background: #6d7fcc;
+}
+
+#profile #sidebar ul.components {
+    padding: 20px 0;
+    border-bottom: 1px solid #47748b;
+}
+
+#profile #sidebar ul p {
+    color: #fff;
+    padding: 10px;
+}
+
+#profile #sidebar ul li a {
+    padding: 10px;
+    font-size: 1.1em;
+    display: block;
+}
+
+#profile #sidebar ul li a:hover {
+    color: #7386D5;
+    background: #fff;
+}
+
+#profile #sidebar ul li.active>a,
+a[aria-expanded="true"] {
+    color: #fff;
+    background: #6d7fcc;
+}
+
+a[data-toggle="collapse"] {
+    position: relative;
+}
+
+#profile .dropdown-toggle::after {
+    display: block;
+    position: absolute;
+    top: 50%;
+    right: 20px;
+    transform: translateY(-50%);
+}
+
+#profile ul ul a {
+    font-size: 0.9em !important;
+    padding-left: 30px !important;
+    background: #6d7fcc;
+}
+
+#profile ul.CTAs {
+    padding: 20px;
+}
+
+#profile ul.CTAs a {
+    text-align: center;
+    font-size: 0.9em !important;
+    display: block;
+    border-radius: 5px;
+    margin-bottom: 5px;
+}
+
+#profile a.download {
+    background: #fff;
+    color: #7386D5;
+}
+
+#profile a.article,
+#profile a.article:hover {
+    background: #6d7fcc !important;
+    color: #fff !important;
+}
+
+/* ---------------------------------------------------
+    CONTENT STYLE
+----------------------------------------------------- */
+
+#profile #content {
+    width: 100%;
+    padding: 20px;
+    min-height: 100vh;
+    transition: all 0.3s;
+}
+
+/* ---------------------------------------------------
+    MEDIAQUERIES
+----------------------------------------------------- */
+
+@media (max-width: 768px) {
+    #profile #sidebar {
+        margin-left: -250px;
+    }
+    #sidebar.active {
+        margin-left: 0;
+    }
+    #sidebarCollapse span {
+        display: none;
+    }
+}
+
+
+

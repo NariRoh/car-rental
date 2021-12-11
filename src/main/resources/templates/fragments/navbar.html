@@ -6,42 +6,6 @@
                 <span class="oi oi-menu"></span> Menu
             </button>
 
-<!--            <form method="post" th:action="@{/logout}" sec:authorize="isAuthenticated()">-->
-<!--                <button type="submit">Sign Out</button>-->
-<!--            </form>-->
-
-<!--            <div sec:authorize="isAnonymous()">-->
-<!--                <a th:hre>-->
-
-<!--                </a>-->
-<!--                <button type="submit">Sign In</button>-->
-<!--            </div>-->
-
-<!--            <div th:action="@{/register}" sec:authorize="isAnonymous()">-->
-<!--                <button type="submit">Sign Up</button>-->
-<!--            </div>-->
-<!--            <span th:unless="${user}">User</span>-->
-<!--            <span th:if="${user}" th:text="${user.firstName}"></span>-->
-<!--            <ul class="navbar-nav ml-auto">-->
-<!--                <li class="nav-item dropdown">-->
-<!--                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">-->
-<!--                        <p th:text="${#authentication.firstName}"></p>-->
-<!--                        &lt;!&ndash;                            <div sec:authentication="name"></div>&ndash;&gt;-->
-<!--                    </a>-->
-<!--                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">-->
-<!--                        <a class="dropdown-item" href="/login">Log In</a>-->
-<!--                        <a class="dropdown-item" href="/register">Sign Up</a>-->
-<!--                    </div>-->
-<!--                </li>-->
-
-<!--                <form method="post" th:action="@{/logout}" sec:authorize="isAuthenticated()">-->
-<!--                    <button type="submit" class="dropdown-item py-2">-->
-<!--                        Log Out-->
-<!--                    </button>-->
-<!--                </form>-->
-<!--            </ul>-->
-<!--            <a sec:authorize="isAnonymous()" class="dropdown-item" th:href="@{/login}">Log In</a>-->
-<!--            <a sec:authorize="isAnonymous()" class="dropdown-item" th:href="@{/register}">Sign Up</a>-->
             <div class="collapse navbar-collapse" id="ftco-nav">
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item active"><a href="/" class="nav-link">Home</a></li>
@@ -76,6 +40,7 @@
                     </li>
                 </ul>
             </div>
+
         </div>
     </nav>
 </div>

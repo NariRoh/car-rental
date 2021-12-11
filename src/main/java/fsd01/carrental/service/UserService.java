@@ -9,11 +9,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
-
-import javax.validation.Valid;
-import javax.validation.constraints.Pattern;
 
 @Service
 @AllArgsConstructor
@@ -41,6 +36,10 @@ public class UserService implements UserDetailsService {
         userRepository.save(user);
     }
 
+    public void fetchUser(Long id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid user"));
+    }
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
