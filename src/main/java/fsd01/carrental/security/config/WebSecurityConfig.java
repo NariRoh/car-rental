@@ -52,8 +52,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .defaultSuccessUrl("/")
                     .permitAll()
                 .and()
-                    .logout()
-                    .permitAll();
+                .logout()
+                    .logoutSuccessUrl("/")
+                .permitAll();
     }
 //    protected void configure(HttpSecurity http) throws Exception {
 //        http

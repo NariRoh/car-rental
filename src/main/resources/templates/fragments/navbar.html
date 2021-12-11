@@ -10,16 +10,38 @@
 <!--                <button type="submit">Sign Out</button>-->
 <!--            </form>-->
 
-<!--            <form method="post" th:action="@{/login}" sec:authorize="isAnonymous()">-->
-<!--                <button type="submit">Sign In</button>-->
-<!--            </form>-->
+<!--            <div sec:authorize="isAnonymous()">-->
+<!--                <a th:hre>-->
 
-<!--            <form method="post" th:action="@{/register}" sec:authorize="isAnonymous()">-->
+<!--                </a>-->
+<!--                <button type="submit">Sign In</button>-->
+<!--            </div>-->
+
+<!--            <div th:action="@{/register}" sec:authorize="isAnonymous()">-->
 <!--                <button type="submit">Sign Up</button>-->
-<!--            </form>-->
+<!--            </div>-->
 <!--            <span th:unless="${user}">User</span>-->
 <!--            <span th:if="${user}" th:text="${user.firstName}"></span>-->
+<!--            <ul class="navbar-nav ml-auto">-->
+<!--                <li class="nav-item dropdown">-->
+<!--                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">-->
+<!--                        <p th:text="${#authentication.firstName}"></p>-->
+<!--                        &lt;!&ndash;                            <div sec:authentication="name"></div>&ndash;&gt;-->
+<!--                    </a>-->
+<!--                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">-->
+<!--                        <a class="dropdown-item" href="/login">Log In</a>-->
+<!--                        <a class="dropdown-item" href="/register">Sign Up</a>-->
+<!--                    </div>-->
+<!--                </li>-->
 
+<!--                <form method="post" th:action="@{/logout}" sec:authorize="isAuthenticated()">-->
+<!--                    <button type="submit" class="dropdown-item py-2">-->
+<!--                        Log Out-->
+<!--                    </button>-->
+<!--                </form>-->
+<!--            </ul>-->
+<!--            <a sec:authorize="isAnonymous()" class="dropdown-item" th:href="@{/login}">Log In</a>-->
+<!--            <a sec:authorize="isAnonymous()" class="dropdown-item" th:href="@{/register}">Sign Up</a>-->
             <div class="collapse navbar-collapse" id="ftco-nav">
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item active"><a href="/" class="nav-link">Home</a></li>
@@ -27,6 +49,31 @@
                     <li class="nav-item"><a href="/pricing" class="nav-link">Pricing</a></li>
                     <li class="nav-item"><a href="/cars" class="nav-link">Cars</a></li>
                     <li class="nav-item"><a href="/contact" class="nav-link">Contact</a></li>
+
+                    <li th:unless="${user}" class="nav-item">
+                        <a href="/login" class="nav-link">Sign In</a>
+                    </li>
+
+                    <li th:if="${user}" class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle"
+                           href="#"
+                           id="navbarDropdownMenuLink"
+                           data-toggle="dropdown"
+                           aria-haspopup="true"
+                           aria-expanded="false">
+                            <span th:text="${user.firstName}"></span>
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <a class="dropdown-item" href="/profile" sec:authorize="isAuthenticated()">
+                                Profile
+                            </a>
+                            <form method="post" th:action="@{/logout}" sec:authorize="isAuthenticated()">
+                                <button type="submit" class="dropdown-item py-2">
+                                    Log Out
+                                </button>
+                            </form>
+                        </div>
+                    </li>
                 </ul>
             </div>
         </div>
