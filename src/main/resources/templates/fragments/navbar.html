@@ -6,19 +6,19 @@
                 <span class="oi oi-menu"></span> Menu
             </button>
 
-            <form method="post" th:action="@{/logout}" sec:authorize="isAuthenticated()">
-                <button type="submit">Sign Out</button>
-            </form>
+<!--            <form method="post" th:action="@{/logout}" sec:authorize="isAuthenticated()">-->
+<!--                <button type="submit">Sign Out</button>-->
+<!--            </form>-->
 
-            <form method="post" th:action="@{/login}" sec:authorize="isAnonymous()">
-                <button type="submit">Sign In</button>
-            </form>
+<!--            <form method="post" th:action="@{/login}" sec:authorize="isAnonymous()">-->
+<!--                <button type="submit">Sign In</button>-->
+<!--            </form>-->
 
-            <form method="post" th:action="@{/register}" sec:authorize="isAnonymous()">
-                <button type="submit">Sign Up</button>
-            </form>
-            <span th:unless="${user}">User</span>
-            <span th:if="${user}" th:text="${user.firstName}"></span>
+<!--            <form method="post" th:action="@{/register}" sec:authorize="isAnonymous()">-->
+<!--                <button type="submit">Sign Up</button>-->
+<!--            </form>-->
+<!--            <span th:unless="${user}">User</span>-->
+<!--            <span th:if="${user}" th:text="${user.firstName}"></span>-->
 
             <div class="collapse navbar-collapse" id="ftco-nav">
                 <ul class="navbar-nav ml-auto">
