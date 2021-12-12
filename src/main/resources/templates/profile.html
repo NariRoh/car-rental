@@ -19,23 +19,87 @@
         <h2>Welcome to your profile, <span th:text="${user.firstName}" class="capitalized"></span></h2>
         <article>
             <h2>Name</h2>
-            <p th:text="${user.firstName} +  ' ' + ${user.lastName}" class="capitalized"></p>
-            <button><a th:href="@{#}">Edit</a></button>
+            <div class="user-info">
+                <p th:text="${user.firstName} +  ' ' + ${user.lastName}" class="capitalized"></p>
+                <button class="btn-edit"><a th:href="@{#}">Edit</a></button>
+            </div>
+            <div class="hidden-form">
+                <form id="renterName" th:action="@{#}" th:object="${user}" method="POST">
+                    <div class="form-row">
+                        <label>First Name</label>
+                        <input type="text" th:field="*{firstName}" th:errorClass="is-invalid" class="form-control"/>
+                        <p th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}" class="invalid-feedback"></p>
+                    </div>
+
+                    <div class="form-row">
+                        <label>Last Name</label>
+                        <input type="text" th:field="*{lastName}" th:errorClass="is-invalid" class="form-control"/>
+                        <p th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}" class="invalid-feedback"></p>
+                    </div>
+                    <div class="form-row">
+                        <button class="btn btn-secondary btn-cancel">
+                            Cancel
+                        </button>
+                        <button type="submit" class="btn btn-secondary">
+                            Save
+                        </button>
+                    </div>
+                </form>
+            </div>
         </article>
 
         <article>
             <h2>Email</h2>
-            <p th:text="${user.email}" class="uppercase"></p>
-            <button><a th:href="@{#}">Edit</a></button>
+
+            <div class="user-info">
+                <p th:text="${user.email}" class="uppercase"></p>
+                <button class="btn-edit"><a th:href="@{#}">Edit</a></button>
+            </div>
+            <div class="hidden-form">
+                <form id="renterEmail" th:action="@{#}" th:object="${user}" method="POST">
+                    <div class="form-row">
+                        <label>Email*</label>
+                        <input type="email" th:field="*{email}" th:errorClass="is-invalid" class="form-control"/>
+                        <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="invalid-feedback"></p>
+                    </div>
+                    <div class="form-row">
+                        <button class="btn btn-secondary btn-cancel">
+                            Cancel
+                        </button>
+                        <button type="submit" class="btn btn-secondary">
+                            Save
+                        </button>
+                    </div>
+                </form>
+            </div>
         </article>
 
         <article>
-            <h2>Telephone</h2>
-            <!--  TODO: format phone number (000) 000 -0000 -->
-            <p th:text="${user.phoneNumber}"></p>
-            <button><a th:href="@{#}">Edit</a></button>
-        </article>
+            <h2>Phone Number</h2>
 
+            <div class="user-info">
+                <!--  TODO: format phone number (000) 000 -0000 -->
+                <p th:text="${user.phoneNumber}"></p>
+                <button class="btn-edit"><a th:href="@{#}">Edit</a></button>
+            </div>
+            <div class="hidden-form">
+                <form id="renterPhone" th:action="@{#}" th:object="${user}" method="POST">
+                    <div class="form-row">
+                        <label>Phone Number</label>
+                        <input type="text" th:field="*{phoneNumber}" th:errorClass="is-invalid" class="form-control"/>
+                        <p th:if="${#fields.hasErrors('phoneNumber')}" th:errors="*{phoneNumber}" class="invalid-feedback"></p>
+                    </div>
+                    <div class="form-row">
+                        <button class="btn btn-secondary btn-cancel">
+                            Cancel
+                        </button>
+                        <button type="submit" class="btn btn-secondary">
+                            Save
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </article>
     </div>
 </div>
 </main>
@@ -48,7 +112,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
 <!-- Bootstrap JS -->
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
-
+<script src="js/userProfile.js"></script>
 </body>
 
 </html>

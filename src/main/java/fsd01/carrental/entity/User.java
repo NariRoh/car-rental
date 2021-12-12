@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.validator.constraints.Length;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -39,6 +40,8 @@ public class User implements UserDetails {
     @Column(length = 150, unique = true)
     private String email;
 
+    // FIXME: modify password regex
+//    @Length(min = 6, message = "Password must be at least 6 character long")
     @NotBlank(message = "Please enter a password")
     @Pattern(regexp =
                     "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{6,100}$",

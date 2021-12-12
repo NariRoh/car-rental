@@ -8,11 +8,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
@@ -29,8 +28,8 @@ public class UserController {
     @GetMapping("/register")
     public ModelAndView showRegisterView() {
         ModelAndView modelAndView = new ModelAndView("register");
-        User newUser = new User();
-        modelAndView.addObject("user", newUser);
+//        User newUser = new User();
+        modelAndView.addObject("user", new User());
 
         return modelAndView;
     }
@@ -62,5 +61,10 @@ public class UserController {
         // TODO: redirect to 'no access page'?
         return authentication == null ? "redirect:/" : "profile";
     }
+
+//    @PostMapping("/validateFullName")
+//    public String validateFullName(@RequestBody User user, Model model) {
+//
+//    }
 
 }

@@ -71,6 +71,12 @@ main#profile {
     transition: all 0.3s;
 }
 
+/*------/ Edit Form /------*/
+
+.hidden-form {
+    display: none;
+}
+
 /*.line {*/
 /*    width: 100%;*/
 /*    height: 1px;*/
