@@ -2,31 +2,9 @@
 <html lang="en">
   <head>
     <title>Car List - Car Rental</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    
-    <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800&display=swap" rel="stylesheet">
 
-    <link rel="shortcut icon" href="images/Car-Icon-16x16.png"/>
+      <div th:replace="fragments/head :: head"></div>
 
-    <link rel="stylesheet" href="css/open-iconic-bootstrap.min.css">
-    <link rel="stylesheet" href="css/animate.css">
-    
-    <link rel="stylesheet" href="css/owl.carousel.min.css">
-    <link rel="stylesheet" href="css/owl.theme.default.min.css">
-    <link rel="stylesheet" href="css/magnific-popup.css">
-
-    <link rel="stylesheet" href="css/aos.css">
-
-    <link rel="stylesheet" href="css/ionicons.min.css">
-
-    <link rel="stylesheet" href="css/bootstrap-datepicker.css">
-    <link rel="stylesheet" href="css/jquery.timepicker.css">
-
-    
-    <link rel="stylesheet" href="css/flaticon.css">
-    <link rel="stylesheet" href="css/icomoon.css">
-    <link rel="stylesheet" href="css/style.css">
   </head>
   <body>
 
@@ -46,15 +24,146 @@
 		
 
 		<section class="ftco-section bg-light">
-    	<div class="container">
-    		<div class="row">
+            <div class="mb-5 text-center row">
+                <div class="col-md-2"></div>
+                <div class="col-md-6">
+                    <input class="form-control" type="text" id="textSearch" onkeyup="function searchJS() {
+            var input = document.getElementById('textSearch');
+            var filter = input.value.toUpperCase();
+            var list = document.getElementById('allCars');
+            var item = list.getElementsByClassName('searchBarJS');
 
-    			<div class="col-md-4" th:each="car: ${cars}">
+            for (var i = 0; i < item.length; i++) {
+            var a = item[i].getElementsByTagName('a')[0];
+            var txtValue = a.textContent || a.innerText;
+            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                item[i].style.display = '';
+                } else {
+                    item[i].style.display = 'none';
+                }
+            }
+        }
+        searchJS()" placeholder="Search for a model...">
+                </div>
+                <div class="col-md-2">
+                    <button class="btn btn-secondary" style="width:100%;height:100%;font-size:18px;" onclick="function toggleAdvancedSearch() {
+                        if (document.getElementById('advancedSearchDiv').style.display === 'block') {
+                            document.getElementById('advancedSearchDiv').style.display = 'none';
+                        } else {
+                            document.getElementById('advancedSearchDiv').style.display = 'block';
+                        }
+                    }toggleAdvancedSearch()">Advanced Search</button>
+                    <a class="btn btn-secondary" href="/cars">Reset</a>
+                </div>
+                <div class="col-md-2"><span style="display: none;">filler</span></div>
+            </div>
+    	<div class="container">
+            <div id="advancedSearchDiv" class="row mb-5" style="display: none;">
+                <div class="container">
+                    <form>
+                        Daily Price Range:
+                        <br>
+                        <input type="radio" class="btn-check" name="priceRangeOptions" id="priceRangeOption1" autocomplete="off" value="null" checked="checked">
+                        <label class="btn btn-outline-primary" for="priceRangeOption1">No Choice</label>
+
+                        <input type="radio" class="btn-check" name="priceRangeOptions" id="priceRangeOption2" autocomplete="off" value="50to75">
+                        <label class="btn btn-outline-primary" for="priceRangeOption2">$50 - $75</label>
+
+                        <input type="radio" class="btn-check" name="priceRangeOptions" id="priceRangeOption3" autocomplete="off" value="76to100">
+                        <label class="btn btn-outline-primary" for="priceRangeOption3">$76 - $100</label>
+
+                        <input type="radio" class="btn-check" name="priceRangeOptions" id="priceRangeOption4" autocomplete="off" value="101to125">
+                        <label class="btn btn-outline-primary" for="priceRangeOption4">$101 - $125</label>
+
+                        <input type="radio" class="btn-check" name="priceRangeOptions" id="priceRangeOption5" autocomplete="off" value="126to150">
+                        <label class="btn btn-outline-primary" for="priceRangeOption5">$126 - 150</label>
+
+                        <input type="radio" class="btn-check" name="priceRangeOptions" id="priceRangeOption6" autocomplete="off" value="151plus">
+                        <label class="btn btn-outline-primary" for="priceRangeOption6">$151+</label>
+                        <br>
+
+
+                        Transmission:
+                        <br>
+                        <input type="radio" class="btn-check" name="transmissionOptions" id="transmissionOption1" autocomplete="off" value="null" checked="checked">
+                        <label class="btn btn-outline-primary" for="transmissionOption1">No Choice</label>
+
+                        <input type="radio" class="btn-check" name="transmissionOptions" id="transmissionOption2" autocomplete="off" value="Automatic">
+                        <label class="btn btn-outline-primary" for="transmissionOption2">Automatic</label>
+
+                        <input type="radio" class="btn-check" name="transmissionOptions" id="transmissionOption3" autocomplete="off" value="Manual">
+                        <label class="btn btn-outline-primary" for="transmissionOption3">Manual</label>
+                        <br>
+
+
+                        Mileage:
+                        <br>
+                        <input type="radio" class="btn-check" name="mileageOptions" id="mileageOption1" autocomplete="off" value="null" checked="checked">
+                        <label class="btn btn-outline-primary" for="mileageOption1">No Choice</label>
+
+                        <input type="radio" class="btn-check" name="mileageOptions" id="mileageOption2" autocomplete="off" value="less10000">
+                        <label class="btn btn-outline-primary" for="mileageOption2">10,000 or Less</label>
+
+                        <input type="radio" class="btn-check" name="mileageOptions" id="mileageOption3" autocomplete="off" value="10001to30000">
+                        <label class="btn btn-outline-primary" for="mileageOption3">10,001 - 30,000</label>
+
+                        <input type="radio" class="btn-check" name="mileageOptions" id="mileageOption4" autocomplete="off" value="30001to60000">
+                        <label class="btn btn-outline-primary" for="mileageOption4">30,001 - 60,000</label>
+
+                        <input type="radio" class="btn-check" name="mileageOptions" id="mileageOption5" autocomplete="off" value="60001to100000">
+                        <label class="btn btn-outline-primary" for="mileageOption5">60,001 - 100,000</label>
+
+                        <input type="radio" class="btn-check" name="mileageOptions" id="mileageOption6" autocomplete="off" value="more100000">
+                        <label class="btn btn-outline-primary" for="mileageOption6">100,001+</label>
+                        <br>
+
+                        Fuel Type:
+                        <br>
+                        <input type="radio" class="btn-check" name="fuelTypeOptions" id="fuelTypeOption1" autocomplete="off" value="null" checked="checked">
+                        <label class="btn btn-outline-primary" for="fuelTypeOption1">No Choice</label>
+
+                        <input type="radio" class="btn-check" name="fuelTypeOptions" id="fuelTypeOption2" autocomplete="off" value="Gasoline">
+                        <label class="btn btn-outline-primary" for="fuelTypeOption2">Gasoline</label>
+
+                        <input type="radio" class="btn-check" name="fuelTypeOptions" id="fuelTypeOption3" autocomplete="off" value="Electric">
+                        <label class="btn btn-outline-primary" for="fuelTypeOption3">Electric</label>
+
+                        <input type="radio" class="btn-check" name="fuelTypeOptions" id="fuelTypeOption4" autocomplete="off" value="Hybrid">
+                        <label class="btn btn-outline-primary" for="fuelTypeOption4">Hybrid</label>
+
+                        <input type="radio" class="btn-check" name="fuelTypeOptions" id="fuelTypeOption5" autocomplete="off" value="Diesel">
+                        <label class="btn btn-outline-primary" for="fuelTypeOption5">Diesel</label>
+                        <br>
+
+                        Seats:
+                        <br>
+                        <input type="radio" class="btn-check" name="seatsOptions" id="seatsOption1" autocomplete="off" value="null" checked="checked">
+                        <label class="btn btn-outline-primary" for="seatsOption1">No Choice</label>
+
+                        <input type="radio" class="btn-check" name="seatsOptions" id="seatsOption2" autocomplete="off" value="2">
+                        <label class="btn btn-outline-primary" for="seatsOption2">2</label>
+
+                        <input type="radio" class="btn-check" name="seatsOptions" id="seatsOption3" autocomplete="off" value="3">
+                        <label class="btn btn-outline-primary" for="seatsOption3">3</label>
+
+                        <input type="radio" class="btn-check" name="seatsOptions" id="seatsOption4" autocomplete="off" value="4">
+                        <label class="btn btn-outline-primary" for="seatsOption4">4</label>
+
+                        <input type="radio" class="btn-check" name="seatsOptions" id="seatsOption5" autocomplete="off" value="5plus">
+                        <label class="btn btn-outline-primary" for="seatsOption5">5+</label>
+                        <br>
+
+                        <br>
+                        <input class="btn btn-primary form-control" type="submit" value="Search">
+                    </form>
+                </div>
+            </div>
+    		<div id="allCars" class="row">
+    			<div class="col-md-4 searchBarJS" th:each="car: ${cars}">
     				<div class="car-wrap rounded ftco-animate">
-<!--    					<div class="img rounded d-flex align-items-end" style="background-image: url(images/car-1.jpg);"></div>-->
 						<img class="img rounded d-flex align-items-end" th:src="${car.value} == null ? _ : @{'data:' +${car.key.imgType} + ';base64,'+${car.value}}"/>
     					<div class="text">
-    						<h2 class="mb-0"><a th:href="@{/car/{id}(id=${car.key.id})}" th:text="${car.key.model}"></a></h2>
+    						<h2 class="mb-0"><a id="carModel" th:href="@{/car/{id}(id=${car.key.id})}" th:text="${car.key.model}"></a></h2>
     						<div class="d-flex mb-3">
 	    						<span class="cat" th:text="${car.key.make}"></span>
 								<p class="price ml-auto" th:text="${car.key.dailyRate}"></p><span>$/day</span>

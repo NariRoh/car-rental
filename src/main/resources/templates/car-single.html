@@ -2,31 +2,9 @@
 <html lang="en">
   <head>
     <title>Car to Rent - Car Rental</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    
-    <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800&display=swap" rel="stylesheet">
 
-	<link rel="shortcut icon" href="images/Car-Icon-16x16.png"/>
+	  <div th:replace="fragments/head :: head"></div>
 
-    <link rel="stylesheet" href="css/open-iconic-bootstrap.min.css">
-    <link rel="stylesheet" href="css/animate.css">
-    
-    <link rel="stylesheet" href="css/owl.carousel.min.css">
-    <link rel="stylesheet" href="css/owl.theme.default.min.css">
-    <link rel="stylesheet" href="css/magnific-popup.css">
-
-    <link rel="stylesheet" href="css/aos.css">
-
-    <link rel="stylesheet" href="css/ionicons.min.css">
-
-    <link rel="stylesheet" href="css/bootstrap-datepicker.css">
-    <link rel="stylesheet" href="css/jquery.timepicker.css">
-
-    
-    <link rel="stylesheet" href="css/flaticon.css">
-    <link rel="stylesheet" href="css/icomoon.css">
-    <link rel="stylesheet" href="css/style.css">
   </head>
   <body>
 
@@ -45,15 +23,15 @@
     </section>
 		
 
-		<section class="ftco-section ftco-car-details" th:object="${car}">
+		<section class="ftco-section ftco-car-details" th:each="car: ${car}">
       <div class="container">
       	<div class="row justify-content-center">
       		<div class="col-md-12">
       			<div class="car-details">
-      				<div class="img rounded" style="background-image: url(images/bg_1.jpg);"></div>
+					<img class="img rounded" th:src="${car.value} == null ? _ : @{'data:' +${car.key.imgType} + ';base64,'+${car.value}}"/>
       				<div class="text text-center">
-      					<span class="subheading" th:text="${car.make}"></span>
-      					<h2 th:text="${car.model}"></h2>
+      					<span class="subheading" th:text="${car.key.make}"></span>
+      					<h2 th:text="${car.key.model}"></h2>
       				</div>
       			</div>
       		</div>
@@ -67,7 +45,7 @@
 	              	<div class="text">
 		                <h3 class="heading mb-0 pl-3">
 		                	Mileage
-		                	<span th:text="${car.mileage}"></span>
+		                	<span th:text="${car.key.mileage}"></span>
 		                </h3>
 	                </div>
                 </div>
@@ -82,7 +60,7 @@
 	              	<div class="text">
 		                <h3 class="heading mb-0 pl-3">
 		                	Transmission
-		                	<span th:text="${car.transmission}">Manual</span>
+		                	<span th:text="${car.key.transmission}">Manual</span>
 		                </h3>
 	                </div>
                 </div>
@@ -97,7 +75,7 @@
 	              	<div class="text">
 		                <h3 class="heading mb-0 pl-3">
 		                	Seats
-		                	<span th:text="${car.seats}"></span>
+		                	<span th:text="${car.key.seats}"></span>
 		                </h3>
 	                </div>
                 </div>
@@ -127,7 +105,7 @@
 	              	<div class="text">
 		                <h3 class="heading mb-0 pl-3">
 		                	Fuel
-		                	<span th:text="${car.fuelType}"></span>
+		                	<span th:text="${car.key.fuelType}"></span>
 		                </h3>
 	                </div>
                 </div>
