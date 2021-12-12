@@ -1,3 +1,29 @@
+2021-12-12
+
+Chris
+1. Done / not done since the last scrum:
+- Fixed CSS issue for car details
+- Implemented car list search bar (javascript and server-side)
+- Finished pricing page (without reviews)
+- Started reviews
+2. To do until the next Scrum:
+- Finish reviews
+- Fix all pages that display car reviews (car details, pricing, index)
+3. Need assistance/figure things out
+- Nothing for now
+
+Nari
+1. Done / not done since last scrum:
+- implement user register/login/logout with spring security
+- design register/login and user profile
+- share current user info in nav
+2. To do until next Scrum:
+- finish update user info in profile
+- read stripe api document
+3. Need assistance / figure things out
+- nothing for now
+
+-----------------------------------------------------------------------------------------------
 2021-12-10
 
 Chris
