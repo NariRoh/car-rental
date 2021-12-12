@@ -15,7 +15,7 @@
 
         <div class="col col-md-5">
 
-            <form th:action="@{/register}" th:object="${user}" method="POST">
+            <form th:action="@{/register}" th:object="${userDTO}" method="POST">
 
                 <div class="form-row py-1">
                     <label>First Name*</label>
@@ -39,6 +39,12 @@
                     <label>Password*</label>
                     <input type="password" th:field="*{password}" th:errorClass="is-invalid" class="form-control"/>
                     <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="invalid-feedback"></p>
+                </div>
+
+                <div class="form-row py-1">
+                    <label>Phone Number</label>
+                    <input type="text" th:field="*{phoneNumber}" th:errorClass="is-invalid" class="form-control"/>
+                    <p th:if="${#fields.hasErrors('phoneNumber')}" th:errors="*{phoneNumber}" class="invalid-feedback"></p>
                 </div>
 
                 <div class="form-row py-1 text-center">

@@ -12,6 +12,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.util.Collection;
 
@@ -27,27 +28,19 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "Please enter your first name")
+    @NotNull
     @Column(length = 50)
     private String firstName;
 
-    @NotBlank(message = "Please enter your last name")
+    @NotNull
     @Column(length = 50)
     private String lastName;
-    
-    @Email(message = "Please enter a valid email")
-    @NotBlank(message = "Please enter your email")
+
+    @NotNull
     @Column(length = 150, unique = true)
     private String email;
 
-    // FIXME: modify password regex
-//    @Length(min = 6, message = "Password must be at least 6 character long")
-    @NotBlank(message = "Please enter a password")
-    @Pattern(regexp =
-                    "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{6,100}$",
-            message =
-                    "Password must be 6 - 100 characters long including one uppercase, " +
-                            "one lowercase, one number, and one special character.")
+    @NotNull
     private String password;
 
     private String phoneNumber;

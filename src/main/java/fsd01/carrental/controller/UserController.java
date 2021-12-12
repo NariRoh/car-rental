@@ -23,33 +23,6 @@ public class UserController {
 
     @Autowired
     private final UserService userService;
-    private static final Logger log = LoggerFactory.getLogger(UserService.class);
-
-    @GetMapping("/register")
-    public ModelAndView showRegisterView() {
-        ModelAndView modelAndView = new ModelAndView("register");
-//        User newUser = new User();
-        modelAndView.addObject("user", new User());
-
-        return modelAndView;
-    }
-
-    @PostMapping("/register")
-    public String registerUser(@Valid User user, BindingResult bindingResult) {
-        if (userService.userEmailExists(user.getEmail())) {
-            bindingResult.addError(new FieldError(
-                    "user", "email", "Email already in use"
-            ));
-        }
-        if (bindingResult.hasErrors()) {
-            return "register";
-        }
-
-        userService.saveUser(user);
-        log.info(">>>>>> Created new user : {}", user);
-
-        return "redirect:/";
-    }
 
     @GetMapping("/login")
     public String showLoginView(Authentication authentication) {

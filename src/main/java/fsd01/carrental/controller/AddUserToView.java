@@ -8,10 +8,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 @ControllerAdvice
 public class AddUserToView {
 
-//    @ModelAttribute("user")
-//    public User addUserToModel(Authentication authentication) {
-//        return authentication != null ? (User) authentication.getPrincipal() : null;
-//    }
-
-
+    @ModelAttribute("user")
+    public User addUserToModel(Authentication authentication) {
+        return authentication != null ? (User) authentication.getPrincipal() : null;
+    }
 }
