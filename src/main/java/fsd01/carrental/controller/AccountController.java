@@ -1,20 +1,18 @@
 package fsd01.carrental.controller;
 
-import fsd01.carrental.entity.User;
-import fsd01.carrental.object.UserDTO;
+import fsd01.carrental.dtos.UserDTO;
 import fsd01.carrental.service.UserService;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -46,42 +44,24 @@ public class AccountController {
     @PostMapping("/register")
     public String registerUser(@Valid UserDTO userDTO, BindingResult bindingResult) {
 
-        // check if user email exists
-        if (userService.userEmailExists(userDTO.getEmail())) {
-            bindingResult.addError(new FieldError(
-                    "userDTO", "email", "Email already in use"
-            ));
-        }
-        // check if given phone number is in valid form
+        // validates email uniqueness and phone number pattern
+        userService.validateEmail(userDTO.getEmail(), bindingResult);
         if (userDTO.getPhoneNumber() != null) {
-            if (!(userService.validatePhoneNumber(userDTO.getPhoneNumber()))) {
-                bindingResult.addError(new FieldError(
-                        "userDTO", "phoneNumber", "Enter a valid phone number"
-                ));
-            }
+            userService.validatePhoneNumber(userDTO.getPhoneNumber(), bindingResult);
         }
+
         if (bindingResult.hasErrors()) {
             return "register";
         }
 
-        userService.registerUser(userDTO);
+        userService.createUser(userDTO);
         log.info(">>>>>> Creating a new user : {}", userDTO);
 
         return "redirect:/";
     }
-//    public String registerUser(@Valid User user, BindingResult bindingResult) {
-//        if (userService.userEmailExists(user.getEmail())) {
-//            bindingResult.addError(new FieldError(
-//                    "user", "email", "Email already in use"
-//            ));
-//        }
-//        if (bindingResult.hasErrors()) {
-//            return "register";
-//        }
-//
-//        userService.saveUser(user);
-//        log.info(">>>>>> Created new user : {}", user);
-//
-//        return "redirect:/";
-//    }
+
+    @GetMapping("/login")
+    public String showLoginView(Authentication authentication) {
+        return authentication == null ? "signIn" : "redirect:/";
+    }
 }

@@ -1,4 +1,4 @@
-package fsd01.carrental.object;
+package fsd01.carrental.dtos;
 
 import fsd01.carrental.security.UserRole;
 import lombok.*;
@@ -8,12 +8,14 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
-@AllArgsConstructor
-@NoArgsConstructor
+//@AllArgsConstructor
+//@NoArgsConstructor
 @Getter
 @Setter
 @ToString
 public class UserDTO {
+
+    private long id;
 
     @NotBlank(message = "Please enter your first name")
     private String firstName;
@@ -33,6 +35,6 @@ public class UserDTO {
 
     private String phoneNumber;
 
-    private UserRole role;
+//    private UserRole role;
 
 }
