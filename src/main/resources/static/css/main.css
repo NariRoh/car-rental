@@ -35,6 +35,10 @@
     text-transform: uppercase;
 }
 
+.pointy:hover {
+    cursor: pointer;
+}
+
 /*======================================
 //--//-->  User Log In
 ======================================*/
@@ -76,6 +80,8 @@ main#profile {
 .hidden-form {
     display: none;
 }
+
+
 
 /*.line {*/
 /*    width: 100%;*/

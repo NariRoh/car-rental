@@ -18,6 +18,7 @@ $(document).ready(function() {
         parentNode.siblings(".user-info").show()
     });
 
+
     // validateUserFullName();
     // function validateUserFullName() {
     //     console.log(firstName);
@@ -25,18 +26,18 @@ $(document).ready(function() {
     //     const lastName = $("input[name=lastName]").val();
     //
     // }
-    const serializedForm = $("#renterName").serialize();
-    ajaxRequest(serializedForm);
-
-    function ajaxRequest(serializedForm) {
-        $.ajax({
-            url: `/${endpoint}`,
-            type: "POST",
-            data: serializedForm,
-            dataType: "json",
-            success: function () {
-                console.log("success");
-            }
-        });
-    }
+    // const serializedForm = $("#renterName").serialize();
+    // ajaxRequest(serializedForm);
+    //
+    // function ajaxRequest(serializedForm) {
+    //     $.ajax({
+    //         url: `/${endpoint}`,
+    //         type: "POST",
+    //         data: serializedForm,
+    //         dataType: "json",
+    //         success: function () {
+    //             console.log("success");
+    //         }
+    //     });
+    // }
 });
