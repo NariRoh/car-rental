@@ -2,31 +2,9 @@
 <html lang="en">
   <head>
     <title>Pricing - Car Rental</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    
-    <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800&display=swap" rel="stylesheet">
 
-	<link rel="shortcut icon" href="images/Car-Icon-16x16.png"/>
+	  <div th:replace="fragments/head :: head"></div>
 
-    <link rel="stylesheet" href="css/open-iconic-bootstrap.min.css">
-    <link rel="stylesheet" href="css/animate.css">
-    
-    <link rel="stylesheet" href="css/owl.carousel.min.css">
-    <link rel="stylesheet" href="css/owl.theme.default.min.css">
-    <link rel="stylesheet" href="css/magnific-popup.css">
-
-    <link rel="stylesheet" href="css/aos.css">
-
-    <link rel="stylesheet" href="css/ionicons.min.css">
-
-    <link rel="stylesheet" href="css/bootstrap-datepicker.css">
-    <link rel="stylesheet" href="css/jquery.timepicker.css">
-
-    
-    <link rel="stylesheet" href="css/flaticon.css">
-    <link rel="stylesheet" href="css/icomoon.css">
-    <link rel="stylesheet" href="css/style.css">
   </head>
   <body>
 
@@ -60,10 +38,10 @@
 						      </tr>
 						    </thead>
 						    <tbody>
-						      <tr class="">
-						      	<td class="car-image"><div class="img" style="background-image:url(images/car-1.jpg);"></div></td>
+						      <tr class="" th:each="car: ${cars}">
+						      	<td class="car-image"><img class="img" th:src="${car.value} == null ? _ : @{'data:' +${car.key.imgType} + ';base64,'+${car.value}}"/></td>
 						        <td class="product-name">
-						        	<h3>Cheverolet SUV Car</h3>
+						        	<h3><span th:text="${car.key.make}"></span> <span th:text="${car.key.model}"></span></h3>
 						        	<p class="mb-0 rated">
 						        		<span>rated:</span>
 						        		<span class="ion-ios-star"></span>
@@ -75,10 +53,10 @@
 						        </td>
 						        
 						        <td class="price">
-						        	<p class="btn-custom"><a href="#">Rent a car</a></p>
+						        	<p class="btn-custom"><a th:href="@{/car/{id}(id=${car.key.id})}">Rent a car</a></p>
 						        	<div class="price-rate">
 							        	<h3>
-							        		<span class="num"><small class="currency">$</small> 10.99</span>
+							        		<span class="num"><small class="currency">$</small><span th:text="${car.key.hourlyRate}"></span></span>
 							        		<span class="per">/per hour</span>
 							        	</h3>
 							        	<span class="subheading">$3/hour fuel surcharges</span>
@@ -86,10 +64,10 @@
 						        </td>
 						        
 						        <td class="price">
-						        	<p class="btn-custom"><a href="#">Rent a car</a></p>
+						        	<p class="btn-custom"><a th:href="@{/car/{id}(id=${car.key.id})}">Rent a car</a></p>
 						        	<div class="price-rate">
 							        	<h3>
-							        		<span class="num"><small class="currency">$</small> 60.99</span>
+							        		<span class="num"><small class="currency">$</small><span th:text="${car.key.dailyRate}"></span></span>
 							        		<span class="per">/per day</span>
 							        	</h3>
 							        	<span class="subheading">$3/hour fuel surcharges</span>
@@ -97,10 +75,10 @@
 						        </td>
 
 						        <td class="price">
-						        	<p class="btn-custom"><a href="#">Rent a car</a></p>
+						        	<p class="btn-custom"><a th:href="@{/car/{id}(id=${car.key.id})}">Rent a car</a></p>
 						        	<div class="price-rate">
 							        	<h3>
-							        		<span class="num"><small class="currency">$</small> 995.99</span>
+							        		<span class="num"><small class="currency">$</small><span th:text="${car.key.monthlyLeasingRate}"></span></span>
 							        		<span class="per">/per month</span>
 							        	</h3>
 							        	<span class="subheading">$3/hour fuel surcharges</span>
