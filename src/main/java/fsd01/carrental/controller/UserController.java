@@ -1,6 +1,7 @@
 package fsd01.carrental.controller;
 
 import fsd01.carrental.dtos.UserDTO;
+import fsd01.carrental.dtos.UserUpdateDTO;
 import fsd01.carrental.entity.User;
 import fsd01.carrental.service.UserService;
 import lombok.AllArgsConstructor;
@@ -25,39 +26,48 @@ public class UserController {
 
     @Autowired
     private final UserService userService;
+    private static final Logger log = LoggerFactory.getLogger(UserService.class);
 
     @GetMapping("/profile")
-    public String showUserProfileView(Authentication authentication) {
-        // TODO: redirect to 'no access page'?
-        return authentication == null ? "redirect:/" : "profile";
+    public ModelAndView showUserProfileView(@AuthenticationPrincipal User user) {
+        ModelAndView modelAndView = new ModelAndView("profile");
+        UserDTO userDTO = userService.getUserDTO(user.getId());
+
+        log.info(">>>>>> Fetched user info : {}", userDTO);
+        modelAndView.addObject("userDTO", userDTO);
+
+        return modelAndView;
+
+//        // TODO: redirect to 'access denied page'
+//        return authentication == null ? "redirect:/" : "profile";
     }
 
     @PostMapping("/profile")
     public String updateUserProfile(
-            @AuthenticationPrincipal User user,
-            @Valid UserDTO userDTO,
+            @Valid UserUpdateDTO userUpdateDTO,
+            @ModelAttribute UserDTO userDTO,
+            Model model,
             BindingResult bindingResult) {
-        System.out.println(userDTO.toString());
 
-        // check if user email exists
-//        if (userService.userEmailExists(userDTO.getEmail())) {
-//            bindingResult.addError(new FieldError(
-//                    "userDTO", "email", "Email already in use"
-//            ));
-//        }
-        // check if given phone number is in valid form
-//        if (userDTO.getPhoneNumber() != null) {
-//            if (!(userService.validatePhoneNumber(userDTO.getPhoneNumber()))) {
-//                bindingResult.addError(new FieldError(
-//                        "userDTO", "phoneNumber", "Enter a valid phone number"
-//                ));
-//            }
-//        }
+        log.info(">>>>>> Requested user update field(s) : {}", userUpdateDTO);
+
+        // validates phone number pattern if it's changed
+        if (userUpdateDTO.getPhoneNumber() != null) {
+            userService.validatePhoneNumber(userUpdateDTO.getPhoneNumber(), bindingResult);
+        }
         if (bindingResult.hasErrors()) {
+            model.addAttribute("userDTO", userDTO);
             return "profile";
         }
-        userService.updateUser(user.getId(), userDTO);
-        return "profile";
+
+        // FIXME: Validation failed for object='userUpdateDTO'. Error count: 1
+        // https://stackoverflow.com/questions/16122257/how-to-pass-two-objects-to-use-in-a-form-using-thymeleaf
+        // FIXME: password required when updating (setting to null for now)
+
+        userService.updateUser(userUpdateDTO);
+
+        // TODO: add flash message when update success
+        return "redirect:/profile";
     }
 
 //    @PostMapping("/validateFullName")

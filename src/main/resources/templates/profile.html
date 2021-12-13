@@ -18,24 +18,10 @@
     <div id="content">
         <h2>Welcome to your profile, <span th:text="${user.firstName}" class="capitalized"></span></h2>
         <section>
-            <div class="user-info">
 
-                <h2>Name</h2>
-                <p th:text="${user.firstName} +  ' ' + ${user.lastName}" class="capitalized"></p>
-
-                <h2>Email</h2>
-                <p th:text="${user.email}" class="uppercase"></p>
-
-                <h2>Phone Number</h2>
-                <!--  TODO: format phone number (000) 000 -0000 -->
-                <p th:text="${user.phoneNumber}"></p>
-
-                <button class="btn-edit btn btn-secondary"><a th:href="@{#}">Edit</a></button>
-
-            </div>
-
-            <div class="hidden-form">
-                <form id="profileForm" th:action="@{/profile}" th:object="${user}" method="POST">
+            <div>
+                <form id="profileForm" th:action="@{/profile}" th:object="${userDTO}" method="POST">
+                    <input type="hidden" name="id" th:value="${user.id}">
                     <div class="form-row">
                         <label>First Name</label>
                         <input type="text" th:field="*{firstName}" th:errorClass="is-invalid" class="form-control"/>
@@ -50,19 +36,13 @@
 
                     <div class="form-row">
                         <label>Email</label>
-                        <input type="email" th:field="*{email}" th:errorClass="is-invalid" class="form-control"/>
-                        <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="invalid-feedback"></p>
+                        <input type="email" th:field="*{email}" th:errorClass="is-invalid" class="form-control" readonly />
+<!--                        <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="invalid-feedback"></p>-->
                     </div>
 
                     <div class="form-row">
                         <label>Phone Number</label>
                         <input type="text" th:field="*{phoneNumber}" th:errorClass="is-invalid" class="form-control"/>
-                        <p th:if="${#fields.hasErrors('phoneNumber')}" th:errors="*{phoneNumber}" class="invalid-feedback"></p>
-                    </div>
-
-                    <div class="form-row">
-                        <label>Password</label>
-                        <input type="password" th:field="*{password}" th:errorClass="is-invalid" class="form-control"/>
                         <p th:if="${#fields.hasErrors('phoneNumber')}" th:errors="*{phoneNumber}" class="invalid-feedback"></p>
                     </div>
 
@@ -77,29 +57,6 @@
                 </form>
             </div>
 
-            <div class="user-password">
-                <h2>
-                    Change Password
-                </h2>
-                <a data-toggle="collapse" data-target="#passwordForm" class="pointy">
-                    <p>Click to change password</p>
-                </a>
-
-                <form id="passwordForm" class="collapse" th:action="@{/password}" th:object="${user}" method="POST">
-                    <div class="form-row">
-                        <label>Current Password</label>
-                        <input type="password" th:field="*{password}" th:errorClass="is-invalid" class="form-control"/>
-                        <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="invalid-feedback"></p>
-                    </div>
-                    <div class="form-row">
-                        <label>New Password</label>
-                        <input type="password" th:field="*{password}" th:errorClass="is-invalid" class="form-control"/>
-                        <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="invalid-feedback"></p>
-                    </div>
-                    <button type="submit" class="btn btn-secondary">Save</button>
-                </form>
-
-            </div>
         </section>
 
     </div>

@@ -8,14 +8,14 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
-//@AllArgsConstructor
-//@NoArgsConstructor
-@Getter
-@Setter
-@ToString
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
 public class UserDTO {
 
     private long id;
+
+    // TODO: first & lastname size validation?
 
     @NotBlank(message = "Please enter your first name")
     private String firstName;
@@ -35,6 +35,16 @@ public class UserDTO {
 
     private String phoneNumber;
 
-//    private UserRole role;
+    //    private UserRole role;
 
+    @Override
+    public String toString() {
+        return "UserDTO{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                '}';
+    }
 }

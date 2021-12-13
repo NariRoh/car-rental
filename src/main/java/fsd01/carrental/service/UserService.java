@@ -1,11 +1,14 @@
 package fsd01.carrental.service;
 
+import fsd01.carrental.dtos.UserUpdateDTO;
 import fsd01.carrental.entity.User;
 import fsd01.carrental.dtos.UserDTO;
 import fsd01.carrental.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -20,6 +23,8 @@ import javax.transaction.Transactional;
 @Service
 @AllArgsConstructor
 public class UserService implements UserDetailsService {
+
+    private static final Logger log = LoggerFactory.getLogger(UserService.class);
 
     @Autowired
     private final UserRepository userRepository;
@@ -36,8 +41,6 @@ public class UserService implements UserDetailsService {
         return userRepository.save(user);
     }
 
-
-
     public User createUser (UserDTO userDTO) {
         // encode user password
         String encodedPassword = bCryptPasswordEncoder.encode(userDTO.getPassword());
@@ -47,17 +50,20 @@ public class UserService implements UserDetailsService {
         return saveUser(user);
     }
 
-    public User updateUser(Long id, UserDTO userDTO) {
-        User user = userRepository.findUserById(id)
-                .orElseThrow(() -> new IllegalArgumentException("User doesn't exists."));
+    @Transactional
+    public void updateUser(UserUpdateDTO userUpdateDTO) {
+        User user = userRepository.findById(userUpdateDTO.getId())
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+        user.update(
+                userUpdateDTO.getFirstName(),
+                userUpdateDTO.getLastName(),
+                userUpdateDTO.getPhoneNumber()
+        );
 
-        User userRequest = convertDtoToEntity(userDTO);
-        user.setFirstName(userRequest.getFirstName());
-        user.setLastName(userRequest.getLastName());
-        user.setEmail(userRequest.getEmail());
-        user.setPhoneNumber(userRequest.getPhoneNumber());
-
-        return saveUser(user);
+        log.info(">>>>>> Updating user : {}", user.toString());
+//        User user = modelMapper.map(userUpdateDTO, User.class);
+//        return saveUser(user);
+//        return saveUser(convertDtoToEntity(userUpdateDTO));
     }
 
     public void validateEmail(String email, BindingResult bindingResult) {
@@ -71,34 +77,43 @@ public class UserService implements UserDetailsService {
     public void validatePhoneNumber(String phoneNumber, BindingResult bindingResult) {
         boolean isValid = phoneNumber.replaceAll("[\\s+()-]", "").matches("^\\d{10}$");
 
-        if(!isValid) {
+        if (!isValid) {
             bindingResult.addError(new FieldError(
                     "userDTO", "phoneNumber", "Enter a valid phone number"
             ));
         }
+//        if (!isValid) {
+//            bindingResult.addError(new FieldError(
+//                    "userUpdateDTO", "phoneNumber", "Enter a valid phone number"
+//            ));
+//        }
+    }
+
+    public UserDTO getUserDTO(Long id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+        return convertEntityToDTO(user);
     }
 
     private UserDTO convertEntityToDTO(User user) {
         // to grab all the properties in User entity
         modelMapper.getConfiguration()
                 .setMatchingStrategy(MatchingStrategies.LOOSE);
-        UserDTO userDTO = new UserDTO();
-        userDTO = modelMapper.map(user, UserDTO.class);
-        return userDTO;
+        return modelMapper.map(user, UserDTO.class);
+    }
+
+    private User convertDtoToEntity(UserUpdateDTO userUpdateDTO) {
+        // to grab all the properties in User entity
+        modelMapper.getConfiguration()
+                .setMatchingStrategy(MatchingStrategies.LOOSE);
+        return modelMapper.map(userUpdateDTO, User.class);
     }
 
     private User convertDtoToEntity(UserDTO userDTO) {
         // to grab all the properties in User entity
         modelMapper.getConfiguration()
                 .setMatchingStrategy(MatchingStrategies.LOOSE);
-        User user = new User();
-        user = modelMapper.map(userDTO, User.class);
-        return user;
-    }
-
-    public void fetchUser(Long id) {
-        User user = userRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Invalid user"));
+        return modelMapper.map(userDTO, User.class);
     }
 
     @Override
@@ -106,6 +121,5 @@ public class UserService implements UserDetailsService {
         return userRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found."));
     }
-
 
 }
