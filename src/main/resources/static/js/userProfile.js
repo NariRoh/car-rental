@@ -18,6 +18,10 @@ $(document).ready(function() {
         parentNode.siblings(".user-info").show()
     });
 
+    // $("#profileForm").submit(function (e) {
+    //    e.preventDefault();
+    // });
+
 
     // validateUserFullName();
     // function validateUserFullName() {

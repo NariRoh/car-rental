@@ -1,15 +1,12 @@
 package fsd01.carrental.entity;
 
 import fsd01.carrental.security.UserRole;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.util.Collection;
 
 @Entity
@@ -18,25 +15,22 @@ import java.util.Collection;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
+//@DynamicUpdate
 public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
     @Column(length = 50)
     private String firstName;
 
-    @NotNull
     @Column(length = 50)
     private String lastName;
 
-    @NotNull
     @Column(length = 150, unique = true)
     private String email;
 
-    @NotNull
     private String password;
 
     private String phoneNumber;
@@ -72,5 +66,11 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public void update(String firstName, String lastName, String phoneNumber) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.phoneNumber = phoneNumber;
     }
 }
