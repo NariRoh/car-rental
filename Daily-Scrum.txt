@@ -1,3 +1,27 @@
+2021-12-13
+
+Chris
+1. Done / not done since the last scrum:
+- Put reviews on hold for now (have to implement booking first)
+- Started implementing car booking feature
+2. To do until the next Scrum:
+- Finish booking without stripe then pass it on to Nari
+3. Need assistance/figure things out
+- Nothing for now
+
+Nari
+1. Done / not done since last scrum:
+- finished user update in profile
+- design register/login and user profile
+- share current user info in nav
+2. To do until next Scrum:
+- finish update user info in profile
+- read stripe api document
+3. Need assistance / figure things out
+- nothing for now
+
+-----------------------------------------------------------------------------------------------
+
 2021-12-12
 
 Chris
@@ -24,6 +48,7 @@ Nari
 - nothing for now
 
 -----------------------------------------------------------------------------------------------
+
 2021-12-10
 
 Chris
