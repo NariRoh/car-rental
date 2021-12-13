@@ -12,10 +12,9 @@ Chris
 Nari
 1. Done / not done since last scrum:
 - finished user update in profile
-- design register/login and user profile
-- share current user info in nav
+- built form for change password & some logic
 2. To do until next Scrum:
-- finish update user info in profile
+- finish change password feature in profile
 - read stripe api document
 3. Need assistance / figure things out
 - nothing for now
