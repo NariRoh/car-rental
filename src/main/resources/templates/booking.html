@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <title>Booking Car - Car Rental</title>
+
+    <div th:replace="fragments/head :: head"></div>
+
+    <link href='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css' rel='stylesheet'>
+    <link href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.0.3/css/font-awesome.css' rel='stylesheet'>
+    <script type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>
+    <style>* {
+        margin: 0;
+        padding: 0
+    }
+
+    html {
+        height: 100%
+    }
+
+    p {
+        color: grey
+    }
+
+    #heading {
+        text-transform: uppercase;
+        color: rgb(1, 210, 142);
+        font-weight: normal
+    }
+
+    #msform {
+        text-align: center;
+        position: relative;
+        margin-top: 20px
+    }
+
+    #msform fieldset {
+        background: white;
+        border: 0 none;
+        border-radius: 0.5rem;
+        box-sizing: border-box;
+        width: 100%;
+        margin: 0;
+        padding-bottom: 20px;
+        position: relative
+    }
+
+    .form-card {
+        text-align: left
+    }
+
+    #msform fieldset:not(:first-of-type) {
+        display: none
+    }
+
+    #msform input,
+    #msform textarea {
+        padding: 8px 15px 8px 15px;
+        border: 1px solid #ccc;
+        border-radius: 0px;
+        margin-bottom: 25px;
+        margin-top: 2px;
+        width: 100%;
+        box-sizing: border-box;
+        color: #2C3E50;
+        background-color: #ECEFF1;
+        font-size: 16px;
+        letter-spacing: 1px
+    }
+
+    #msform input:focus,
+    #msform textarea:focus {
+        -moz-box-shadow: none !important;
+        -webkit-box-shadow: none !important;
+        box-shadow: none !important;
+        border: 1px solid rgb(1, 210, 142);
+        outline-width: 0
+    }
+
+    #msform .action-button {
+        width: 100px;
+        background: rgb(1, 210, 142);
+        font-weight: bold;
+        color: white;
+        border: 0 none;
+        border-radius: 0px;
+        cursor: pointer;
+        padding: 10px 5px;
+        margin: 10px 0px 10px 5px;
+        float: right
+    }
+
+    #msform .action-button:hover,
+    #msform .action-button:focus {
+        background-color: rgb(1, 210, 142);
+    }
+
+    #msform .action-button-previous {
+        width: 100px;
+        background: #616161;
+        font-weight: bold;
+        color: white;
+        border: 0 none;
+        border-radius: 0px;
+        cursor: pointer;
+        padding: 10px 5px;
+        margin: 10px 5px 10px 0px;
+        float: right
+    }
+
+    #msform .action-button-previous:hover,
+    #msform .action-button-previous:focus {
+        background-color: #000000
+    }
+
+    .card {
+        z-index: 0;
+        border: none;
+        position: relative
+    }
+
+    .fs-title {
+        font-size: 25px;
+        color: rgb(1, 210, 142);
+        margin-bottom: 15px;
+        font-weight: normal;
+        text-align: left
+    }
+
+    .purple-text {
+        color: rgb(1, 210, 142);
+        font-weight: normal
+    }
+
+    .fieldlabels {
+        color: gray;
+        text-align: left
+    }
+
+    #progressbar {
+        margin-bottom: 30px;
+        overflow: hidden;
+        color: lightgrey
+    }
+
+    #progressbar .active {
+        color: rgb(1, 210, 142);
+    }
+
+    #progressbar li {
+        list-style-type: none;
+        font-size: 15px;
+        width: 25%;
+        float: left;
+        position: relative;
+        font-weight: 400
+    }
+
+    #progressbar #account:before {
+        font-family: FontAwesome;
+        content: "\f002"
+    }
+
+    #progressbar #personal:before {
+        font-family: FontAwesome;
+        content: "\f007";
+    }
+
+    #progressbar #payment:before {
+        font-family: FontAwesome;
+        content: "\f09d";
+    }
+
+    #progressbar #confirm:before {
+        font-family: FontAwesome;
+        content: "\f00c";
+    }
+
+    #progressbar li:before {
+        width: 50px;
+        height: 50px;
+        line-height: 45px;
+        display: block;
+        font-size: 20px;
+        color: #ffffff;
+        background: lightgray;
+        border-radius: 50%;
+        margin: 0 auto 10px auto;
+        padding: 2px;
+    }
+
+    #progressbar li:after {
+        content: '';
+        width: 100%;
+        height: 2px;
+        background: lightgray;
+        position: absolute;
+        left: 0;
+        top: 25px;
+        z-index: -1;
+    }
+
+    #progressbar li.active:before,
+    #progressbar li.active:after {
+        background: rgb(1, 210, 142);
+    }
+
+    .progress {
+        height: 20px;
+    }
+
+    .progress-bar {
+        background-color: rgb(1, 210, 142);
+    }
+
+    .containerHeight {
+        height: 975px;
+        width: 100%;
+    }
+
+    .bookingCarImage {
+        height: 290px;
+        width: 437px;
+        padding-bottom: 10px;
+    }
+
+    .carHeaders{
+        display: inline;
+    }
+
+    .leftCarHeader {
+        padding-right: 5px;
+    }
+
+    .row {
+        --bs-gutter-x: 0;
+        margin-right: 0px;
+        margin-left: 0px;
+    }
+
+    .form-card {
+        height: 560px;
+    }
+
+    .dateTimeInputs {
+        margin-bottom: 0px !important;
+    }
+    </style>
+</head>
+
+<body class='snippet-body'>
+
+<div th:replace="fragments/navbar :: navbar"></div>
+
+<div class="containerHeight">
+    <div th:each="car: ${cars}">
+        <div class="row justify-content-center">
+            <div class="col-11 col-sm-9 col-md-7 col-lg-6 col-xl-5 text-center p-0 mt-3 mb-2">
+                <div class="card px-0 pt-4 pb-0 mt-3 mb-3">
+                    <h2 id="heading">Book Your Car Today</h2>
+                    <p>Fill all form field to go to next step</p>
+                    <form id="msform">
+                        <!-- Progress Bar -->
+                        <ul id="progressbar">
+                            <li class="active" id="account"><strong>Renting</strong></li>
+                            <li id="personal"><strong>Personal</strong></li>
+                            <li id="payment"><strong>Payment</strong></li>
+                            <li id="confirm"><strong>Confirmation</strong></li>
+                        </ul>
+                        <div class="progress">
+                            <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"
+                                 aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                        <br>
+                        <!-- ------------------------------------------------------ STEP 1 ----------------------------------------------------------------  -->
+                        <fieldset>
+                            <div class="form-card">
+                                <div class="row">
+                                    <h2 class="fs-title">Car Booking:</h2>
+                                </div>
+                                <div class="row">
+                                    <div class="col-7">
+                                        <div>
+                                            <h2 class="carHeaders leftCarHeader" th:text="${car.key.make}"></h2>
+                                            <h2 class="carHeaders" th:text="${car.key.model}"></h2>
+                                        </div>
+                                        <br>
+                                        <img class="bookingCarImage" th:src="${car.value} == null ? _ : @{'data:' +${car.key.imgType} + ';base64,'+${car.value}}"/>
+                                        <p>Hourly Rate: $<span th:text="${car.key.hourlyRate}">20.0</span>/hr</p>
+                                        <p>Daily Rate: $<span th:text="${car.key.dailyRate}">110.0</span>/day</p>
+                                        <p>Monthly Rate: $<span th:text="${car.key.monthlyLeasingRate}">600.0</span>/month</p>
+                                    </div>
+                                    <div class="col-5">
+
+                                        <p>Renting Options:</p>
+                                        <input type="radio" class="btn-check" name="priceOptions" id="priceOption1"
+                                               autocomplete="off" value="Hourly" checked="checked">
+                                        <label class="btn btn-outline-primary" for="priceOption1">Hourly</label>
+                                        <!--                            th:field="*{pricingOption}"-->
+                                        <input type="radio" class="btn-check" name="priceOptions" id="priceOption2"
+                                               autocomplete="off" value="Daily">
+                                        <label class="btn btn-outline-primary" for="priceOption2">Daily</label>
+                                        <!--                            th:field="*{pricingOption}"-->
+                                        <input type="radio" class="btn-check" name="priceOptions" id="priceOption3"
+                                               autocomplete="off" value="Monthly">
+                                        <label class="btn btn-outline-primary" for="priceOption3">Monthly</label>
+                                        <!--                            th:field="*{pricingOption}"-->
+                                        <br>
+                                        <br>
+                                        <p id="labelPickup" for="pickup">Pickup Date:</p>
+                                        <input class="dateTimeInputs" type="date" id="pickup" name="pickup">
+                                        <p id="pickupError" class="text-danger d-none">Please enter a valid pickup date.</p>
+
+                                        <p id="labelDropoff" for="dropoff">Drop-off Date:</p>
+                                        <input class="dateTimeInputs" type="date" id="dropoff" name="dropoff">
+                                        <p id="dropoffError" class="text-danger d-none">Please enter a valid drop-off date.</p>
+
+                                        <p id="labelPickupTime" for="pickupTime">Pickup Time:</p>
+                                        <input class="dateTimeInputs" type="time" id="pickupTime" name="pickupTime">
+                                        <p id="pickupTimeError" class="text-danger d-none">Please enter a valid pickup time.</p>
+
+                                        <p id="labelDropoffTime" for="dropoffTime">Dropoff Time: </p>
+                                        <input class="dateTimeInputs" type="time" id="dropoffTime" name="dropoffTime">
+                                        <p id="dropoffTimeError" class="text-danger d-none">Please enter a valid drop-off time.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <input id="step1Next" type="button" name="next" class="next action-button" value="Next">
+                        </fieldset>
+                        <!-- ------------------------------------------------------ STEP 2 ----------------------------------------------------------------  -->
+                        <fieldset>
+                            <div class="form-card">
+                                <div class="row">
+                                    <h2 class="fs-title">Car Renter Information:</h2>
+                                    <p>* Note - the information below must be associated with the person picking the car up. *</p>
+                                </div>
+                                <label class="fieldlabels">First Name:</label>
+                                <input type="text" name="firstName" placeholder="First Name"/>
+                                <label class="fieldlabels">Last Name:</label>
+                                <input type="text" name="lastName" placeholder="Last Name"/>
+                                <label class="fieldlabels">Email:</label>
+                                <input type="email" name="email" placeholder="Email"/>
+                            </div>
+                            <input type="button" name="next" class="next action-button" value="Next"/> <input
+                                type="button"
+                                name="previous"
+                                class="previous action-button-previous"
+                                value="Previous"/>
+                        </fieldset>
+                        <!-- ------------------------------------------------------ STEP 3 ----------------------------------------------------------------  -->
+                        <fieldset>
+                            <div class="form-card">
+                                <div class="row">
+                                    <h2 class="fs-title">Stripe Payment: </h2>
+                                </div>
+
+
+                                <!-- Any forms for Stripe goes here -->
+
+
+                            </div>
+                            <input type="button" name="next" class="next action-button" value="Submit"/> <input
+                                type="button"
+                                name="previous"
+                                class="previous action-button-previous"
+                                value="Previous"/>
+                        </fieldset>
+                        <!-- ------------------------------------------------------ STEP 4 ----------------------------------------------------------------  -->
+                        <fieldset>
+                            <div class="form-card">
+                                <div class="row">
+                                    <div class="col-7">
+                                        <h2 class="fs-title">Success:</h2>
+                                    </div>
+                                    <div class="col-5"></div>
+                                </div>
+                                <div class="row justify-content-center">
+                                    <div class="col-7 text-center">
+                                        <h5 class="purple-text text-center">You payment has been successfully processed.</h5>
+                                        <p>A confirmation email will be sent shortly about the details of your order.</p>
+                                        <p>Thank you!</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:replace="fragments/footer :: footer"></div>
+
+<script type='text/javascript'
+        src='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js'></script>
+<script type='text/javascript' src=''></script>
+<script type='text/javascript' src=''></script>
+<script type='text/Javascript'>$(document).ready(function () {
+
+    $('#dropoff').css("display", "none");
+    $('#labelDropoff').css("display", "none");
+
+    $('#priceOption1').click(function() {
+        $('#dropoff').css("display", "none");
+        $('#labelDropoff').css("display", "none");
+        $('#pickup').css("display", "");
+        $('#labelPickup').css("display", "");
+        $('#pickupTime').css("display", "");
+        $('#labelPickupTime').css("display", "");
+        $('#dropoffTime').css("display", "");
+        $('#labelDropoffTime').css("display", "");
+    });
+
+    $('#priceOption2').click(function() {
+        $('#pickupTime').css("display", "none");
+        $('#dropoffTime').css("display", "none");
+        $('#labelPickupTime').css("display", "none");
+        $('#labelDropoffTime').css("display", "none");
+        $('#dropoff').css("display", "");
+        $('#pickup').css("display", "");
+        $('#labelDropoff').css("display", "");
+        $('#labelPickup').css("display", "");
+    });
+
+    $('#priceOption3').click(function() {
+        $('#pickupTime').css("display", "none");
+        $('#dropoffTime').css("display", "none");
+        $('#labelPickupTime').css("display", "none");
+        $('#labelDropoffTime').css("display", "none");
+        $('#dropoff').css("display", "");
+        $('#pickup').css("display", "");
+        $('#labelDropoff').css("display", "");
+        $('#labelPickup').css("display", "");
+    });
+
+
+    $("#step1Next").click(function () {
+        const currentDate = new Date();
+        const pickupDate = new Date($('#pickup').val() + "T00:00:00");
+        console.log("Current Date: " + currentDate);
+        console.log("Pickup Date: " + pickupDate);
+        showDateTimeErrors();
+    });
+
+    function hideDateTimeErrors() {
+        $('#pickupError').css("display", "none");
+        $('#dropoffError').css("display", "none");
+        $('#pickupTimeError').css("display", "none");
+        $('#dropoffTimeError').css("display", "none");
+    }
+
+    function showDateTimeErrors() {
+        $('#pickupError').css("display", "");
+        $('#dropoffError').css("display", "");
+        $('#pickupTimeError').css("display", "");
+        $('#dropoffTimeError').css("display", "");
+    }
+
+
+
+
+
+
+
+
+    var current_fs, next_fs, previous_fs; //fieldset
+    var opacity;
+    var current = 1;
+    var steps = $("fieldset").length;
+
+    setProgressBar(current);
+
+    $(".next").click(function () {
+
+        current_fs = $(this).parent();
+        next_fs = $(this).parent().next();
+
+        //Add Class Active
+        $("#progressbar li").eq($("fieldset").index(next_fs)).addClass("active");
+
+        //show the next fieldset
+        next_fs.show();
+        //hide the current fieldset with style
+        current_fs.animate({opacity: 0}, {
+            step: function (now) {
+        // for making fieldset appear animation
+                opacity = 1 - now;
+
+                current_fs.css({
+                    'display': 'none',
+                    'position': 'relative'
+                });
+                next_fs.css({'opacity': opacity});
+            },
+            duration: 500
+        });
+        setProgressBar(++current);
+    });
+
+    $(".previous").click(function () {
+
+        current_fs = $(this).parent();
+        previous_fs = $(this).parent().prev();
+
+        //Remove class active
+        $("#progressbar li").eq($("fieldset").index(current_fs)).removeClass("active");
+
+        //show the previous fieldset
+        previous_fs.show();
+
+        //hide the current fieldset with style
+        current_fs.animate({opacity: 0}, {
+            step: function (now) {
+        // for making fieldset appear animation
+                opacity = 1 - now;
+
+                current_fs.css({
+                    'display': 'none',
+                    'position': 'relative'
+                });
+                previous_fs.css({'opacity': opacity});
+            },
+            duration: 500
+        });
+        setProgressBar(--current);
+    });
+
+    function setProgressBar(curStep) {
+        var percent = parseFloat(100 / steps) * curStep;
+        percent = percent.toFixed();
+        $(".progress-bar")
+            .css("width", percent + "%")
+    }
+
+    $(".submit").click(function () {
+        return false;
+    })
+
+});</script>
+
+</body>
+</html>
