@@ -2,23 +2,22 @@ package fsd01.carrental.controller;
 
 import fsd01.carrental.dtos.UserDTO;
 import fsd01.carrental.dtos.UserUpdateDTO;
+import fsd01.carrental.dtos.PasswordDTO;
 import fsd01.carrental.entity.User;
 import fsd01.carrental.service.UserService;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.RedirectView;
 
 import javax.validation.Valid;
-import java.security.Principal;
 
 @Controller
 @AllArgsConstructor
@@ -35,6 +34,8 @@ public class UserController {
 
         log.info(">>>>>> Fetched user info : {}", userDTO);
         modelAndView.addObject("userDTO", userDTO);
+        modelAndView.addObject("userUpdateDTO", new UserUpdateDTO());
+//        modelAndView.addObject("passwordDTO", new PasswordDTO());
 
         return modelAndView;
 
@@ -43,36 +44,54 @@ public class UserController {
     }
 
     @PostMapping("/profile")
-    public String updateUserProfile(
-            @Valid UserUpdateDTO userUpdateDTO,
+    public ModelAndView updateUserProfile(
+            @ModelAttribute @Valid UserUpdateDTO userUpdateDTO,
             @ModelAttribute UserDTO userDTO,
-            Model model,
             BindingResult bindingResult) {
 
         log.info(">>>>>> Requested user update field(s) : {}", userUpdateDTO);
+
+        ModelAndView mav = new ModelAndView();
 
         // validates phone number pattern if it's changed
         if (userUpdateDTO.getPhoneNumber() != null) {
             userService.validatePhoneNumber(userUpdateDTO.getPhoneNumber(), bindingResult);
         }
-        if (bindingResult.hasErrors()) {
-            model.addAttribute("userDTO", userDTO);
-            return "profile";
-        }
 
-        // FIXME: Validation failed for object='userUpdateDTO'. Error count: 1
-        // https://stackoverflow.com/questions/16122257/how-to-pass-two-objects-to-use-in-a-form-using-thymeleaf
-        // FIXME: password required when updating (setting to null for now)
+        if (bindingResult.hasErrors()) {
+            mav.setViewName("profile");
+            mav.addObject("userDTO", userDTO);
+            return mav;
+        }
 
         userService.updateUser(userUpdateDTO);
 
         // TODO: add flash message when update success
-        return "redirect:/profile";
+        mav.setView(new RedirectView("profile"));
+        return mav;
     }
 
-//    @PostMapping("/validateFullName")
-//    public String validateFullName(@RequestBody User user, Model model) {
+
+//    @PostMapping ("/password")
+//    public String updateUserPassword(
+//            @Valid PasswordDTO passwordDTO,
+////            @ModelAttribute UserDTO userDTO,
+//            BindingResult bindingResult,
+//            Model model) {
 //
+//        log.info(">>>>>> Requested password update fields  : {}", passwordDTO);
+//
+//        // check  if current password is equal to record
+//        userService.validatePassword(passwordDTO, bindingResult);
+//
+//        if (bindingResult.hasErrors()) {
+////            model.addAttribute("userDTO", userDTO);
+//            return "profile";
+//        }
+//        // update password
+//
+//        return "redirect:/profile";
 //    }
+
 
 }

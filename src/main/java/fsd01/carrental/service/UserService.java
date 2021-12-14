@@ -1,5 +1,6 @@
 package fsd01.carrental.service;
 
+import fsd01.carrental.dtos.PasswordDTO;
 import fsd01.carrental.dtos.UserUpdateDTO;
 import fsd01.carrental.entity.User;
 import fsd01.carrental.dtos.UserDTO;
@@ -66,6 +67,9 @@ public class UserService implements UserDetailsService {
 //        return saveUser(convertDtoToEntity(userUpdateDTO));
     }
 
+//    public boolean updatePassword(String password, String newPassword) {
+//    }
+
     public void validateEmail(String email, BindingResult bindingResult) {
         if(userRepository.findByEmail(email).isPresent()) {
             bindingResult.addError(new FieldError(
@@ -79,14 +83,24 @@ public class UserService implements UserDetailsService {
 
         if (!isValid) {
             bindingResult.addError(new FieldError(
-                    "userDTO", "phoneNumber", "Enter a valid phone number"
+                    "userUpdateDTO", "phoneNumber", "Enter a valid phone number"
             ));
         }
-//        if (!isValid) {
-//            bindingResult.addError(new FieldError(
-//                    "userUpdateDTO", "phoneNumber", "Enter a valid phone number"
-//            ));
-//        }
+    }
+
+    public void validatePassword(PasswordDTO passwordDTO, BindingResult bindingResult) {
+
+        User user = userRepository.findById(passwordDTO.getId())
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+
+        // check if given password is matched to record
+        if (!(user.getPassword().equals(passwordDTO.getPassword()))) {
+            bindingResult.addError(new FieldError(
+                    "passwordDTO",
+                    "password",
+                    "Current password doesn't match to the record"
+            ));
+        }
     }
 
     public UserDTO getUserDTO(Long id) {
