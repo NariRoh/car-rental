@@ -19,6 +19,8 @@
         <h2>Welcome to your profile, <span th:text="${user.firstName}" class="capitalized"></span></h2>
         <section id="userProfile">
             <div>
+                <div class="alert alert-success text-center" th:if="${message}" th:text="${message}"></div>
+
                 <form id="profileForm" th:action="@{/profile}" th:object="${userUpdateDTO}" method="POST">
                     <div th:object="${userDTO}">
                         <input type="hidden" name="id" th:value="${user.id}">

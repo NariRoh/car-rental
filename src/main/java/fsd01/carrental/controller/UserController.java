@@ -15,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
 import javax.validation.Valid;
@@ -47,7 +48,8 @@ public class UserController {
     public ModelAndView updateUserProfile(
             @ModelAttribute UserDTO userDTO,
             @ModelAttribute @Valid UserUpdateDTO userUpdateDTO,
-            BindingResult bindingResult) {
+            BindingResult bindingResult,
+            RedirectAttributes redirectAttributes) {
 
         log.info(">>>>>> Requested user update field(s) : {}", userUpdateDTO);
         ModelAndView mav = new ModelAndView();
@@ -65,7 +67,11 @@ public class UserController {
 
         userService.updateUser(userUpdateDTO);
 
-        // TODO: add flash message when update success
+        // send success message
+        redirectAttributes.addFlashAttribute(
+                "message",
+                "Your profile updated successfully!");
+
         mav.setView(new RedirectView("profile"));
         return mav;
     }
@@ -89,7 +95,8 @@ public class UserController {
     public String updateUserPassword(
             @ModelAttribute UserDTO userDTO,
             @ModelAttribute @Valid PasswordDTO passwordDTO,
-            BindingResult bindingResult) {
+            BindingResult bindingResult,
+            RedirectAttributes redirectAttributes) {
         // NOTE: binding result should be immediate to @Valid object otherwise it throws
         // Field error in object ....
 
@@ -103,7 +110,11 @@ public class UserController {
         }
         // update password
         userService.updatePassword(passwordDTO);
-        // TODO: add flash message when update success
+
+        // send success message
+        redirectAttributes.addFlashAttribute(
+                "message",
+                "Your password updated successfully!");
         return "redirect:/password";
     }
 
