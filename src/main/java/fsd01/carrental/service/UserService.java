@@ -60,15 +60,22 @@ public class UserService implements UserDetailsService {
                 userUpdateDTO.getLastName(),
                 userUpdateDTO.getPhoneNumber()
         );
-
         log.info(">>>>>> Updating user : {}", user.toString());
 //        User user = modelMapper.map(userUpdateDTO, User.class);
 //        return saveUser(user);
 //        return saveUser(convertDtoToEntity(userUpdateDTO));
     }
 
-//    public boolean updatePassword(String password, String newPassword) {
-//    }
+    @Transactional
+    public void updatePassword(PasswordDTO passwordDTO) {
+        User user = userRepository.findById(passwordDTO.getId())
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+
+        String encodedPassword = bCryptPasswordEncoder.encode(passwordDTO.getNewPassword());
+        user.setPassword(encodedPassword);
+
+        log.info(">>>>>> Updating user password: {}", user);
+    }
 
     public void validateEmail(String email, BindingResult bindingResult) {
         if(userRepository.findByEmail(email).isPresent()) {
@@ -94,7 +101,9 @@ public class UserService implements UserDetailsService {
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
 
         // check if given password is matched to record
-        if (!(user.getPassword().equals(passwordDTO.getPassword()))) {
+        boolean result = bCryptPasswordEncoder.matches(passwordDTO.getPassword(), user.getPassword());
+        System.out.println(result);
+        if (!result) {
             bindingResult.addError(new FieldError(
                     "passwordDTO",
                     "password",

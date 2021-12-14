@@ -95,14 +95,14 @@ public class UserController {
 
         log.info(">>>>>> Requested password update fields  : {}", passwordDTO);
 
-        // check  if current password is equal to record
+        // check  if current password matches to record
         userService.validatePassword(passwordDTO, bindingResult);
 
         if (bindingResult.hasErrors()) {
             return "password";
         }
         // update password
-        
+        userService.updatePassword(passwordDTO);
         // TODO: add flash message when update success
         return "redirect:/password";
     }
