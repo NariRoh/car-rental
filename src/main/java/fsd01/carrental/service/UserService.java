@@ -90,7 +90,7 @@ public class UserService implements UserDetailsService {
 
         if (!isValid) {
             bindingResult.addError(new FieldError(
-                    "userUpdateDTO", "phoneNumber", "Enter a valid phone number"
+                    "userDTO", "phoneNumber", "Enter a valid phone number"
             ));
         }
     }

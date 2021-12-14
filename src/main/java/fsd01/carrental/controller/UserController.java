@@ -46,7 +46,7 @@ public class UserController {
 
     @PostMapping("/profile")
     public ModelAndView updateUserProfile(
-            @ModelAttribute UserDTO userDTO,
+            UserDTO userDTO,
             @ModelAttribute @Valid UserUpdateDTO userUpdateDTO,
             BindingResult bindingResult,
             RedirectAttributes redirectAttributes) {
