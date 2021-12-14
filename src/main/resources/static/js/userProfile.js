@@ -1,17 +1,17 @@
 $(document).ready(function() {
     console.log("loading jQuery functions");
 
-    $("#userPassword").hide();
-
-    $("#changePass").click(function (e) {
-        $("#userPassword").show();
-        $("#userProfile").hide();
-    });
-
-    $("#changeProfile").click(function () {
-        $("#userProfile").show();
-        $("#userPassword").hide();
-    });
+    // $("#userPassword").hide();
+    //
+    // $("#changePass").click(function (e) {
+    //     $("#userPassword").show();
+    //     $("#userProfile").hide();
+    // });
+    //
+    // $("#changeProfile").click(function () {
+    //     $("#userProfile").show();
+    //     $("#userPassword").hide();
+    // });
         //     const parentNode = $(e.target).parents(".user-info");
         //
         //     parentNode.siblings(".hidden-form").show();

@@ -29,15 +29,15 @@ public class UserController {
 
     @GetMapping("/profile")
     public ModelAndView showUserProfileView(@AuthenticationPrincipal User user) {
-        ModelAndView modelAndView = new ModelAndView("profile");
+        ModelAndView mav = new ModelAndView("profile");
         UserDTO userDTO = userService.getUserDTO(user.getId());
 
         log.info(">>>>>> Fetched user info : {}", userDTO);
-        modelAndView.addObject("userDTO", userDTO);
-        modelAndView.addObject("userUpdateDTO", new UserUpdateDTO());
-//        modelAndView.addObject("passwordDTO", new PasswordDTO());
+        mav.addObject("userDTO", userDTO);
+        mav.addObject("userUpdateDTO", new UserUpdateDTO());
+        mav.addObject("passwordDTO", new PasswordDTO());
 
-        return modelAndView;
+        return mav;
 
 //        // TODO: redirect to 'access denied page'
 //        return authentication == null ? "redirect:/" : "profile";
@@ -45,12 +45,11 @@ public class UserController {
 
     @PostMapping("/profile")
     public ModelAndView updateUserProfile(
-            @ModelAttribute @Valid UserUpdateDTO userUpdateDTO,
             @ModelAttribute UserDTO userDTO,
+            @ModelAttribute @Valid UserUpdateDTO userUpdateDTO,
             BindingResult bindingResult) {
 
         log.info(">>>>>> Requested user update field(s) : {}", userUpdateDTO);
-
         ModelAndView mav = new ModelAndView();
 
         // validates phone number pattern if it's changed
@@ -71,27 +70,42 @@ public class UserController {
         return mav;
     }
 
+    @GetMapping("/password")
+    public ModelAndView showUserPasswordView() {
+        ModelAndView mav = new ModelAndView("password");
+//        UserDTO userDTO = userService.getUserDTO(user.getId());
+//
+//        log.info(">>>>>> Fetched user info : {}", userDTO);
+//        mav.addObject("userDTO", userDTO);
+//        mav.addObject("userUpdateDTO", new UserUpdateDTO());
+        mav.addObject("passwordDTO", new PasswordDTO());
 
-//    @PostMapping ("/password")
-//    public String updateUserPassword(
-//            @Valid PasswordDTO passwordDTO,
-////            @ModelAttribute UserDTO userDTO,
-//            BindingResult bindingResult,
-//            Model model) {
-//
-//        log.info(">>>>>> Requested password update fields  : {}", passwordDTO);
-//
-//        // check  if current password is equal to record
-//        userService.validatePassword(passwordDTO, bindingResult);
-//
-//        if (bindingResult.hasErrors()) {
-////            model.addAttribute("userDTO", userDTO);
-//            return "profile";
-//        }
-//        // update password
-//
-//        return "redirect:/profile";
-//    }
+        return mav;
+
+//        // TODO: redirect to 'access denied page'
+//        return authentication == null ? "redirect:/" : "profile";
+    }
+    @PostMapping ("/password")
+    public String updateUserPassword(
+            @ModelAttribute UserDTO userDTO,
+            @ModelAttribute @Valid PasswordDTO passwordDTO,
+            BindingResult bindingResult) {
+        // NOTE: binding result should be immediate to @Valid object otherwise it throws
+        // Field error in object ....
+
+        log.info(">>>>>> Requested password update fields  : {}", passwordDTO);
+
+        // check  if current password is equal to record
+        userService.validatePassword(passwordDTO, bindingResult);
+
+        if (bindingResult.hasErrors()) {
+            return "password";
+        }
+        // update password
+        
+        // TODO: add flash message when update success
+        return "redirect:/password";
+    }
 
 
 }

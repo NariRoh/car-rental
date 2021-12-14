@@ -22,6 +22,7 @@
                 <form id="profileForm" th:action="@{/profile}" th:object="${userUpdateDTO}" method="POST">
                     <div th:object="${userDTO}">
                         <input type="hidden" name="id" th:value="${user.id}">
+
                         <div class="form-row">
                             <label>First Name</label>
                             <input type="text" th:field="*{firstName}" th:errorClass="is-invalid" class="form-control" required />
@@ -53,28 +54,6 @@
             </div>
         </section>
 
-        <section class="" id="userPassword">
-            <form th:action="@{/password}" th:object="${passwordDTO}" method="POST">
-                <input type="hidden" name="id" th:value="${user.id}">
-                <div class="form-row">
-                    <label>Current password</label>
-                    <input type="password" th:field="*{password}" th:errorClass="is-invalid" class="form-control"/>
-                    <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="invalid-feedback"></p>
-                </div>
-
-                <div class="form-row">
-                    <label>New password</label>
-                    <input type="password" th:field="*{newPassword}" th:errorClass="is-invalid" class="form-control"/>
-                    <p th:if="${#fields.hasErrors('newPassword')}" th:errors="*{newPassword}" class="invalid-feedback"></p>
-                </div>
-
-                <div class="form-row">
-                    <button type="submit" class="btn btn-secondary">
-                        Save
-                    </button>
-                </div>
-            </form>
-        </section>
     </div>
 </div>
 </main>
