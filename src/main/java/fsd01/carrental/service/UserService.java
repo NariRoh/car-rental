@@ -28,17 +28,20 @@ public class UserService implements UserDetailsService {
 
     private static final Logger log = LoggerFactory.getLogger(UserService.class);
 
-    @Autowired
     private final UserRepository userRepository;
-
-    @Autowired
     private final ModelMapper modelMapper;
-
-    @Autowired
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     public List<User> getUserList() {
         return userRepository.findAll();
+    }
+
+    public void removeUser(Long id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+        userRepository.delete(user);
+
+        log.info(">>>>>>>>>>>> Deleting a user with id: " + user.getId());
     }
 
     @Transactional

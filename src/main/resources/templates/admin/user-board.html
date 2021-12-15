@@ -147,6 +147,11 @@
       });
       // Delete row on delete button click
       $(document).on("click", ".delete", function(){
+        // user-id
+        // deleteRequest();
+        const id = $(this).parents("tr").children(".user-id").val();
+        console.log(id);
+
         $(this).parents("tr").remove();
         $(".add-new").removeAttr("disabled");
       });
@@ -172,19 +177,16 @@
     // }
 
     function deleteRequest(id) {
-      const userId = id;
-
       $.ajax({
-        url: "admin/users/${id}",
+        url: "/admin/users/${id}",
         method: 'DELETE',
         success: function() {
           console.log('record has been deleted');
-
         },
         error: function (error) {
           console.log(error);
         }
-      })
+      });
 
     }
   </script>
@@ -219,7 +221,7 @@
         <tr class="user-list">
 
           <tr th:each="user : ${userList}">
-          <td th:text="${user.id}"></td>
+          <td class="user-id" th:text="${user.id}"></td>
           <td th:text="${user.firstName}"></td>
           <td th:text="${user.lastName}"></td>
           <td th:text="${user.email}"></td>

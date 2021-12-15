@@ -38,6 +38,10 @@ public class AdminController {
         return mav;
     }
 
-//    @RequestPart(value = )
+    @RequestMapping(method = RequestMethod.DELETE)
+    public String deleteUser(@RequestParam("id") Long id) {
+        userService.removeUser(id);
+        return "user-board";
+    }
 
 }
