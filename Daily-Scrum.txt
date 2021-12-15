@@ -1,3 +1,27 @@
+2021-12-15
+
+Chris
+1. Done / not done since the last scrum:
+- Finished booking (without Stripe)
+2. To do until the next Scrum:
+- Finish reviews
+- Send confirmation email after booking
+3. Need assistance/figure things out
+- Nothing for now
+
+Nari
+1. Done / not done since last scrum:
+- finished user deletion for admin
+- created user board for admin
+- display user list in user board
+2. To do until next Scrum:
+- finish user crud for admin
+- connect stripe api with reservation
+3. Need assistance / figure things out
+- how to send payment data to stripe api and receive data back
+
+-----------------------------------------------------------------------------------------------
+
 2021-12-14
 
 Chris
