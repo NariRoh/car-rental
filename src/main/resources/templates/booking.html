@@ -241,9 +241,19 @@
         height: 560px;
     }
 
-    .dateTimeInputs {
+    .dtInputs {
         margin-bottom: 0px !important;
     }
+
+    .step1Errors {
+        display: none;
+    }
+
+    .step2Errors {
+        display: none;
+    }
+
+    input[type="date"]::-webkit-clear-button { display: none; }
     </style>
 </head>
 
@@ -258,7 +268,7 @@
                 <div class="card px-0 pt-4 pb-0 mt-3 mb-3">
                     <h2 id="heading">Book Your Car Today</h2>
                     <p>Fill all form field to go to next step</p>
-                    <form id="msform">
+                    <form id="msform" method="post" th:action="@{/booking}" th:object="${booking}">
                         <!-- Progress Bar -->
                         <ul id="progressbar">
                             <li class="active" id="account"><strong>Renting</strong></li>
@@ -285,46 +295,49 @@
                                         </div>
                                         <br>
                                         <img class="bookingCarImage" th:src="${car.value} == null ? _ : @{'data:' +${car.key.imgType} + ';base64,'+${car.value}}"/>
-                                        <p>Hourly Rate: $<span th:text="${car.key.hourlyRate}">20.0</span>/hr</p>
-                                        <p>Daily Rate: $<span th:text="${car.key.dailyRate}">110.0</span>/day</p>
-                                        <p>Monthly Rate: $<span th:text="${car.key.monthlyLeasingRate}">600.0</span>/month</p>
+                                        <p>Hourly Rate: $<span id="hourlyRate" th:text="${car.key.hourlyRate}">20.0</span>/hr</p>
+                                        <p>Daily Rate: $<span id="dailyRate" th:text="${car.key.dailyRate}">110.0</span>/day</p>
+                                        <p>Monthly Rate: $<span id="monthlyRate" th:text="${car.key.monthlyLeasingRate}">600.0</span>/month</p>
+                                        <input id="totalCost" class="d-none" type="number" value="0" th:field="*{total}">
                                     </div>
                                     <div class="col-5">
 
                                         <p>Renting Options:</p>
                                         <input type="radio" class="btn-check" name="priceOptions" id="priceOption1"
-                                               autocomplete="off" value="Hourly" checked="checked">
+                                               autocomplete="off" value="Hourly" th:field="*{pricingOption}" checked="checked">
                                         <label class="btn btn-outline-primary" for="priceOption1">Hourly</label>
-                                        <!--                            th:field="*{pricingOption}"-->
+
                                         <input type="radio" class="btn-check" name="priceOptions" id="priceOption2"
-                                               autocomplete="off" value="Daily">
+                                               autocomplete="off" value="Daily" th:field="*{pricingOption}">
                                         <label class="btn btn-outline-primary" for="priceOption2">Daily</label>
-                                        <!--                            th:field="*{pricingOption}"-->
+
                                         <input type="radio" class="btn-check" name="priceOptions" id="priceOption3"
-                                               autocomplete="off" value="Monthly">
+                                               autocomplete="off" value="Monthly" th:field="*{pricingOption}">
                                         <label class="btn btn-outline-primary" for="priceOption3">Monthly</label>
-                                        <!--                            th:field="*{pricingOption}"-->
+
                                         <br>
                                         <br>
                                         <p id="labelPickup" for="pickup">Pickup Date:</p>
-                                        <input class="dateTimeInputs" type="date" id="pickup" name="pickup">
-                                        <p id="pickupError" class="text-danger d-none">Please enter a valid pickup date.</p>
+                                        <input class="dtInputs" type="date" id="pickup" name="pickup" th:field="*{pickupDate}">
+                                        <p id="pickupError" class="text-danger step1Errors">Enter a valid pickup date.</p>
 
                                         <p id="labelDropoff" for="dropoff">Drop-off Date:</p>
-                                        <input class="dateTimeInputs" type="date" id="dropoff" name="dropoff">
-                                        <p id="dropoffError" class="text-danger d-none">Please enter a valid drop-off date.</p>
+                                        <input class="dtInputs" type="date" id="dropoff" name="dropoff" th:field="*{dropOffDate}">
+                                        <p id="dropoffError" class="text-danger step1Errors">Enter a valid drop-off date.</p>
 
                                         <p id="labelPickupTime" for="pickupTime">Pickup Time:</p>
-                                        <input class="dateTimeInputs" type="time" id="pickupTime" name="pickupTime">
-                                        <p id="pickupTimeError" class="text-danger d-none">Please enter a valid pickup time.</p>
+                                        <input class="dtInputs" type="time" id="pickupTime" name="pickupTime" th:field="*{pickupTime}">
+                                        <p id="pickupTimeError" class="text-danger step1Errors">Enter a time between 9:00 - 20:00.</p>
 
                                         <p id="labelDropoffTime" for="dropoffTime">Dropoff Time: </p>
-                                        <input class="dateTimeInputs" type="time" id="dropoffTime" name="dropoffTime">
-                                        <p id="dropoffTimeError" class="text-danger d-none">Please enter a valid drop-off time.</p>
+                                        <input class="dtInputs" type="time" id="dropoffTime" name="dropoffTime" th:field="*{dropOffTime}">
+                                        <p id="dropoffTimeError" class="text-danger step1Errors">Enter a time between 10:00 - 21:00.</p>
+                                        <p id="compareTimeError" class="text-danger step1Errors">Pickup time must be before drop-off time.</p>
+                                        <p id="compareDateError" class="text-danger step1Errors">Pickup date must be before drop-off date.</p>
                                     </div>
                                 </div>
                             </div>
-                            <input id="step1Next" type="button" name="next" class="next action-button" value="Next">
+                            <input id="step1Next" type="button" name="next" class="next action-button step1Next" value="Next">
                         </fieldset>
                         <!-- ------------------------------------------------------ STEP 2 ----------------------------------------------------------------  -->
                         <fieldset>
@@ -334,13 +347,16 @@
                                     <p>* Note - the information below must be associated with the person picking the car up. *</p>
                                 </div>
                                 <label class="fieldlabels">First Name:</label>
-                                <input type="text" name="firstName" placeholder="First Name"/>
+                                <input id="firstName" type="text" name="firstName" placeholder="First Name" th:field="*{renterFirstName}"/>
+                                <p id="firstNameError" class="text-danger step2Errors">First name must be between 1 - 30 characters and must not contain special characters.</p>
                                 <label class="fieldlabels">Last Name:</label>
-                                <input type="text" name="lastName" placeholder="Last Name"/>
+                                <input id="lastName" type="text" name="lastName" placeholder="Last Name" th:field="*{renterLastName}"/>
+                                <p id="lastNameError" class="text-danger step2Errors">Last name must be between 1 - 30 characters and must not contain special characters.</p>
                                 <label class="fieldlabels">Email:</label>
-                                <input type="email" name="email" placeholder="Email"/>
+                                <input id="email" type="email" name="email" placeholder="Email" th:field="*{renterEmail}"/>
+                                <p id="emailError" class="text-danger step2Errors">Please provide a valid email address.</p>
                             </div>
-                            <input type="button" name="next" class="next action-button" value="Next"/> <input
+                            <input type="button" name="next" class="next action-button step2Next" value="Next"/> <input
                                 type="button"
                                 name="previous"
                                 class="previous action-button-previous"
@@ -358,7 +374,7 @@
 
 
                             </div>
-                            <input type="button" name="next" class="next action-button" value="Submit"/> <input
+                            <input type="submit" name="next" class="next action-button" value="Submit"/> <input
                                 type="button"
                                 name="previous"
                                 class="previous action-button-previous"
@@ -375,7 +391,7 @@
                                 </div>
                                 <div class="row justify-content-center">
                                     <div class="col-7 text-center">
-                                        <h5 class="purple-text text-center">You payment has been successfully processed.</h5>
+                                        <h5 class="purple-text text-center">Your payment has been successfully processed.</h5>
                                         <p>A confirmation email will be sent shortly about the details of your order.</p>
                                         <p>Thank you!</p>
                                     </div>
@@ -397,10 +413,20 @@
 <script type='text/javascript' src=''></script>
 <script type='text/Javascript'>$(document).ready(function () {
 
+    $(document).ready( function() { // Won't work without another document ready
+        $("#priceOption1").prop("checked", true);
+        let nextDay = new Date();
+        nextDay.setDate(nextDay.getDate() + 1);
+        $('#pickup').val(nextDay.toDateInputValue());
+        $('#pickupTime').val("09:00");
+        $('#dropoffTime').val("21:00");
+    });
+
     $('#dropoff').css("display", "none");
     $('#labelDropoff').css("display", "none");
 
     $('#priceOption1').click(function() {
+        cleanStep1Errors();
         $('#dropoff').css("display", "none");
         $('#labelDropoff').css("display", "none");
         $('#pickup').css("display", "");
@@ -409,9 +435,13 @@
         $('#labelPickupTime').css("display", "");
         $('#dropoffTime').css("display", "");
         $('#labelDropoffTime').css("display", "");
+        let nextDay = new Date();
+        nextDay.setDate(nextDay.getDate() + 1);
+        $('#pickup').val(nextDay.toDateInputValue());
     });
 
     $('#priceOption2').click(function() {
+        cleanStep1Errors();
         $('#pickupTime').css("display", "none");
         $('#dropoffTime').css("display", "none");
         $('#labelPickupTime').css("display", "none");
@@ -420,9 +450,16 @@
         $('#pickup').css("display", "");
         $('#labelDropoff').css("display", "");
         $('#labelPickup').css("display", "");
+        let nextDay = new Date();
+        nextDay.setDate(nextDay.getDate() + 1);
+        $('#pickup').val(nextDay.toDateInputValue());
+        let next2Days = new Date();
+        next2Days.setDate(next2Days.getDate() + 2);
+        $('#dropoff').val(next2Days.toDateInputValue());
     });
 
     $('#priceOption3').click(function() {
+        cleanStep1Errors();
         $('#pickupTime').css("display", "none");
         $('#dropoffTime').css("display", "none");
         $('#labelPickupTime').css("display", "none");
@@ -431,37 +468,13 @@
         $('#pickup').css("display", "");
         $('#labelDropoff').css("display", "");
         $('#labelPickup').css("display", "");
+        let nextDay = new Date();
+        nextDay.setDate(nextDay.getDate() + 1);
+        $('#pickup').val(nextDay.toDateInputValue());
+        let nextMonth = new Date();
+        nextMonth.setDate(nextDay.getDate() + 31);
+        $('#dropoff').val(nextMonth.toDateInputValue());
     });
-
-
-    $("#step1Next").click(function () {
-        const currentDate = new Date();
-        const pickupDate = new Date($('#pickup').val() + "T00:00:00");
-        console.log("Current Date: " + currentDate);
-        console.log("Pickup Date: " + pickupDate);
-        showDateTimeErrors();
-    });
-
-    function hideDateTimeErrors() {
-        $('#pickupError').css("display", "none");
-        $('#dropoffError').css("display", "none");
-        $('#pickupTimeError').css("display", "none");
-        $('#dropoffTimeError').css("display", "none");
-    }
-
-    function showDateTimeErrors() {
-        $('#pickupError').css("display", "");
-        $('#dropoffError').css("display", "");
-        $('#pickupTimeError').css("display", "");
-        $('#dropoffTimeError').css("display", "");
-    }
-
-
-
-
-
-
-
 
     var current_fs, next_fs, previous_fs; //fieldset
     var opacity;
@@ -474,6 +487,138 @@
 
         current_fs = $(this).parent();
         next_fs = $(this).parent().next();
+
+<!-- ------------------------------------------------------ STEP 1 - START ----------------------------------------------------------------  -->
+        if (current_fs.prevObject.hasClass("step1Next")) {
+            cleanStep1Errors();
+
+            const currentDate = new Date();
+            const openingTime =  "09:00";
+            const closingTime =  "21:00";
+            const pickupDate = new Date($('#pickup').val() + "T00:00:00");
+            const dropOffDate = new Date($('#dropoff').val() + "T00:00:00");
+            const pickupTime = $('#pickupTime').val();
+            const dropOffTime = $('#dropoffTime').val();
+
+            const isHourlyChecked = $("#priceOption1").is(":checked");
+            const isDailyChecked = $("#priceOption2").is(":checked");
+            const isMonthlyChecked = $("#priceOption3").is(":checked");
+
+            let pickupCheck = false;
+            let dropOffCheck = false;
+            let pickupTimeCheck = false;
+            let dropOffTimeCheck = false;
+            let compareTimeCheck = false;
+            let compareDateCheck = false;
+
+            const hourlyRate = parseFloat($('#hourlyRate').text());
+            const dailyRate = parseFloat($('#dailyRate').text());
+            const monthlyRate = parseFloat($('#monthlyRate').text());
+            let total = 0;
+
+            if (isHourlyChecked) {
+                if (currentDate > pickupDate || isNaN(pickupDate)) {
+                    pickupCheck = true;
+                }
+                if (pickupTime < openingTime || pickupTime > "20:00") {
+                    pickupTimeCheck = true;
+                }
+                if (dropOffTime > closingTime || dropOffTime < "10:00") {
+                    dropOffTimeCheck = true;
+                }
+                if (pickupTime > dropOffTime) {
+                    compareTimeCheck = true;
+                }
+                const pickupTimeHour = parseFloat(pickupTime.split(':')[0]);
+                const dropOffTimeHour = parseFloat(dropOffTime.split(':')[0]);
+                const pickupTimeMinutes = parseFloat(pickupTime.split(':')[1]);
+                const dropOffTimeMinutes = parseFloat(dropOffTime.split(':')[1]);
+                let hours = dropOffTimeHour - pickupTimeHour;
+
+                if (dropOffTimeMinutes > pickupTimeMinutes) {
+                    hours++;
+                }
+
+                total = hours * hourlyRate;
+
+                $('#totalCost').val(total);
+
+                $('#dropOffDate').val(null);
+            }
+
+            if (isDailyChecked) {
+                if (currentDate > pickupDate || isNaN(pickupDate)) {
+                    pickupCheck = true;
+                }
+                if (pickupDate > dropOffDate || isNaN(dropOffDate)) {
+                    compareDateCheck = true;
+                }
+
+                const days = Math.ceil((dropOffDate - pickupDate) / 86400000);
+
+                total = days * dailyRate;
+
+                $('#totalCost').val(total);
+
+                $('#pickupTime').val(null);
+                $('#dropoffTime').val(null);
+            }
+
+            if (isMonthlyChecked) {
+                if (currentDate > pickupDate || isNaN(pickupDate)) {
+                    pickupCheck = true;
+                }
+                if (pickupDate > dropOffDate || isNaN(dropOffDate)) {
+                    compareTimeCheck = true;
+                }
+
+                const months = Math.ceil(((dropOffDate - pickupDate) / 86400000) / 30);
+
+                total = months * monthlyRate;
+
+                $('#totalCost').val(total);
+
+                $('#pickupTime').val(null);
+                $('#dropoffTime').val(null);
+            }
+
+            if (pickupCheck || dropOffCheck || pickupTimeCheck || dropOffTimeCheck || compareTimeCheck || compareDateCheck) {
+                checkStep1Validation(pickupCheck, dropOffCheck, pickupTimeCheck, dropOffTimeCheck, compareTimeCheck, compareDateCheck);
+                return;
+            }
+        }
+<!-- ------------------------------------------------------ STEP 1 - DONE ----------------------------------------------------------------  -->
+
+<!-- ------------------------------------------------------ STEP 2 - START ----------------------------------------------------------------  -->
+        if (current_fs.prevObject.hasClass("step2Next")) {
+            cleanStep2Errors();
+
+            const firstName = $('#firstName').val();
+            const lastName = $('#lastName').val();
+            const email = $('#email').val();
+
+            let firstNameCheck = false;
+            let lastNameCheck = false;
+            let emailCheck = false;
+
+            if (!firstName.match(/^[a-zA-Z '-.,]{1,30}$/) || firstName == "") {
+                firstNameCheck = true;
+            }
+
+            if (!lastName.match(/^[a-zA-Z '-.,]{1,30}$/) || lastName == "") {
+                lastNameCheck = true;
+            }
+
+            if (email == "" || !email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
+                emailCheck = true;
+            }
+
+            if (firstNameCheck || lastNameCheck || emailCheck) {
+                checkStep2Validation(firstNameCheck, lastNameCheck, emailCheck);
+                return;
+            }
+        }
+<!-- ------------------------------------------------------ STEP 2 - END ----------------------------------------------------------------  -->
 
         //Add Class Active
         $("#progressbar li").eq($("fieldset").index(next_fs)).addClass("active");
@@ -525,16 +670,115 @@
         setProgressBar(--current);
     });
 
+    $("#msform").submit(function (e) {
+        e.preventDefault();
+        let form = $('#msform');
+        $.ajax({
+            url: form.attr('action'),
+            data: form.serialize(),
+            type: "post",
+            success:function(){
+
+                $("#progressbar li").eq($("fieldset").index(next_fs)).addClass("active");
+
+                next_fs.show();
+
+                current_fs.animate({opacity: 0}, {
+                    step: function (now) {
+                        opacity = 1 - now;
+                        current_fs.css({
+                            'display': 'none',
+                            'position': 'relative'
+                        });
+                        next_fs.css({'opacity': opacity});
+                    },
+                    duration: 500
+                });
+                setProgressBar(++current);
+            }
+        });
+    })
+
     function setProgressBar(curStep) {
-        var percent = parseFloat(100 / steps) * curStep;
+        let percent = parseFloat(100 / steps) * curStep;
         percent = percent.toFixed();
         $(".progress-bar")
             .css("width", percent + "%")
     }
 
-    $(".submit").click(function () {
-        return false;
-    })
+    // pickupCheck || dropOffCheck || pickupTimeCheck || dropOffTimeCheck || compareTimeCheck || compareDateCheck
+    function checkStep1Validation(error1, error2, error3, error4, error5, error6) {
+        if (error1) {
+            $('#pickupError').css({ display: "block" });
+        } else {
+            $('#pickupError').css({ display: "none" });
+        }
+        if (error2) {
+            $('#dropoffError').css({ display: "block" });
+        } else {
+            $('#dropoffError').css({ display: "none" });
+        }
+        if (error3) {
+            $('#pickupTimeError').css({ display: "block" });
+        } else {
+            $('#pickupTimeError').css({ display: "none" });
+        }
+        if (error4) {
+            $('#dropoffTimeError').css({ display: "block" });
+        } else {
+            $('#dropoffTimeError').css({ display: "none" });
+        }
+        if (error5) {
+            $('#compareTimeError').css({ display: "block" });
+        } else {
+            $('#compareTimeError').css({ display: "none" });
+        }
+        if (error6) {
+            $('#compareDateError').css({ display: "block" });
+        } else {
+            $('#compareDateError').css({ display: "none" });
+        }
+    }
+
+    // firstNameCheck || lastNameCheck || emailCheck
+    function checkStep2Validation(error1, error2, error3) {
+        if (error1) {
+            $('#firstNameError').css({ display: "block" });
+        } else {
+            $('#firstNameError').css({ display: "none" });
+        }
+        if (error2) {
+            $('#lastNameError').css({ display: "block" });
+        } else {
+            $('#lastNameError').css({ display: "none" });
+        }
+        if (error3) {
+            $('#emailError').css({ display: "block" });
+        } else {
+            $('#emailError').css({ display: "none" });
+        }
+    }
+
+    function cleanStep1Errors() {
+        $('#pickupError').css({ display: "none" });
+        $('#dropoffError').css({ display: "none" });
+        $('#pickupTimeError').css({ display: "none" });
+        $('#dropoffTimeError').css({ display: "none" });
+        $('#compareTimeError').css({ display: "none" });
+        $('#compareDateError').css({ display: "none" });
+    }
+
+    function cleanStep2Errors() {
+        $('#firstNameError').css({ display: "none" });
+        $('#lastNameError').css({ display: "none" });
+        $('#emailError').css({ display: "none" });
+    }
+
+    Date.prototype.toDateInputValue = (function() {
+        let local = new Date(this);
+        local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
+        return local.toJSON().slice(0,10);
+    });
 
 });</script>
 

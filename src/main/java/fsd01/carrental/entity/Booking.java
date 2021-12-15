@@ -1,12 +1,14 @@
 package fsd01.carrental.entity;
 
 import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 @Entity
 @Table(name = "bookings")
@@ -31,20 +33,24 @@ public class Booking {
 
     private String pricingOption;
 
-    private LocalDateTime pickupDate;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date pickupDate;
 
-    private LocalDateTime dropOffDate;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date dropOffDate;
 
-    private LocalDateTime pickupTime;
+    @DateTimeFormat(pattern = "HH:mm")
+    private Date pickupTime;
 
-    private LocalDateTime dropOffTime;
+    @DateTimeFormat(pattern = "HH:mm")
+    private Date dropOffTime;
 
     private double total;
 
-    @Pattern(regexp = "^[a-z][a-z '-.,]{1,30}$", message = "First name must be between 1 - 30 characters and must not contain special characters.")
+    @Pattern(regexp = "^[a-zA-Z '-.,]{1,30}$", message = "First name must be between 1 - 30 characters and must not contain special characters.")
     private String renterFirstName;
 
-    @Pattern(regexp = "^[a-z][a-z '-.,]{1,30}$", message = "Last name must be between 1 - 30 characters and must not contain special characters.")
+    @Pattern(regexp = "^[a-zA-Z '-.,]{1,30}$", message = "Last name must be between 1 - 30 characters and must not contain special characters.")
     private String renterLastName;
 
     @Email(message = "Please provide a valid email address.")
