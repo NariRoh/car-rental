@@ -3,7 +3,7 @@ package fsd01.carrental.entity;
 import lombok.*;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.util.Date;
 
 @Entity
 @Table(name = "reviews")
@@ -20,7 +20,9 @@ public class Review {
 
     private String comment;
 
-    private LocalDateTime createdAtDate;
+    private Date createdAtDate;
+
+    private int rating;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
