@@ -20,6 +20,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 @Service
 @AllArgsConstructor
@@ -35,6 +36,10 @@ public class UserService implements UserDetailsService {
 
     @Autowired
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    public List<User> getUserList() {
+        return userRepository.findAll();
+    }
 
     @Transactional
     public User saveUser(User user) {

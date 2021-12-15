@@ -11,7 +11,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -30,6 +29,7 @@ public class UserController {
 
     @GetMapping("/profile")
     public ModelAndView showUserProfileView(@AuthenticationPrincipal User user) {
+        //  TODO: set 'access denied' for not logged-in access
         ModelAndView mav = new ModelAndView("profile");
         UserDTO userDTO = userService.getUserDTO(user.getId());
 
@@ -39,9 +39,6 @@ public class UserController {
         mav.addObject("passwordDTO", new PasswordDTO());
 
         return mav;
-
-//        // TODO: redirect to 'access denied page'
-//        return authentication == null ? "redirect:/" : "profile";
     }
 
     @PostMapping("/profile")
@@ -78,18 +75,11 @@ public class UserController {
 
     @GetMapping("/password")
     public ModelAndView showUserPasswordView() {
+        //  TODO: set 'access denied' for not logged-in access
         ModelAndView mav = new ModelAndView("password");
-//        UserDTO userDTO = userService.getUserDTO(user.getId());
-//
-//        log.info(">>>>>> Fetched user info : {}", userDTO);
-//        mav.addObject("userDTO", userDTO);
-//        mav.addObject("userUpdateDTO", new UserUpdateDTO());
         mav.addObject("passwordDTO", new PasswordDTO());
 
         return mav;
-
-//        // TODO: redirect to 'access denied page'
-//        return authentication == null ? "redirect:/" : "profile";
     }
     @PostMapping ("/password")
     public String updateUserPassword(
