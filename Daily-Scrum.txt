@@ -2,6 +2,30 @@
 
 Chris
 1. Done / not done since the last scrum:
+- Finished past rentals
+- Finished upcoming rentals
+- Still working on reviews
+2. To do until the next Scrum:
+- Finish reviews
+- Admin CRUD for what's missing
+3. Need assistance/figure things out
+- Nothing for now
+
+Nari
+1. Done / not done since last scrum:
+- modify user board in admin panel
+- finished user update in admin panel
+2. To do until next Scrum:
+- connect stripe api with reservation
+3. Need assistance / figure things out
+- how to send payment data to stripe api and receive data back
+
+-----------------------------------------------------------------------------------------------
+
+2021-12-15
+
+Chris
+1. Done / not done since the last scrum:
 - Finished booking (without Stripe)
 2. To do until the next Scrum:
 - Finish reviews
