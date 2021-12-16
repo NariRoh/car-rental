@@ -109,49 +109,95 @@
 
       $('[data-toggle="tooltip"]').tooltip();
       var actions = $("table td:last-child").html();
+
       // Append table with add row form on add new button click
-      $(".add-new").click(function(){
+      $(".add-new").click(function () {
         $(this).attr("disabled", "disabled");
-        var index = $("table tbody tr:last-child").index();
-        var row = '<tr>' +
-                '<td><input type="text" class="form-control" name="name" id="name"></td>' +
-                '<td><input type="text" class="form-control" name="department" id="department"></td>' +
-                '<td><input type="text" class="form-control" name="phone" id="phone"></td>' +
+        const index = $("table tbody tr:last-child").index();
+        // const row = '<tr>' +
+        //         '<td><input type="number" class="form-control" name="id" disabled placeholder="id"></td>' +
+        //         '<td><input type="text" class="form-control" name="firstName"></td>' +
+        //         '<td><input type="text" class="form-control" name="lastName"></td>' +
+        //         '<td><input type="text" class="form-control" name="email"></td>' +
+        //         '<td><input type="text" class="form-control" name="phoneNumber"></td>' +
+        //         '<td>' + actions + '</td>' +
+        //         '</tr>';
+        const row = '<tr>' +
+                '<td><input type="number" class="form-control" disabled placeholder="id"></td>' +
+                '<td><input type="text" class="form-control" th:field="*{firstName}"></td>' +
+                '<td><input type="text" class="form-control" th:field="*{lastName}"></td>' +
+                '<td><input type="text" class="form-control" th:field="*{email}"></td>' +
+                '<td><input type="text" class="form-control" th:field="*{phoneNumber}"></td>' +
                 '<td>' + actions + '</td>' +
                 '</tr>';
+
         $("table").append(row);
+        // $("#addUserForm").append(row);
         $("table tbody tr").eq(index + 1).find(".add, .edit").toggle();
         $('[data-toggle="tooltip"]').tooltip();
       });
+
       // Add row on add button click
       $(document).on("click", ".add", function(){
-        var empty = false;
-        var input = $(this).parents("tr").find('input[type="text"]');
+        let empty = false;
+        const input = $(this).parents("tr").find('input[type="text"]');
+
         input.each(function(){
-          if(!$(this).val()){
+          if (!$(this).val()){
             $(this).addClass("error");
             empty = true;
-          } else{
+          } else {
             $(this).removeClass("error");
           }
         });
+
+        const userUpdateObj = [];
+
+        // push input data to userUpdateObj
+        userUpdateObj.push({
+          firstName: elem.find("td input[name='firstName']").val(),
+          lastName: elem.find("td input[name='lastName']").val(),
+          // email: elem.find("td input[name='email']").val(),
+          phoneNumber: elem.find("td input[name='phoneNumber']").val()
+        });
+        console.log(userUpdateObj);
+        // editRequest()
+        // edit call
+
+
+
         $(this).parents("tr").find(".error").first().focus();
-        if(!empty){
-          input.each(function(){
+        if (!empty) {
+          input.each(function () {
+            // console.log($(this).parent("td").html($(this).val()));
             $(this).parent("td").html($(this).val());
           });
           $(this).parents("tr").find(".add, .edit").toggle();
           $(".add-new").removeAttr("disabled");
         }
       });
+
       // Edit row on edit button click
-      $(document).on("click", ".edit", function(){
-        $(this).parents("tr").find("td:not(:last-child)").each(function(){
-          $(this).html('<input type="text" class="form-control" value="' + $(this).text() + '">');
+      $(document).on("click", ".edit", function () {
+        // create input fields
+        $(this).parents("tr").find("td:not(:last-child):not(:first-child):not(:nth-child(4))").each(function () {
+          $(this).html(`<input type="text" class="form-control edit-form" value="${$(this).text()}">`);
         });
+        // add name attributes to each input field
+        $(this).parents("tr").each(function (index, element) {
+          let elem = $(element);
+          elem.find('td:eq(1) input').attr("name", "firstName");
+          elem.find('td:eq(2) input').attr("name", "lastName");
+          // elem.find('td:eq(3) input').attr("name", "email");
+          elem.find('td:eq(4) input').attr("name", "phoneNumber");
+          // elem.find('td:eq(5) input').attr("name", "role");
+        });
+
+
         $(this).parents("tr").find(".add, .edit").toggle();
         $(".add-new").attr("disabled", "disabled");
       });
+
       // Delete row on delete button click
       $(document).on("click", ".delete", function(){
         const id = $(this).parent().siblings().data("id");
@@ -179,6 +225,35 @@
     //     }
     //   }, "json");
     // }
+
+    // function addRequest() {
+    //   const form = $('#addUserForm');
+    //   $.ajax({
+    //     url: '/admin/users/addUser',
+    //     method: 'POST',
+    //     data: form.serialize(),
+    //     success: function() {
+    //       console.log('user has been added');
+    //       // $(this).parents("tr").remove();
+    //     },
+    //     error: function (error) {
+    //       console.log(error);
+    //     }
+    //   });
+    // }
+
+    function editRequest(id) {
+      $.ajax({
+        url: `/admin/users/edit/${id}`,
+        method: 'POST',
+        success: function() {
+          console.log('user has been edited');
+        },
+        error: function (error) {
+          console.log(error);
+        }
+      });
+    }
 
     function deleteRequest(id) {
       $.ajax({
@@ -214,37 +289,43 @@
               </div>
             </div>
             <table class="table table-bordered">
-              <thead>
-              <tr>
-                <th>#</th>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>Email</th>
-                <th>Phone Number</th>
-      <!--          <th>Role</th>-->
-                <th>Modify</th>
-              </tr>
-              </thead>
-              <tbody>
-              <tr th:if="${userList.isEmpty()}">
-                <td>No Records found</td>
-              </tr>
-              <tr class="user-list">
 
-                <tr th:each="user : ${userList}">
-                <td th:attr="data-id=${user.id}" th:text="${user.id}"></td>
-                <td th:text="${user.firstName}"></td>
-                <td th:text="${user.lastName}"></td>
-                <td th:text="${user.email}"></td>
-                <td th:text="${user.phoneNumber}"></td>
-      <!--          <td th:text="${user.role}"></td>-->
-                <td>
-                  <a class="add" title="Add" data-toggle="tooltip"><i class="material-icons">&#xE03B;</i></a>
-                  <a class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
-                  <a id="userDelete" class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a>
-                </td>
-              </tr>
-              </tbody>
+              <form id="addUserForm" method="post" th:action="@{/addUser}" th:object="${user}">
+
+                <thead>
+                <tr>
+                  <th>#</th>
+                  <th>First Name</th>
+                  <th>Last Name</th>
+                  <th>Email</th>
+                  <th>Phone Number</th>
+        <!--          <th>Role</th>-->
+                  <th>Modify</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:if="${userList.isEmpty()}">
+                  <td>No Records found</td>
+                </tr>
+                <tr class="user-list">
+
+                  <tr th:each="user : ${userList}">
+                  <td th:attr="data-id=${user.id}" th:text="${user.id}"></td>
+                  <td th:text="${user.firstName}"></td>
+                  <td th:text="${user.lastName}"></td>
+                  <td th:text="${user.email}"></td>
+                  <td th:text="${user.phoneNumber}"></td>
+        <!--          <td th:text="${user.role}"></td>-->
+                  <td>
+                    <a class="add" title="Add" data-toggle="tooltip"><i class="material-icons">&#xE03B;</i></a>
+                    <a class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
+                    <a id="userDelete" class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a>
+                  </td>
+                </tr>
+
+                </tbody>
+              </form>
+
             </table>
           </div>
         </div>
