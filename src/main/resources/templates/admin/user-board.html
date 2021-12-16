@@ -154,12 +154,9 @@
       });
       // Delete row on delete button click
       $(document).on("click", ".delete", function(){
-        // user-id
-        // deleteRequest();
-        const id = $(this).closest().data("id");
+        const id = $(this).parent().siblings().data("id");
         console.log(id);
-
-        $(this).parents("tr").remove();
+        deleteRequest(id);
         $(".add-new").removeAttr("disabled");
       });
     }); // document ready
@@ -185,16 +182,16 @@
 
     function deleteRequest(id) {
       $.ajax({
-        url: "/admin/users/${id}",
+        url: `/admin/users/delete/${id}`,
         method: 'DELETE',
         success: function() {
           console.log('record has been deleted');
+          $(this).parents("tr").remove();
         },
         error: function (error) {
           console.log(error);
         }
       });
-
     }
   </script>
 </head>
