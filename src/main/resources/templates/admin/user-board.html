@@ -141,6 +141,7 @@
       $(document).on("click", ".add", function(){
         let empty = false;
         const input = $(this).parents("tr").find('input[type="text"]');
+        const id = $(this).parent().siblings().data("id");
 
         input.each(function(){
           if (!$(this).val()){
@@ -151,20 +152,27 @@
           }
         });
 
-        const userUpdateObj = [];
-
         // push input data to userUpdateObj
-        userUpdateObj.push({
-          firstName: elem.find("td input[name='firstName']").val(),
-          lastName: elem.find("td input[name='lastName']").val(),
-          // email: elem.find("td input[name='email']").val(),
-          phoneNumber: elem.find("td input[name='phoneNumber']").val()
+        const userUpdateObj = {};
+        $(this).parents("tr").each(function (index, element) {
+          let elem = $(element);
+          userUpdateObj.firstName = elem.find("td input[name='firstName']").val();
+          userUpdateObj.lastName = elem.find("td input[name='lastName']").val();
+          // userUpdateObj.email = elem.find("td input[name='email']").val();
+          userUpdateObj.phoneNumber = elem.find("td input[name='phoneNumber']").val();
+
+          // userUpdateObj.push({
+          //   firstName: elem.find("td input[name='firstName']").val(),
+          //   lastName: elem.find("td input[name='lastName']").val(),
+          //   // email: elem.find("td input[name='email']").val(),
+          //   phoneNumber: elem.find("td input[name='phoneNumber']").val()
+          // });
         });
         console.log(userUpdateObj);
-        // editRequest()
+        // console.log(id);
+
         // edit call
-
-
+        editRequest(id, userUpdateObj);
 
         $(this).parents("tr").find(".error").first().focus();
         if (!empty) {
@@ -242,10 +250,12 @@
     //   });
     // }
 
-    function editRequest(id) {
+    function editRequest(id, userUpdateObj) {
       $.ajax({
         url: `/admin/users/edit/${id}`,
         method: 'POST',
+        contentType : 'application/json; charset=utf-8',
+        data: JSON.stringify(userUpdateObj),
         success: function() {
           console.log('user has been edited');
         },

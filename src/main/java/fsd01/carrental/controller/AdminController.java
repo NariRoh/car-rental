@@ -1,5 +1,6 @@
 package fsd01.carrental.controller;
 
+import fsd01.carrental.dtos.UserUpdateDTO;
 import fsd01.carrental.entity.User;
 import fsd01.carrental.service.UserService;
 import org.slf4j.Logger;
@@ -26,6 +27,7 @@ public class AdminController {
         ModelAndView mav = new ModelAndView("admin/user-board");
         List<User> userList = userService.getUserList();
         mav.addObject("userList", userList);
+        mav.addObject("user", new User());
 
         return mav;
     }
@@ -34,6 +36,22 @@ public class AdminController {
     @ResponseBody
     public String deleteUser(@PathVariable("id") Long id) {
         userService.removeUser(id);
+        return "redirect:admin/user-board";
+    }
+
+//    @RequestMapping(value = "/users/add", method = RequestMethod.POST)
+//    @ResponseBody
+//    public String addUser(@ModelAttribute User user) {
+//        userService.createUser(user);
+//        log.info(">>>>>> Creating a new user : {}", user);
+//        return "redirect:admin/user-board";
+//    }
+
+    @RequestMapping(value = "/users/edit/{id}", method = RequestMethod.POST)
+    @ResponseBody
+    public String updateUserInfo(@PathVariable("id") Long id, @RequestBody UserUpdateDTO userUpdateDTO) {
+        userUpdateDTO.setId(id);
+        userService.updateUser(userUpdateDTO);
         return "redirect:admin/user-board";
     }
 

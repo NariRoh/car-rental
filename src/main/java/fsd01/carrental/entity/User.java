@@ -2,7 +2,6 @@ package fsd01.carrental.entity;
 
 import fsd01.carrental.security.UserRole;
 import lombok.*;
-import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -15,7 +14,6 @@ import java.util.Collection;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-//@DynamicUpdate
 public class User implements UserDetails {
 
     @Id
