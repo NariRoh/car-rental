@@ -21,4 +21,12 @@ public class CarService {
     public List<Car> getCarList() {
         return carRepository.findAll();
     }
+
+    public void removeCar(Long id) {
+        Car car = carRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Car not found"));
+        carRepository.delete(car);
+
+        log.info(">>>>>>>>>>>> Deleting a user with id: " + car.getId());
+    }
 }

@@ -258,7 +258,7 @@
 
     function deleteRequest(id) {
       $.ajax({
-        url: `/admin/users/delete/${id}`,
+        url: `/admin/cars/delete/${id}`,
         method: 'DELETE',
         success: function() {
           console.log('record has been deleted');
@@ -303,7 +303,6 @@
                   <th>Hourly<br>Rate</th>
                   <th>Seats</th>
                   <th>Transmission</th>
-<!--                  <th>Transmission</th>-->
                   <th>Modify</th>
                 </tr>
                 </thead>

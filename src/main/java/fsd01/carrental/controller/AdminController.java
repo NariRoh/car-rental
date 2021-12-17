@@ -73,6 +73,13 @@ public class AdminController {
         return mav;
     }
 
+    @RequestMapping(value = "/cars/delete/{id}", method = RequestMethod.DELETE)
+    @ResponseBody
+    public String deleteCar(@PathVariable("id") Long id) {
+        carService.removeCar(id);
+        return "redirect:admin/car-board";
+    }
+
     @GetMapping("reservations")
     public ModelAndView showReservationList() {
         ModelAndView mav = new ModelAndView("admin/booking-board");
