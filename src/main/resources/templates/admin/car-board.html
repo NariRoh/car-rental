@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>Users</title>
+  <title>Cars</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round|Open+Sans">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
@@ -283,7 +283,7 @@
           <div class="table-wrapper">
             <div class="table-title">
               <div class="row">
-                <div class="col-sm-8"><h2><b>User Details</b></h2></div>
+                <div class="col-sm-8"><h2><b>Car Details</b></h2></div>
                 <div class="col-sm-4">
                   <button type="button" class="btn btn-info add-new"><i class="fa fa-plus"></i> Add New</button>
                 </div>
@@ -294,27 +294,37 @@
                 <thead>
                 <tr>
                   <th>#</th>
-                  <th>First Name</th>
-                  <th>Last Name</th>
-                  <th>Email</th>
-                  <th>Phone Number</th>
-        <!--          <th>Role</th>-->
+                  <th>Model</th>
+                  <th>Make</th>
+                  <th>Fuel Type</th>
+                  <th>Mileage</th>
+                  <th>Daily<br>Rate</th>
+                  <th>Monthly<br>Rate</th>
+                  <th>Hourly<br>Rate</th>
+                  <th>Seats</th>
+                  <th>Transmission</th>
+<!--                  <th>Transmission</th>-->
                   <th>Modify</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:if="${userList.isEmpty()}">
+                <tr th:if="${carList.isEmpty()}">
                   <td>No Records found</td>
                 </tr>
-                <tr class="user-list">
+                <tr class="car-list">
 
-                  <tr th:each="user : ${userList}">
-                  <td th:attr="data-id=${user.id}" th:text="${user.id}"></td>
-                  <td th:text="${user.firstName}"></td>
-                  <td th:text="${user.lastName}"></td>
-                  <td th:text="${user.email}"></td>
-                  <td th:text="${user.phoneNumber}"></td>
-        <!--          <td th:text="${user.role}"></td>-->
+                  <tr th:each="car : ${carList}">
+                  <td th:attr="data-id=${car.id}" th:text="${car.id}"></td>
+                  <td th:text="${car.make}"></td>
+                  <td th:text="${car.make}"></td>
+                  <td th:text="${car.fuelType}"></td>
+                  <td th:text="${car.mileage}"></td>
+                  <td th:text="${car.dailyRate}"></td>
+                  <td th:text="${car.monthlyLeasingRate}"></td>
+                  <td th:text="${car.hourlyRate}"></td>
+                  <td th:text="${car.seats}"></td>
+                  <td th:text="${car.transmission}"></td>
+
                   <td>
                     <a class="add" title="Add" data-toggle="tooltip"><i class="material-icons">&#xE03B;</i></a>
                     <a class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>

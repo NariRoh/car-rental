@@ -1,8 +1,13 @@
 package fsd01.carrental.controller;
 
 import fsd01.carrental.dtos.UserUpdateDTO;
+import fsd01.carrental.entity.Booking;
+import fsd01.carrental.entity.Car;
 import fsd01.carrental.entity.User;
+import fsd01.carrental.service.BookingService;
+import fsd01.carrental.service.CarService;
 import fsd01.carrental.service.UserService;
+import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,13 +17,15 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
-//@AllArgsConstructor
+@AllArgsConstructor
 @RequestMapping("/admin")
 @Controller
 public class AdminController {
 
-    @Autowired
     private UserService userService;
+    private CarService carService;
+    private BookingService bookingService;
+
     private static final Logger log = LoggerFactory.getLogger(UserService.class);
 
     //  TODO: set 'access denied' for not logged-in & invalid access
@@ -53,6 +60,28 @@ public class AdminController {
         userUpdateDTO.setId(id);
         userService.updateUser(userUpdateDTO);
         return "redirect:admin/user-board";
+    }
+
+    @GetMapping("cars")
+    public ModelAndView showCarList() {
+        ModelAndView mav = new ModelAndView("admin/car-board");
+        List<Car> carList = carService.getCarList();
+
+        mav.addObject("carList", carList);
+        mav.addObject("car", new Car());
+
+        return mav;
+    }
+
+    @GetMapping("reservations")
+    public ModelAndView showReservationList() {
+        ModelAndView mav = new ModelAndView("admin/booking-board");
+        List<Booking> bookingList = bookingService.getBookingList();
+
+        mav.addObject("bookingList", bookingList);
+        mav.addObject("booking", new Booking());
+
+        return mav;
     }
 
 }

@@ -30,9 +30,6 @@ public class StripeService {
         // change total (in cents) for stripe api
         Long amount = (Double.valueOf(booking.getTotal()).longValue()) * 100;
 
-        log.info(">>>>>> Printing stripe amount", amount);
-        System.out.printf("total >>>>>>>>>>>>>>> %s", amount);
-
         try {
             ChargeCreateParams params =
                     ChargeCreateParams.builder()
