@@ -381,7 +381,6 @@
                                     <p>Taxes: $ <span id="tax"></span></p>
                                     <p>Total: $ <span id="totalPayment"></span></p>
                                     <input type="hidden" th:field="*{total}"/>
-
                                 </div>
                                 <div class="row">
                                     <div class="form-row">
@@ -728,7 +727,6 @@
                 var errorElement = document.getElementById('card-errors');
                 errorElement.textContent = result.error.message;
             } else {
-                // $('#token').attr('value', result.token.id);
                 const stripeToken = $('input[name="stripeToken"]');
                 stripeToken.val(result.token.id);
                 let form = $('#payment-form');
@@ -885,38 +883,6 @@ $('#pay').click(function () {
 
     // Add an instance of the card Element into the `card-element` <div>.
     card.mount('#card-element');
-
-    // Create a token or display an error when the form is submitted.
-    // var form = document.getElementById('payment-form');
-    // form.addEventListener('submit', function(event) {
-    //     event.preventDefault();
-    //
-    //     stripe.createToken(card).then(function(result) {
-    //         if (result.error) {
-    //             console.log(result.error)
-    //             // Inform the customer that there was an error.
-    //             var errorElement = document.getElementById('card-errors');
-    //             errorElement.textContent = result.error.message;
-    //         } else {
-    //             // Send the token to your server.
-    //             stripeTokenHandler(result.token);
-    //             console.log(result.token)
-    //         }
-    //     });
-    // });
-
-    function stripeTokenHandler(token) {
-        // Insert the token ID into the form so it gets submitted to the server
-        var form = document.getElementById('payment-form');
-        var hiddenInput = document.createElement('input');
-        hiddenInput.setAttribute('type', 'hidden');
-        hiddenInput.setAttribute('name', 'stripeToken');
-        hiddenInput.setAttribute('value', token.id);
-        form.appendChild(hiddenInput);
-
-        // Submit the form
-        // form.submit();
-    }
 </script>
 </body>
 </html>
