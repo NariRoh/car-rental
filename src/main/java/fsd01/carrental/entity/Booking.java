@@ -7,7 +7,6 @@ import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
-import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -56,5 +55,8 @@ public class Booking {
     @Email(message = "Please provide a valid email address.")
     @Size(min = 3, max = 320, message = "Email must be between 3 - 320 characters.")
     private String renterEmail;
+
+    @Transient
+    private boolean reviewed = false;
 
 }

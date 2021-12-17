@@ -48,8 +48,6 @@ public class CarController {
         HashMap<Car, String> carWithImage = new HashMap<Car, String>();
         carWithImage.put(carRepository.findCarById(id), Base64.getEncoder().encodeToString(carRepository.findCarById(id).getImgData()));
         mav.addObject("car", carWithImage);
-//        mav.addObject("car", carRepository.findCarById(id));
-//        mav.addObject("carImage", Base64.getEncoder().encodeToString(carRepository.findCarById(id).getImgData()));
         return mav;
     }
 
