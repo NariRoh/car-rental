@@ -8,6 +8,7 @@
     <link href='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css' rel='stylesheet'>
     <link href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.0.3/css/font-awesome.css' rel='stylesheet'>
     <script type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>
+
     <style>* {
         margin: 0;
         padding: 0
@@ -27,13 +28,13 @@
         font-weight: normal
     }
 
-    #msform {
+    #payment-form {
         text-align: center;
         position: relative;
         margin-top: 20px
     }
 
-    #msform fieldset {
+    #payment-form fieldset {
         background: white;
         border: 0 none;
         border-radius: 0.5rem;
@@ -48,12 +49,12 @@
         text-align: left
     }
 
-    #msform fieldset:not(:first-of-type) {
+    #payment-form fieldset:not(:first-of-type) {
         display: none
     }
 
-    #msform input,
-    #msform textarea {
+    #payment-form input,
+    #payment-form textarea {
         padding: 8px 15px 8px 15px;
         border: 1px solid #ccc;
         border-radius: 0px;
@@ -67,8 +68,8 @@
         letter-spacing: 1px
     }
 
-    #msform input:focus,
-    #msform textarea:focus {
+    #payment-form input:focus,
+    #payment-form textarea:focus {
         -moz-box-shadow: none !important;
         -webkit-box-shadow: none !important;
         box-shadow: none !important;
@@ -76,7 +77,7 @@
         outline-width: 0
     }
 
-    #msform .action-button {
+    #payment-form .action-button {
         width: 100px;
         background: rgb(1, 210, 142);
         font-weight: bold;
@@ -89,12 +90,16 @@
         float: right
     }
 
-    #msform .action-button:hover,
-    #msform .action-button:focus {
+    #pay {
+        cursor: pointer;
+    }
+
+    #payment-form .action-button:hover,
+    #payment-form .action-button:focus {
         background-color: rgb(1, 210, 142);
     }
 
-    #msform .action-button-previous {
+    #payment-form .action-button-previous {
         width: 100px;
         background: #616161;
         font-weight: bold;
@@ -107,8 +112,8 @@
         float: right
     }
 
-    #msform .action-button-previous:hover,
-    #msform .action-button-previous:focus {
+    #payment-form .action-button-previous:hover,
+    #payment-form .action-button-previous:focus {
         background-color: #000000
     }
 
@@ -268,7 +273,9 @@
                 <div class="card px-0 pt-4 pb-0 mt-3 mb-3">
                     <h2 id="heading">Book Your Car Today</h2>
                     <p>Fill all form field to go to next step</p>
-                    <form id="msform" method="post" th:action="@{/booking}" th:object="${booking}">
+                    <form id="payment-form" method="post" th:action="@{/booking}" th:object="${booking}">
+
+                    <!--                    <form id="msform" method="post" th:action="@{/booking}" th:object="${booking}">-->
                         <!-- Progress Bar -->
                         <ul id="progressbar">
                             <li class="active" id="account"><strong>Renting</strong></li>
@@ -295,10 +302,11 @@
                                         </div>
                                         <br>
                                         <img class="bookingCarImage" th:src="${car.value} == null ? _ : @{'data:' +${car.key.imgType} + ';base64,'+${car.value}}"/>
-                                        <p>Hourly Rate: $<span id="hourlyRate" th:text="${car.key.hourlyRate}">20.0</span>/hr</p>
-                                        <p>Daily Rate: $<span id="dailyRate" th:text="${car.key.dailyRate}">110.0</span>/day</p>
-                                        <p>Monthly Rate: $<span id="monthlyRate" th:text="${car.key.monthlyLeasingRate}">600.0</span>/month</p>
-                                        <input id="totalCost" class="d-none" type="number" value="0" th:field="*{total}">
+                                        <p>Hourly Rate: $<span id="hourlyRate" th:text="${car.key.hourlyRate}"></span>/hr</p>
+                                        <p>Daily Rate: $<span id="dailyRate" th:text="${car.key.dailyRate}"></span>/day</p>
+                                        <p>Monthly Rate: $<span id="monthlyRate" th:text="${car.key.monthlyLeasingRate}"></span>/month</p>
+                                        <input id="rentalPrice" hidden>
+<!--                                        <input id="totalCost" class="d-none" type="number" value="0" th:field="*{total}">-->
                                     </div>
                                     <div class="col-5">
 
@@ -368,12 +376,32 @@
                                 <div class="row">
                                     <h2 class="fs-title">Stripe Payment: </h2>
                                 </div>
+                                <div class="row">
+                                    <p>Base Rate: $ <span id="baseRate"></span></p>
+                                    <p>Taxes: $ <span id="tax"></span></p>
+                                    <p>Total: $ <span id="totalPayment"></span></p>
+                                    <input type="hidden" th:field="*{total}"/>
 
+                                </div>
+                                <div class="row">
+                                    <div class="form-row">
+                                        <label for="card-element">
+                                            Credit or debit card
+                                        </label>
+                                        <div id="card-element" style="width: 30em" class="form-control">
+                                            <!-- A Stripe Element will be inserted here. -->
+                                        </div>
 
-                                <!-- Any forms for Stripe goes here -->
+                                        <!-- Used to display Element errors. -->
+                                        <div id="card-errors" role="alert"></div>
+                                    </div>
 
-
+<!--                                    <button id="test">Submit Payment</button>-->
+<!--                                    <a id="pay">Click to pay</a>-->
+                                </div>
                             </div>
+                            <input type="hidden" name="stripeToken" th:field="*{stripeToken}"/>
+
                             <input type="submit" name="next" class="next action-button" value="Submit"/> <input
                                 type="button"
                                 name="previous"
@@ -541,7 +569,8 @@
 
                 total = hours * hourlyRate;
 
-                $('#totalCost').val(total);
+                $('#rentalPrice').val(total);
+                // $('#totalCost').val(total);
 
                 $('#dropOffDate').val(null);
             }
@@ -558,7 +587,8 @@
 
                 total = days * dailyRate;
 
-                $('#totalCost').val(total);
+                $('#rentalPrice').val(total);
+                // $('#totalCost').val(total);
 
                 $('#pickupTime').val(null);
                 $('#dropoffTime').val(null);
@@ -576,7 +606,8 @@
 
                 total = months * monthlyRate;
 
-                $('#totalCost').val(total);
+                $('#rentalPrice').val(total);
+                // $('#totalCost').val(total);
 
                 $('#pickupTime').val(null);
                 $('#dropoffTime').val(null);
@@ -586,6 +617,22 @@
                 checkStep1Validation(pickupCheck, dropOffCheck, pickupTimeCheck, dropOffTimeCheck, compareTimeCheck, compareDateCheck);
                 return;
             }
+
+            // calculate tax and total payment
+            const SALES_TAX_RATE = 0.14975;
+            const rentalPriceVal = $('#rentalPrice').val();
+
+            const salesTax = parseFloat(rentalPriceVal * SALES_TAX_RATE).toFixed(2);
+            const totalPayment = parseInt(rentalPriceVal) + parseFloat(salesTax);
+
+            // FIXME: daily & monthly cost incorrect
+            // display total cost in payment step
+            $('#baseRate').text(rentalPriceVal);
+            $('#tax').text(salesTax);
+            $('#totalPayment').text(totalPayment);
+
+            // setting total amount in the form
+            $('input[name="total"]').val(totalPayment);
         }
 <!-- ------------------------------------------------------ STEP 1 - DONE ----------------------------------------------------------------  -->
 
@@ -670,34 +717,52 @@
         setProgressBar(--current);
     });
 
-    $("#msform").submit(function (e) {
+    $("#payment-form").submit(function (e) {
         e.preventDefault();
-        let form = $('#msform');
-        $.ajax({
-            url: form.attr('action'),
-            data: form.serialize(),
-            type: "post",
-            success:function(){
 
-                $("#progressbar li").eq($("fieldset").index(next_fs)).addClass("active");
+        // Create a token or display an error when the form is submitted.
+        stripe.createToken(card).then(function(result) {
+            if (result.error) {
+                console.log(result.error)
+                // Inform the customer that there was an error.
+                var errorElement = document.getElementById('card-errors');
+                errorElement.textContent = result.error.message;
+            } else {
+                // $('#token').attr('value', result.token.id);
+                const stripeToken = $('input[name="stripeToken"]');
+                stripeToken.val(result.token.id);
+                let form = $('#payment-form');
+                console.log(form.serialize());
 
-                next_fs.show();
+                $.ajax({
+                    url: form.attr('action'),
+                    data: form.serialize(),
+                    type: "post",
+                    success:function(){
 
-                current_fs.animate({opacity: 0}, {
-                    step: function (now) {
-                        opacity = 1 - now;
-                        current_fs.css({
-                            'display': 'none',
-                            'position': 'relative'
+                        $("#progressbar li").eq($("fieldset").index(next_fs)).addClass("active");
+
+                        next_fs.show();
+
+                        current_fs.animate({opacity: 0}, {
+                            step: function (now) {
+                                opacity = 1 - now;
+                                current_fs.css({
+                                    'display': 'none',
+                                    'position': 'relative'
+                                });
+                                next_fs.css({'opacity': opacity});
+                            },
+                            duration: 500
                         });
-                        next_fs.css({'opacity': opacity});
-                    },
-                    duration: 500
+                        setProgressBar(++current);
+                    }
                 });
-                setProgressBar(++current);
             }
         });
-    })
+
+
+    });
 
     function setProgressBar(curStep) {
         let percent = parseFloat(100 / steps) * curStep;
@@ -779,8 +844,79 @@
         local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
         return local.toJSON().slice(0,10);
     });
+}); // .next click
+<!-- ------------------------------------------------------ STEP 3 - START ----------------------------------------------------------------  -->
 
-});</script>
+$('#pay').click(function () {
+   const bookingId =
+   $.ajax({
+       url: `/booking/payment/${id}`,
+       method: 'POST',
+       contentType : 'application/json; charset=utf-8',
+       data: JSON.stringify(userUpdateObj),
+       success: function() {
+           console.log('user has been edited');
+       },
+       error: function (error) {
+           console.log(error);
+       }
+   });
+});
 
+</script>
+<script src="https://js.stripe.com/v3/"></script>
+<script>
+    // Set your publishable key: remember to change this to your live publishable key in production
+    // See your keys here: https://dashboard.stripe.com/apikeys
+    var stripe = Stripe('pk_test_Ct6QfTOvJQgIpq0EdL9InUYj');
+    var elements = stripe.elements();
+
+    // Custom styling can be passed to options when creating an Element.
+    var style = {
+        base: {
+            // Add your base input styles here. For example:
+            fontSize: '16px',
+            color: '#32325d',
+        },
+    };
+
+    // Create an instance of the card Element.
+    var card = elements.create('card', {style: style});
+
+    // Add an instance of the card Element into the `card-element` <div>.
+    card.mount('#card-element');
+
+    // Create a token or display an error when the form is submitted.
+    // var form = document.getElementById('payment-form');
+    // form.addEventListener('submit', function(event) {
+    //     event.preventDefault();
+    //
+    //     stripe.createToken(card).then(function(result) {
+    //         if (result.error) {
+    //             console.log(result.error)
+    //             // Inform the customer that there was an error.
+    //             var errorElement = document.getElementById('card-errors');
+    //             errorElement.textContent = result.error.message;
+    //         } else {
+    //             // Send the token to your server.
+    //             stripeTokenHandler(result.token);
+    //             console.log(result.token)
+    //         }
+    //     });
+    // });
+
+    function stripeTokenHandler(token) {
+        // Insert the token ID into the form so it gets submitted to the server
+        var form = document.getElementById('payment-form');
+        var hiddenInput = document.createElement('input');
+        hiddenInput.setAttribute('type', 'hidden');
+        hiddenInput.setAttribute('name', 'stripeToken');
+        hiddenInput.setAttribute('value', token.id);
+        form.appendChild(hiddenInput);
+
+        // Submit the form
+        // form.submit();
+    }
+</script>
 </body>
 </html>

@@ -57,4 +57,7 @@ public class Booking {
     @Size(min = 3, max = 320, message = "Email must be between 3 - 320 characters.")
     private String renterEmail;
 
+    @Transient
+    private String stripeToken;
+
 }
