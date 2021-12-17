@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <div th:replace="fragments/head :: head"></div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <title>Leave a Review - Car Rental</title>
+
+    <style>
+        /*.rating {*/
+        /*    left: 50%;*/
+        /*}*/
+
+        .rating:not(:checked) > input {
+            position:absolute;
+            top:-9999px;
+            clip:rect(0,0,0,0);
+        }
+
+        .rating:not(:checked) > label {
+            float:right;
+            width:1em;
+            padding:0 .1em;
+            overflow:hidden;
+            white-space:nowrap;
+            cursor:pointer;
+            font-size:200%;
+            line-height:1.2;
+            color:#ddd;
+            text-shadow:1px 1px #bbb, 2px 2px #666, .1em .1em .2em rgba(0,0,0,.5);
+        }
+
+        .rating:not(:checked) > label:before {
+            content: '★';
+        }
+
+        .rating > input:checked ~ label {
+            color: gold;
+            text-shadow:1px 1px #c60, 2px 2px #940, .1em .1em .2em rgba(0,0,0,.5);
+        }
+
+        .rating:not(:checked) > label:hover,
+        .rating:not(:checked) > label:hover ~ label {
+            color: gold;
+            text-shadow:1px 1px goldenrod, 2px 2px #B57340, .1em .1em .2em rgba(0,0,0,.5);
+        }
+
+        .rating > input:checked + label:hover,
+        .rating > input:checked + label:hover ~ label,
+        .rating > input:checked ~ label:hover,
+        .rating > input:checked ~ label:hover ~ label,
+        .rating > label:hover ~ input:checked ~ label {
+            color: gold;
+            text-shadow:1px 1px goldenrod, 2px 2px #B57340, .1em .1em .2em rgba(0,0,0,.5);
+        }
+
+        .rating > label:active {
+            position:relative;
+            top:2px;
+            left:2px;
+        }
+    </style>
+
+</head>
+<body>
+<div th:replace="fragments/navbar :: navbar"></div>
+
+<main class="main-container">
+    <h1 class="display-4 text-center h1-heading">Leave a Review</h1>
+    <div class="row justify-content-center mt-10">
+
+        <div class="col col-md-5">
+
+            <form th:action="@{/review}" th:object="${review}" method="POST">
+
+                <fieldset>
+                    Rating:
+                    <br>
+                    <div class="rating">
+                        <input type="radio" id="star5" name="rating" value="5" th:field="*{ratingString}" /><label for="star5">5 stars</label>
+                        <input type="radio" id="star4" name="rating" value="4" th:field="*{ratingString}" /><label for="star4">4 stars</label>
+                        <input type="radio" id="star3" name="rating" value="3" th:field="*{ratingString}" /><label for="star3">3 stars</label>
+                        <input type="radio" id="star2" name="rating" value="2" th:field="*{ratingString}" /><label for="star2">2 stars</label>
+                        <input type="radio" id="star1" name="rating" value="1" th:field="*{ratingString}" /><label for="star1">1 star</label>
+                    </div>
+                </fieldset>
+                <br>
+
+                <div class="form-row py-1">
+                    Comment:
+                    <p th:if="${#fields.hasErrors('comment')}" th:errors="*{comment}" class="text-danger"></p>
+                    <textarea class="form-control" name="comment" th:field="*{comment}" rows="4" cols="50"></textarea>
+                </div>
+
+                <div class="form-row py-1 text-center">
+                    <button type="submit" class="btn btn-secondary btn-block btn-form">
+                        Leave Review
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</main>
+
+<div th:replace="fragments/footer :: footer"></div>
+
+<script type='text/Javascript'>$(document).ready(function () {
+
+    $(document).ready( function() {
+        // console.log($("#star5").val);
+        $("#star5").prop("checked", true);
+    });
+
+});
+</script>
+
+<div th:replace="fragments/loader :: loader"></div>
+</body>
+</html>

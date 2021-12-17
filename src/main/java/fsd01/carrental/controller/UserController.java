@@ -3,7 +3,10 @@ package fsd01.carrental.controller;
 import fsd01.carrental.dtos.UserDTO;
 import fsd01.carrental.dtos.UserUpdateDTO;
 import fsd01.carrental.dtos.PasswordDTO;
+import fsd01.carrental.entity.Booking;
+import fsd01.carrental.entity.Car;
 import fsd01.carrental.entity.User;
+import fsd01.carrental.repository.BookingRepository;
 import fsd01.carrental.service.UserService;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
@@ -18,6 +21,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.Base64;
+import java.util.HashMap;
+import java.util.List;
 
 @Controller
 @AllArgsConstructor
@@ -26,6 +33,9 @@ public class UserController {
     @Autowired
     private final UserService userService;
     private static final Logger log = LoggerFactory.getLogger(UserService.class);
+
+    @Autowired
+    private final BookingRepository bookingRepository;
 
     @GetMapping("/profile")
     public ModelAndView showUserProfileView(@AuthenticationPrincipal User user) {
@@ -108,5 +118,21 @@ public class UserController {
         return "redirect:/password";
     }
 
+    @GetMapping("/past-bookings")
+    public ModelAndView showPastBookings(@AuthenticationPrincipal User user) {
+        ModelAndView mav = new ModelAndView("past-bookings");
+        List<Booking> pastBookings = bookingRepository.getListOfPastBookings(user.getId()); // TODO: Change when done reviews
+        mav.addObject("bookings", pastBookings);
 
+        return mav;
+    }
+
+    @GetMapping("/upcoming-bookings")
+    public ModelAndView showUpcomingBookings(@AuthenticationPrincipal User user) {
+        ModelAndView mav = new ModelAndView("upcoming-bookings");
+        List<Booking> upcomingBookings = bookingRepository.getListOfBookings();
+        mav.addObject("bookings", bookingRepository.getListOfUpcomingBookingsByUser(user.getId()));
+
+        return mav;
+    }
 }

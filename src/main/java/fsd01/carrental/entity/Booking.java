@@ -7,7 +7,6 @@ import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
-import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -61,5 +60,8 @@ public class Booking {
 
     @Transient
     private String stripeToken;
+
+    @Transient
+    private boolean reviewed = false;
 
 }

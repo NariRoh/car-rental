@@ -17,10 +17,10 @@
             <a href="#myRentalsSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">My Rentals</a>
             <ul class="collapse list-unstyled" id="myRentalsSubmenu">
                 <li>
-                    <a href="#rentalHistory">Upcoming Rentals</a>
+                    <a th:href="@{/upcoming-bookings}">Upcoming Rentals</a>
                 </li>
                 <li>
-                    <a href="#">Past Rentals</a>
+                    <a th:href="@{/past-bookings}">Past Rentals</a>
                 </li>
                 <li>
                     <a href="#">Cancelled Reservations</a>
@@ -28,7 +28,7 @@
             </ul>
         </li>
         <li>
-            <a href="#">Reviews</a>
+            <a th:href="@{/reviews}">Reviews</a>
         </li>
     </ul>
 
