@@ -5,6 +5,7 @@
     <div th:replace="fragments/head :: head"></div>
 
     <title>Past Rentals - Car Rental</title>
+
 </head>
 
 <body>
@@ -15,22 +16,38 @@
         <div th:replace="fragments/renter-sidebar :: renterSidebar"></div>
 
         <div id="content">
-            <h1>Your past bookings</h1>
-            <div class="pastRentalSection" th:each="booking: ${bookings}">
-                <div class="row">
-                    <div class="border border-success mb-1">
-                        <span th:text="${booking.car.make}"></span>
-                        <span th:text="${booking.car.model}"></span>
-                        <span th:text="${#dates.format(booking.pickupDate, 'MMM dd, yyyy')}"></span>
-                        <span th:text="${#dates.format(booking.dropOffDate, 'MMM dd, yyyy')}"></span>
-                        <span th:text="${booking.total}"></span>
-                        <span th:text="${booking.renterFirstName}"></span>
-                        <span th:text="${booking.renterLastName}"></span>
-                        <span th:text="${booking.renterEmail}"></span>
-                        <a th:href="@{/review/{id}(id=${booking.id})}" class="btn btn-primary py-2 mr-1">Leave a review</a>
-<!--                        <a th:unless="${booking.reviewed}" th:href="@{/review/{id}(id=${booking.id})}" class="btn btn-primary py-2 mr-1">Leave a review</a>-->
-                    </div>
-                </div>
+            <h1 class="text-center">Your Past Bookings</h1>
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col">Pickup Date</th>
+                        <th scope="col">Drop-Off Date</th>
+                        <th scope="col">Car</th>
+                        <th scope="col">Total</th>
+                        <th scope="col">Renter First Name</th>
+                        <th scope="col">Renter Last Name</th>
+                        <th scope="col">Renter Email</th>
+                        <th scope="col">Review</th>
+                    </tr>
+                    </thead>
+
+                    <tbody class="propertyTable">
+                    <tr th:each="booking: ${bookings}">
+                        <th th:text="${#dates.format(booking.pickupDate, 'MMM dd, yyyy')}"></th>
+                        <th th:text="${#dates.format(booking.dropOffDate, 'MMM dd, yyyy')}"></th>
+                        <th><span th:text="${booking.car.make}"></span> <span th:text="${booking.car.model}"></span></th>
+                        <th>$<span th:text="${booking.total}"></span></th>
+                        <th th:text="${booking.renterFirstName}"></th>
+                        <th th:text="${booking.renterLastName}"></th>
+                        <th th:text="${booking.renterEmail}"></th>
+                        <th th:unless="${booking.reviewed}"><a th:href="@{/review/{id}(id=${booking.id})}" class="btn btn-primary py-2 mr-1">Leave a
+                            review</a></th>
+                        <th th:if="${booking.reviewed}">Thank you for leaving a review!</th>
+                    </tr>
+                    </tbody>
+
+                </table>
             </div>
         </div>
     </div>
@@ -39,11 +56,17 @@
 <div th:replace="fragments/footer :: footer"></div>
 
 <!-- jQuery CDN - Slim version (=without AJAX) -->
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
 <!-- Popper.JS -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"
+        integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ"
+        crossorigin="anonymous"></script>
 <!-- Bootstrap JS -->
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"
+        integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm"
+        crossorigin="anonymous"></script>
 <script src="js/userProfile.js"></script>
 </body>
 

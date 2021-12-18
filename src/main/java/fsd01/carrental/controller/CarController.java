@@ -2,8 +2,8 @@ package fsd01.carrental.controller;
 
 import fsd01.carrental.entity.Car;
 import fsd01.carrental.repository.CarRepository;
+import fsd01.carrental.repository.ReviewRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,6 +18,9 @@ public class CarController {
 
     @Autowired
     private CarRepository carRepository;
+
+    @Autowired
+    private ReviewRepository reviewRepository;
 
     @GetMapping({"/cars"})
     public ModelAndView showCarList(
@@ -54,8 +57,22 @@ public class CarController {
     @GetMapping("/pricing")
     public ModelAndView showPricingPage() {
         ModelAndView mav = new ModelAndView("pricing");
+        int total = 0;
+        int counter = 0;
         HashMap<Car, String> carsWithImage = new HashMap<Car, String>();
         for (Car car : carRepository.getListOfCars()) {
+            for (Integer rating : reviewRepository.getReviewsOfCar(car.getId())) {
+                total += rating;
+                counter ++;
+            }
+            if (counter == 0) {
+                car.setRating(0);
+            } else {
+                car.setRating((int)Math.ceil(total/counter));
+                System.out.println("Rating: " + car.getRating());
+            }
+            total = 0;
+            counter = 0;
             carsWithImage.put(car, Base64.getEncoder().encodeToString(car.getImgData()));
         }
         mav.addObject("cars", carsWithImage);
