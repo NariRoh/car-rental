@@ -4,7 +4,6 @@ import fsd01.carrental.dtos.UserDTO;
 import fsd01.carrental.dtos.UserUpdateDTO;
 import fsd01.carrental.dtos.PasswordDTO;
 import fsd01.carrental.entity.Booking;
-import fsd01.carrental.entity.Car;
 import fsd01.carrental.entity.User;
 import fsd01.carrental.repository.BookingRepository;
 import fsd01.carrental.service.UserService;
@@ -21,9 +20,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
-import java.util.Base64;
-import java.util.HashMap;
 import java.util.List;
 
 @Controller

@@ -13,7 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 public class BookingService {
 
-    private static final Logger log = LoggerFactory.getLogger(UserService.class);
+    private static final Logger log = LoggerFactory.getLogger(BookingService.class);
 
     private final BookingRepository bookingRepository;
 

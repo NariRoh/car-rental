@@ -19,7 +19,7 @@ public class StripeService {
     @Value("${STRIPE_SECRET_KEY}")
     private String API_PUBLIC_KEY;
 
-    private static final Logger log = LoggerFactory.getLogger(UserService.class);
+    private static final Logger log = LoggerFactory.getLogger(StripeService.class);
 
     public StripeService() {
     }

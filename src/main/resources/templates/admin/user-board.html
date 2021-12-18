@@ -149,18 +149,9 @@
           let elem = $(element);
           userUpdateObj.firstName = elem.find("td input[name='firstName']").val();
           userUpdateObj.lastName = elem.find("td input[name='lastName']").val();
-          // userUpdateObj.email = elem.find("td input[name='email']").val();
           userUpdateObj.phoneNumber = elem.find("td input[name='phoneNumber']").val();
-
-          // userUpdateObj.push({
-          //   firstName: elem.find("td input[name='firstName']").val(),
-          //   lastName: elem.find("td input[name='lastName']").val(),
-          //   // email: elem.find("td input[name='email']").val(),
-          //   phoneNumber: elem.find("td input[name='phoneNumber']").val()
-          // });
         });
         console.log(userUpdateObj);
-        // console.log(id);
 
         // edit call
         editRequest(id, userUpdateObj);
@@ -168,7 +159,7 @@
         $(this).parents("tr").find(".error").first().focus();
         if (!empty) {
           input.each(function () {
-            // console.log($(this).parent("td").html($(this).val()));
+            console.log($(this).parent("td").html($(this).val()));
             $(this).parent("td").html($(this).val());
           });
           $(this).parents("tr").find(".add, .edit").toggle();

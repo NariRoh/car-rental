@@ -12,7 +12,6 @@
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
 
-  <!-- Our Custom CSS -->
   <link rel="stylesheet" href="/css/admin-sidebar.css">
 
   <style>
@@ -20,6 +19,13 @@
       color: #404E67;
       background: #F5F7FA;
       font-family: 'Open Sans', sans-serif;
+    }
+    .hidden {
+      display: none;
+    }
+    #preview img {
+      width: 400px;
+      height: 300px;
     }
     .table-wrapper {
       /*width: fit-content;*/
@@ -103,173 +109,6 @@
       text-align: center;
     }
   </style>
-  <script>
-    $(document).ready(function(){
-      console.log('Hi')
-
-      $('[data-toggle="tooltip"]').tooltip();
-      var actions = $("table td:last-child").html();
-
-      // Append table with add row form on add new button click
-      $(".add-new").click(function () {
-        $(this).attr("disabled", "disabled");
-        const index = $("table tbody tr:last-child").index();
-        const row = '<tr>' +
-                '<td><input type="number" class="form-control" disabled placeholder="id"></td>' +
-                '<td><input type="text" class="form-control" th:field="*{firstName}"></td>' +
-                '<td><input type="text" class="form-control" th:field="*{lastName}"></td>' +
-                '<td><input type="text" class="form-control" th:field="*{email}"></td>' +
-                '<td><input type="text" class="form-control" th:field="*{phoneNumber}"></td>' +
-                '<td>' + actions + '</td>' +
-                '</tr>';
-
-        $("table").append(row);
-        $("table tbody tr").eq(index + 1).find(".add, .edit").toggle();
-        $('[data-toggle="tooltip"]').tooltip();
-      });
-
-      // Add row on add button click
-      $(document).on("click", ".add", function(){
-        let empty = false;
-        const input = $(this).parents("tr").find('input[type="text"]');
-        const id = $(this).parent().siblings().data("id");
-
-        input.each(function(){
-          if (!$(this).val()){
-            $(this).addClass("error");
-            empty = true;
-          } else {
-            $(this).removeClass("error");
-          }
-        });
-
-        // push input data to userUpdateObj
-        const userUpdateObj = {};
-        $(this).parents("tr").each(function (index, element) {
-          let elem = $(element);
-          userUpdateObj.firstName = elem.find("td input[name='firstName']").val();
-          userUpdateObj.lastName = elem.find("td input[name='lastName']").val();
-          // userUpdateObj.email = elem.find("td input[name='email']").val();
-          userUpdateObj.phoneNumber = elem.find("td input[name='phoneNumber']").val();
-
-          // userUpdateObj.push({
-          //   firstName: elem.find("td input[name='firstName']").val(),
-          //   lastName: elem.find("td input[name='lastName']").val(),
-          //   // email: elem.find("td input[name='email']").val(),
-          //   phoneNumber: elem.find("td input[name='phoneNumber']").val()
-          // });
-        });
-        console.log(userUpdateObj);
-        // console.log(id);
-
-        // edit call
-        editRequest(id, userUpdateObj);
-
-        $(this).parents("tr").find(".error").first().focus();
-        if (!empty) {
-          input.each(function () {
-            // console.log($(this).parent("td").html($(this).val()));
-            $(this).parent("td").html($(this).val());
-          });
-          $(this).parents("tr").find(".add, .edit").toggle();
-          $(".add-new").removeAttr("disabled");
-        }
-      });
-
-      // Edit row on edit button click
-      $(document).on("click", ".edit", function () {
-        // create input fields
-        $(this).parents("tr").find("td:not(:last-child):not(:first-child):not(:nth-child(4))").each(function () {
-          $(this).html(`<input type="text" class="form-control edit-form" value="${$(this).text()}">`);
-        });
-        // add name attributes to each input field
-        $(this).parents("tr").each(function (index, element) {
-          let elem = $(element);
-          elem.find('td:eq(1) input').attr("name", "firstName");
-          elem.find('td:eq(2) input').attr("name", "lastName");
-          // elem.find('td:eq(3) input').attr("name", "email");
-          elem.find('td:eq(4) input').attr("name", "phoneNumber");
-          // elem.find('td:eq(5) input').attr("name", "role");
-        });
-
-
-        $(this).parents("tr").find(".add, .edit").toggle();
-        $(".add-new").attr("disabled", "disabled");
-      });
-
-      // Delete row on delete button click
-      $(document).on("click", ".delete", function(){
-        const id = $(this).parent().siblings().data("id");
-        console.log(id);
-        deleteRequest(id);
-        $(".add-new").removeAttr("disabled");
-      });
-    }); // document ready
-
-    // function displayUserList() {
-    //   // const url = /*[[ @{}} */;
-    //   $.get("/admin/users", function(response) {
-    //     if (isEmpty(response) === false) {
-    //       let userListHtml = "";
-    //       $(response.userList).each(function(user) {
-    //         userListHtml += `
-    //             <td>${user.id}</td>
-    //             <td>${user.firstName}</td>
-    //             <td>${user.lastName}</td>
-    //             <td>${user.email}</td>
-    //             <td>${user.phoneNumber}</td>
-    //         `;
-    //       });
-    //       $(".user-list").html(userListHtml);
-    //     }
-    //   }, "json");
-    // }
-
-    // function addRequest() {
-    //   const form = $('#addUserForm');
-    //   $.ajax({
-    //     url: '/admin/users/addUser',
-    //     method: 'POST',
-    //     data: form.serialize(),
-    //     success: function() {
-    //       console.log('user has been added');
-    //       // $(this).parents("tr").remove();
-    //     },
-    //     error: function (error) {
-    //       console.log(error);
-    //     }
-    //   });
-    // }
-
-    function editRequest(id, userUpdateObj) {
-      $.ajax({
-        url: `/admin/users/edit/${id}`,
-        method: 'POST',
-        contentType : 'application/json; charset=utf-8',
-        data: JSON.stringify(userUpdateObj),
-        success: function() {
-          console.log('user has been edited');
-        },
-        error: function (error) {
-          console.log(error);
-        }
-      });
-    }
-
-    function deleteRequest(id) {
-      $.ajax({
-        url: `/admin/cars/delete/${id}`,
-        method: 'DELETE',
-        success: function() {
-          console.log('record has been deleted');
-          $(this).parents("tr").remove();
-        },
-        error: function (error) {
-          console.log(error);
-        }
-      });
-    }
-  </script>
 </head>
 <body>
 
@@ -303,6 +142,7 @@
                   <th>Hourly<br>Rate</th>
                   <th>Seats</th>
                   <th>Transmission</th>
+                  <th>Photo</th>
                   <th>Modify</th>
                 </tr>
                 </thead>
@@ -310,24 +150,52 @@
                 <tr th:if="${carList.isEmpty()}">
                   <td>No Records found</td>
                 </tr>
-                <tr class="car-list">
+                <tr class="car-list" th:each="car: ${carList}">
 
-                  <tr th:each="car : ${carList}">
-                  <td th:attr="data-id=${car.id}" th:text="${car.id}"></td>
-                  <td th:text="${car.make}"></td>
-                  <td th:text="${car.make}"></td>
-                  <td th:text="${car.fuelType}"></td>
-                  <td th:text="${car.mileage}"></td>
-                  <td th:text="${car.dailyRate}"></td>
-                  <td th:text="${car.monthlyLeasingRate}"></td>
-                  <td th:text="${car.hourlyRate}"></td>
-                  <td th:text="${car.seats}"></td>
-                  <td th:text="${car.transmission}"></td>
+                  <td th:attr="data-id=${car.key.id}" th:text="${car.key.id}"></td>
+                  <td th:text="${car.key.model}"></td>
+                  <td th:text="${car.key.make}"></td>
+                  <td th:text="${car.key.fuelType}"></td>
+                  <td th:text="${car.key.mileage}"></td>
+                  <td th:text="${car.key.dailyRate}"></td>
+                  <td th:text="${car.key.monthlyLeasingRate}"></td>
+                  <td th:text="${car.key.hourlyRate}"></td>
+                  <td th:text="${car.key.seats}"></td>
+                  <td th:text="${car.key.transmission}"></td>
+                  <td>
+<!--                    <img th:src="${car.value} == null ? _ : @{'data:' +${car.key.imgType} + ';base64,'+${car.value}}" />-->
 
+                    <a id="editPhoto" title="Edit Photo" data-toggle="tooltip">
+                    <i class="material-icons" data-toggle="modal" data-target="#uploadModal">&#xe3b6;</i></a>
+
+                    <!-- Modal -->
+                    <div id="uploadModal" class="modal fade" role="dialog">
+                      <div class="modal-dialog">
+
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                          <div class="modal-body">
+                            <div class="modal-header">
+                              <h4 class="modal-title">Upload car photo</h4>
+                              <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            </div>
+                            <!--                            <form method='post' action='' enctype="multipart/form-data">-->
+                            Select image : <input type='file' name='file' id='file' class='form-control' ><br>
+                            Image Type : <input type='text' class='form-control' th:value="${car.key.imgType} == null ? '' : ${car.key.imgType}"><br>
+                            <!-- Preview-->
+                            <div id="preview" class="hidden">
+                              <img th:src="${car.value} == null ? _ : @{'data:' +${car.key.imgType} + ';base64,'+${car.value}}" />
+                            </div>
+                            <input type='button' class='btn btn-info' value='Upload' id='btn_upload'>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </td>
                   <td>
                     <a class="add" title="Add" data-toggle="tooltip"><i class="material-icons">&#xE03B;</i></a>
                     <a class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
-                    <a id="userDelete" class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a>
+                    <a id="carDelete" class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a>
                   </td>
                 </tr>
 
@@ -340,5 +208,169 @@
       </div>
     </div>
   </main>
+  <script>
+    $(document).ready(function(){
+
+      $('[data-toggle="tooltip"]').tooltip();
+      var actions = $("table td:last-child").html();
+
+      // Append table with add row form on add new button click
+      $(".add-new").click(function () {
+        $(this).attr("disabled", "disabled");
+        const index = $("table tbody tr:last-child").index();
+        const row = '<tr>' +
+                '<td><input type="number" class="form-control" disabled placeholder="id"></td>' +
+                '<td><input type="text" class="form-control" th:field="*{model}"></td>' +
+                '<td><input type="text" class="form-control" th:field="*{make}"></td>' +
+                '<td><input type="text" class="form-control" th:field="*{fuelType}"></td>' +
+                '<td><input type="text" class="form-control" th:field="*{mileage}"></td>' +
+                '<td><input type="text" class="form-control" th:field="*{dailyRate}"></td>' +
+                '<td><input type="text" class="form-control" th:field="*{monthlyLeasingRate}"></td>' +
+                '<td><input type="text" class="form-control" th:field="*{hourlyRate}"></td>' +
+                '<td><input type="text" class="form-control" th:field="*{seats}"></td>' +
+                '<td><input type="text" class="form-control" th:field="*{transmission}"></td>' +
+                // '<td>' +
+                // '<a class="addPhoto" title="Add Photo" data-toggle="tooltip">' +
+                // '<i class="material-icons">&#xe3b6;</i>' +
+                // ' </a>' +
+                // '</td>' +
+                '<td>' + actions + '</td>' +
+                '</tr>';
+        $("table").append(row);
+        $("table tbody tr").eq(index + 1).find(".add, .edit").toggle();
+        $('[data-toggle="tooltip"]').tooltip();
+      });
+
+      // display photo inside modal
+      $("#editPhoto").click(function () {
+        // $('#preview').append("<img th:src=\"${car.value} == null ? _ : @{'data:' +${car.key.imgType} + ';base64,'+${car.value}}\" >")
+        $('#preview').removeClass('hidden');
+      });
+
+      // Add row on add button click
+      $(document).on("click", ".add", function(){
+        let empty = false;
+        const input = $(this).parents("tr").find('input[type="text"]');
+        const id = $(this).parent().siblings().data("id");
+
+        input.each(function(){
+          if (!$(this).val()){
+            $(this).addClass("error");
+            empty = true;
+          } else {
+            $(this).removeClass("error");
+          }
+        });
+
+        // push input data to userUpdateObj
+        const carUpdateObj = {};
+        $(this).parents("tr").each(function (index, element) {
+          let elem = $(element);
+          carUpdateObj.model = elem.find("td input[name='model']").val();
+          carUpdateObj.make = elem.find("td input[name='make']").val();
+          carUpdateObj.fuelType = elem.find("td input[name='fuelType']").val();
+          carUpdateObj.mileage = elem.find("td input[name='mileage']").val();
+          carUpdateObj.dailyRate = elem.find("td input[name='dailyRate']").val();
+          carUpdateObj.monthlyLeasingRate = elem.find("td input[name='monthlyLeasingRate']").val();
+          carUpdateObj.hourlyRate = elem.find("td input[name='hourlyRate']").val();
+          carUpdateObj.seats = elem.find("td input[name='seats']").val();
+          carUpdateObj.transmission = elem.find("td input[name='transmission']").val();
+        });
+        console.log(carUpdateObj);
+
+        // edit call
+        editRequest(id, carUpdateObj);
+
+        $(this).parents("tr").find(".error").first().focus();
+        if (!empty) {
+            console.log('empty')
+          input.each(function () {
+            console.log($(this).parent("td").html($(this).val()));
+            $(this).parent("td").html($(this).val());
+          });
+          $(this).parents("tr").find(".add, .edit").toggle();
+          $(".add-new").removeAttr("disabled");
+        }
+      });
+
+      // Edit row on edit button click
+      $(document).on("click", ".edit", function () {
+        // create input fields
+        $(this).parents("tr").find("td:not(:last-child):not(:first-child):not(:nth-child(11))").each(function () {
+          $(this).html(`<input type="text" class="form-control edit-form" value="${$(this).text()}">`);
+        });
+        // add name attributes to each input field
+        $(this).parents("tr").each(function (index, element) {
+          let elem = $(element);
+          elem.find('td:eq(1) input').attr("name", "model");
+            elem.find('td:eq(2) input').attr("name", "make");
+            elem.find('td:eq(3) input').attr("name", "fuelType");
+            elem.find('td:eq(4) input').attr("name", "mileage");
+            elem.find('td:eq(5) input').attr("name", "dailyRate");
+            elem.find('td:eq(6) input').attr("name", "monthlyLeasingRate");
+            elem.find('td:eq(7) input').attr("name", "hourlyRate");
+            elem.find('td:eq(8) input').attr("name", "seats");
+            elem.find('td:eq(9) input').attr("name", "transmission");
+        });
+
+
+        $(this).parents("tr").find(".add, .edit").toggle();
+        $(".add-new").attr("disabled", "disabled");
+      });
+
+      // Delete row on delete button click
+      $(document).on("click", ".delete", function(){
+        const id = $(this).parent().siblings().data("id");
+        console.log(id);
+        deleteRequest(id);
+        $(".add-new").removeAttr("disabled");
+      });
+    }); // document ready
+
+    // function addRequest() {
+    //   const form = $('#addUserForm');
+    //   $.ajax({
+    //     url: '/admin/users/addUser',
+    //     method: 'POST',
+    //     data: form.serialize(),
+    //     success: function() {
+    //       console.log('user has been added');
+    //       // $(this).parents("tr").remove();
+    //     },
+    //     error: function (error) {
+    //       console.log(error);
+    //     }
+    //   });
+    // }
+
+    function editRequest(id, carUpdateObj) {
+      $.ajax({
+        url: `/admin/cars/edit/${id}`,
+        method: 'POST',
+        contentType : 'application/json; charset=utf-8',
+        data: JSON.stringify(carUpdateObj),
+        success: function() {
+          console.log('Car has been edited');
+        },
+        error: function (error) {
+          console.log(error);
+        }
+      });
+    }
+
+    function deleteRequest(id) {
+      $.ajax({
+        url: `/admin/cars/delete/${id}`,
+        method: 'DELETE',
+        success: function() {
+          console.log('record has been deleted');
+          $(this).parents("tr").remove();
+        },
+        error: function (error) {
+          console.log(error);
+        }
+      });
+    }
+  </script>
 </body>
 </html>

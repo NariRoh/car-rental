@@ -8,13 +8,12 @@ import fsd01.carrental.service.BookingService;
 import fsd01.carrental.service.CarService;
 import fsd01.carrental.service.UserService;
 import lombok.AllArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.Base64;
+import java.util.HashMap;
 import java.util.List;
 
 @AllArgsConstructor
@@ -25,8 +24,6 @@ public class AdminController {
     private UserService userService;
     private CarService carService;
     private BookingService bookingService;
-
-    private static final Logger log = LoggerFactory.getLogger(UserService.class);
 
     //  TODO: set 'access denied' for not logged-in & invalid access
     @GetMapping("users")
@@ -46,6 +43,7 @@ public class AdminController {
         return "redirect:admin/user-board";
     }
 
+    // commented this out because we don't want admin manually create user
 //    @RequestMapping(value = "/users/add", method = RequestMethod.POST)
 //    @ResponseBody
 //    public String addUser(@ModelAttribute User user) {
@@ -65,18 +63,36 @@ public class AdminController {
     @GetMapping("cars")
     public ModelAndView showCarList() {
         ModelAndView mav = new ModelAndView("admin/car-board");
-        List<Car> carList = carService.getCarList();
+        HashMap<Car, String> carsWithImage = new HashMap<>();
+        for (Car car : carService.getCarList()) {
+            carsWithImage.put(car, Base64.getEncoder().encodeToString(car.getImgData()));
+        }
 
-        mav.addObject("carList", carList);
+        mav.addObject("carList", carsWithImage);
         mav.addObject("car", new Car());
 
         return mav;
     }
 
+    @RequestMapping(value = "/cars/add", method = RequestMethod.POST)
+    @ResponseBody
+    public String addCar(@ModelAttribute Car car) {
+        carService.createCar(car);
+        return "redirect:admin/user-board";
+    }
+
+    @RequestMapping(value = "/cars/edit/{id}", method = RequestMethod.POST)
+    @ResponseBody
+    public String updateCarInfo(@PathVariable("id") Long id, @RequestBody Car carObj) {
+        carService.updateCar(id, carObj);
+        return "redirect:admin/car-board";
+    }
+
     @RequestMapping(value = "/cars/delete/{id}", method = RequestMethod.DELETE)
     @ResponseBody
     public String deleteCar(@PathVariable("id") Long id) {
-        carService.removeCar(id);
+//        comment it out so we don't accidentally delete car data
+//        carService.removeCar(id);
         return "redirect:admin/car-board";
     }
 
