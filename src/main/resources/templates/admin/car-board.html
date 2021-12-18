@@ -75,19 +75,22 @@
       margin: 0 5px;
       min-width: 24px;
     }
-    table.table td a.add {
+    table.table td a.add,
+    table.table td a.create {
       color: #27C46B;
     }
     table.table td a.edit {
       color: #FFC107;
     }
-    table.table td a.delete {
+    table.table td a.delete,
+    table.table td a.remove {
       color: #E34724;
     }
     table.table td i {
       font-size: 19px;
     }
-    table.table td a.add i {
+    table.table td a.add i,
+    table.table td a.create i {
       font-size: 24px;
       margin-right: -1px;
       position: relative;
@@ -102,7 +105,9 @@
     table.table .form-control.error {
       border-color: #f50000;
     }
-    table.table td .add {
+    table.table td .add,
+    table.table td .create,
+    table.table td .remove {
       display: none;
     }
     thead {
@@ -163,7 +168,6 @@
                   <td th:text="${car.key.seats}"></td>
                   <td th:text="${car.key.transmission}"></td>
                   <td>
-<!--                    <img th:src="${car.value} == null ? _ : @{'data:' +${car.key.imgType} + ';base64,'+${car.value}}" />-->
 
                     <a id="editPhoto" title="Edit Photo" data-toggle="tooltip">
                     <i class="material-icons" data-toggle="modal" data-target="#uploadModal">&#xe3b6;</i></a>
@@ -219,7 +223,8 @@
         $(this).attr("disabled", "disabled");
         const index = $("table tbody tr:last-child").index();
         const row = '<tr>' +
-                '<td><input type="number" class="form-control" disabled placeholder="id"></td>' +
+                '<form th:object="${car}" method="POST">' +
+                '<td><input type="text" class="form-control" disabled placeholder="id"></td>' +
                 '<td><input type="text" class="form-control" th:field="*{model}"></td>' +
                 '<td><input type="text" class="form-control" th:field="*{make}"></td>' +
                 '<td><input type="text" class="form-control" th:field="*{fuelType}"></td>' +
@@ -229,21 +234,33 @@
                 '<td><input type="text" class="form-control" th:field="*{hourlyRate}"></td>' +
                 '<td><input type="text" class="form-control" th:field="*{seats}"></td>' +
                 '<td><input type="text" class="form-control" th:field="*{transmission}"></td>' +
-                // '<td>' +
-                // '<a class="addPhoto" title="Add Photo" data-toggle="tooltip">' +
-                // '<i class="material-icons">&#xe3b6;</i>' +
-                // ' </a>' +
-                // '</td>' +
-                '<td>' + actions + '</td>' +
+                '<td>' +
+                '</form>' +
+                '<a class="addPhoto" title="Add Photo" data-toggle="tooltip">' +
+                '<i class="material-icons">&#xe3b6;</i>' +
+                ' </a>' +
+                '</td>' +
+                '<td>' +
+                '<a class="create" title="Create" data-toggle="tooltip"><i class="material-icons">&#xE03B;</i></a>' +
+                '<a class="remove" id="removeRow" title="Remove" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a>' +
+                '</td>' +
                 '</tr>';
         $("table").append(row);
-        $("table tbody tr").eq(index + 1).find(".add, .edit").toggle();
+        $("table tbody tr").eq(index + 1).find(".create, .edit").toggle();
+        $("table tbody tr").eq(index + 1).find(".delete, .remove").toggle();
         $('[data-toggle="tooltip"]').tooltip();
+
+          $("#removeRow").click(function () {
+              console.log('clicked')
+              console.log(this)
+              $(this).closest("tr").remove();
+              $(".add-new").removeAttr("disabled");
+          });
       });
+
 
       // display photo inside modal
       $("#editPhoto").click(function () {
-        // $('#preview').append("<img th:src=\"${car.value} == null ? _ : @{'data:' +${car.key.imgType} + ';base64,'+${car.value}}\" >")
         $('#preview').removeClass('hidden');
       });
 
@@ -327,21 +344,21 @@
       });
     }); // document ready
 
-    // function addRequest() {
-    //   const form = $('#addUserForm');
-    //   $.ajax({
-    //     url: '/admin/users/addUser',
-    //     method: 'POST',
-    //     data: form.serialize(),
-    //     success: function() {
-    //       console.log('user has been added');
-    //       // $(this).parents("tr").remove();
-    //     },
-    //     error: function (error) {
-    //       console.log(error);
-    //     }
-    //   });
-    // }
+    function addRequest() {
+      const form = $('#addUserForm');
+      $.ajax({
+        url: '/admin/cars/add',
+        method: 'POST',
+        data: form.serialize(),
+        success: function() {
+          console.log('Car has been added');
+          // $(this).parents("tr").remove();
+        },
+        error: function (error) {
+          console.log(error);
+        }
+      });
+    }
 
     function editRequest(id, carUpdateObj) {
       $.ajax({
