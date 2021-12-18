@@ -64,4 +64,6 @@ public class Booking {
     @Transient
     private boolean reviewed = false;
 
+    @Column(columnDefinition = "boolean default false")
+    private boolean reviewed;
 }

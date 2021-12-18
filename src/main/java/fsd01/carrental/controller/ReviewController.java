@@ -1,6 +1,5 @@
 package fsd01.carrental.controller;
 
-import fsd01.carrental.dtos.PasswordDTO;
 import fsd01.carrental.entity.Booking;
 import fsd01.carrental.entity.Review;
 import fsd01.carrental.entity.User;
@@ -30,7 +29,6 @@ public class ReviewController {
 
     @GetMapping("/reviews")
     public ModelAndView showUserReviews(@AuthenticationPrincipal User user) {
-        System.out.println(user.getId());
         ModelAndView mav = new ModelAndView("reviews");
         mav.addObject("reviews", reviewRepository.getListOfReviewsByUser(user.getId()));
         return mav;
@@ -60,6 +58,7 @@ public class ReviewController {
         currentBooking.setReviewed(true);
 
         reviewRepository.save(review);
+        bookingRepository.save(currentBooking);
         currentBooking = null;
 
         return "redirect:/past-bookings";

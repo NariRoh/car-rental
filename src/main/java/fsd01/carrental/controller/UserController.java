@@ -117,7 +117,7 @@ public class UserController {
     @GetMapping("/past-bookings")
     public ModelAndView showPastBookings(@AuthenticationPrincipal User user) {
         ModelAndView mav = new ModelAndView("past-bookings");
-        List<Booking> pastBookings = bookingRepository.getListOfPastBookings(user.getId()); // TODO: Change when done reviews
+        List<Booking> pastBookings = bookingRepository.getListOfPastBookings(user.getId());
         mav.addObject("bookings", pastBookings);
 
         return mav;

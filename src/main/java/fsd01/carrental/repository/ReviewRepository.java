@@ -13,7 +13,9 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
     @Query("select r from Review r")
     List<Review> getListOfReviews();
 
-    @Query("select r from Review r join Booking b ON b.user.id = ?1")
+    @Query("select r from Review r join Booking b ON b.user.id = ?1 where r.booking = b")
     List<Review> getListOfReviewsByUser(Long userId);
 
+    @Query("select r.rating from Review r join Booking b ON r.booking = b join Car c ON b.car = c where c.id = ?1")
+    List<Integer> getReviewsOfCar(Long carId);
 }
