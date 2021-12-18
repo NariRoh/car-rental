@@ -27,6 +27,8 @@ public class CarController {
             @RequestParam(required = false) String priceRangeOptions, String transmissionOptions, String mileageOptions, String fuelTypeOptions, String seatsOptions
     ) {
         ModelAndView mav = new ModelAndView("cars");
+        int total = 0;
+        int counter = 0;
         HashMap<Car, String> carsWithImage = new HashMap<Car, String>();
         for (Car car :
                 carRepository.getListOfCarsSearch(
@@ -39,6 +41,17 @@ public class CarController {
                         seatsParams(seatsOptions)[0],
                         seatsParams(seatsOptions)[1])
         ) {
+            for (Integer rating : reviewRepository.getReviewsOfCar(car.getId())) {
+                total += rating;
+                counter ++;
+            }
+            if (counter == 0) {
+                car.setRating(0);
+            } else {
+                car.setRating((int)Math.ceil(total/counter));
+            }
+            total = 0;
+            counter = 0;
             carsWithImage.put(car, Base64.getEncoder().encodeToString(car.getImgData()));
         }
         mav.addObject("cars", carsWithImage);
@@ -59,7 +72,7 @@ public class CarController {
         ModelAndView mav = new ModelAndView("pricing");
         int total = 0;
         int counter = 0;
-        HashMap<Car, String> carsWithImage = new HashMap<Car, String>();
+        HashMap<Car, String> carsWithImage = new HashMap();
         for (Car car : carRepository.getListOfCars()) {
             for (Integer rating : reviewRepository.getReviewsOfCar(car.getId())) {
                 total += rating;
@@ -69,7 +82,6 @@ public class CarController {
                 car.setRating(0);
             } else {
                 car.setRating((int)Math.ceil(total/counter));
-                System.out.println("Rating: " + car.getRating());
             }
             total = 0;
             counter = 0;
