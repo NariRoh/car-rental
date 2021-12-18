@@ -61,9 +61,6 @@ public class Booking {
     @Transient
     private String stripeToken;
 
-    @Transient
-    private boolean reviewed = false;
-
     @Column(columnDefinition = "boolean default false")
     private boolean reviewed;
 }
