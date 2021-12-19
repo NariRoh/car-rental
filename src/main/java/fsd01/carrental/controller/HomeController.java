@@ -29,7 +29,7 @@ public class HomeController {
         int carCounter = 0;
         for (Car car : carRepository.getIndexFeaturedCars()) {
             if (carCounter < 4) {
-                for (Integer rating : reviewRepository.getReviewsOfCar(car.getId())) {
+                for (Integer rating : reviewRepository.getRatingsOfCar(car.getId())) {
                     total += rating;
                     counter ++;
                 }

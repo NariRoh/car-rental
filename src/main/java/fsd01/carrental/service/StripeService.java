@@ -8,14 +8,16 @@ import fsd01.carrental.entity.Booking;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
 @AllArgsConstructor
 public class StripeService {
 
+<<<<<<< HEAD
 //    @Value("${STRIPE_SECRET_KEY}")
+=======
+>>>>>>> b9f7f17ea07365df7a691cfdc5b625a66d039c61
     private String API_PUBLIC_KEY = "sk_test_kdTPQWNDYaBukn7dVMHyzqt1";
 
     private static final Logger log = LoggerFactory.getLogger(StripeService.class);
