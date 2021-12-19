@@ -49,4 +49,10 @@ public class HomeController {
         mav.addObject("cars", featuredCarsWithImage);
         return mav;
     }
+
+    @GetMapping("/admin")
+    public String showAdminIndex() {
+        return "redirect:/admin/users";
+    }
+
 }
