@@ -1,5 +1,6 @@
 package fsd01.carrental.dtos;
 
+import fsd01.carrental.security.UserRole;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,4 +21,6 @@ public class UserUpdateDTO {
     private String lastName;
 
     private String phoneNumber;
+
+    private UserRole role;
 }

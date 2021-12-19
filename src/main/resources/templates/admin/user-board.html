@@ -105,7 +105,6 @@
   </style>
   <script>
     $(document).ready(function(){
-      console.log('Hi')
 
       $('[data-toggle="tooltip"]').tooltip();
       var actions = $("table td:last-child").html();
@@ -150,6 +149,7 @@
           userUpdateObj.firstName = elem.find("td input[name='firstName']").val();
           userUpdateObj.lastName = elem.find("td input[name='lastName']").val();
           userUpdateObj.phoneNumber = elem.find("td input[name='phoneNumber']").val();
+          userUpdateObj.role = elem.find("td input[name='role']").val();
         });
         console.log(userUpdateObj);
 
@@ -180,7 +180,7 @@
           elem.find('td:eq(2) input').attr("name", "lastName");
           // elem.find('td:eq(3) input').attr("name", "email");
           elem.find('td:eq(4) input').attr("name", "phoneNumber");
-          // elem.find('td:eq(5) input').attr("name", "role");
+          elem.find('td:eq(5) input').attr("name", "role");
         });
 
 
@@ -289,7 +289,7 @@
                   <th>Last Name</th>
                   <th>Email</th>
                   <th>Phone Number</th>
-        <!--          <th>Role</th>-->
+                  <th>Role</th>
                   <th>Modify</th>
                 </tr>
                 </thead>
@@ -305,7 +305,7 @@
                   <td th:text="${user.lastName}"></td>
                   <td th:text="${user.email}"></td>
                   <td th:text="${user.phoneNumber}"></td>
-        <!--          <td th:text="${user.role}"></td>-->
+                  <td th:text="${user.role}"></td>
                   <td>
                     <a class="add" title="Add" data-toggle="tooltip"><i class="material-icons">&#xE03B;</i></a>
                     <a class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>

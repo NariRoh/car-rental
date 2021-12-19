@@ -70,9 +70,10 @@ public class User implements UserDetails {
         return true;
     }
 
-    public void update(String firstName, String lastName, String phoneNumber) {
+    public void update(String firstName, String lastName, String phoneNumber, UserRole role) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.phoneNumber = phoneNumber;
+        this.role = role;
     }
 }

@@ -35,7 +35,7 @@ public class UserDTO {
 
     private String phoneNumber;
 
-    //    private UserRole role;
+    private UserRole role;
 
     @Override
     public String toString() {

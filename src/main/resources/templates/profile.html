@@ -24,6 +24,7 @@
                 <form id="profileForm" th:action="@{/profile}" th:object="${userUpdateDTO}" method="POST">
                     <div th:object="${userDTO}">
                         <input type="hidden" name="id" th:value="${user.id}">
+                        <input type="hidden" name="role" th:value="${user.role}">
 
                         <div class="form-row">
                             <label>First Name</label>

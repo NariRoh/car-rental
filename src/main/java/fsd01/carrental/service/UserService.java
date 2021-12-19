@@ -5,6 +5,7 @@ import fsd01.carrental.dtos.UserUpdateDTO;
 import fsd01.carrental.entity.User;
 import fsd01.carrental.dtos.UserDTO;
 import fsd01.carrental.repository.UserRepository;
+import fsd01.carrental.security.UserRole;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
@@ -53,7 +54,7 @@ public class UserService implements UserDetailsService {
         // encode user password
         String encodedPassword = bCryptPasswordEncoder.encode(userDTO.getPassword());
         userDTO.setPassword(encodedPassword);
-
+        userDTO.setRole(UserRole.CUSTOMER);
         User user = convertDtoToEntity(userDTO);
         return saveUser(user);
     }
@@ -65,7 +66,8 @@ public class UserService implements UserDetailsService {
         user.update(
                 userUpdateDTO.getFirstName(),
                 userUpdateDTO.getLastName(),
-                userUpdateDTO.getPhoneNumber()
+                userUpdateDTO.getPhoneNumber(),
+                userUpdateDTO.getRole()
         );
         log.info(">>>>>> Updating user : {}", user.toString());
 //        User user = modelMapper.map(userUpdateDTO, User.class);
