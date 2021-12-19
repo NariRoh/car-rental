@@ -1,8 +1,6 @@
 package fsd01.carrental.service;
 
-import fsd01.carrental.dtos.UserUpdateDTO;
 import fsd01.carrental.entity.Car;
-import fsd01.carrental.entity.User;
 import fsd01.carrental.repository.CarRepository;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;

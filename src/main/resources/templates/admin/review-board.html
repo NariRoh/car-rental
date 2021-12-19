@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Reviews</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round|Open+Sans">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+  <!-- Our Custom CSS -->
+  <link rel="stylesheet" href="/css/admin-sidebar.css">
+
+  <style>
+    body {
+      color: #404E67;
+      background: #F5F7FA;
+      font-family: 'Open Sans', sans-serif;
+    }
+    .table-wrapper {
+      /*width: fit-content;*/
+      margin: 30px auto;
+      background: #fff;
+      padding: 20px;
+      box-shadow: 0 1px 1px rgba(0,0,0,.05);
+    }
+    .table-title {
+      padding-bottom: 10px;
+      margin: 0 0 10px;
+    }
+    .table-title h2 {
+      margin: 6px 0 0;
+      font-size: 22px;
+    }
+    .table-title .add-new {
+      float: right;
+      height: 30px;
+      font-weight: bold;
+      font-size: 12px;
+      text-shadow: none;
+      min-width: 100px;
+      border-radius: 50px;
+      line-height: 13px;
+    }
+    .table-title .add-new i {
+      margin-right: 4px;
+    }
+    table.table {
+      /*table-layout: fixed;*/
+    }
+    table.table tr th, table.table tr td {
+      border-color: #e9e9e9;
+    }
+    table.table th i {
+      font-size: 13px;
+      margin: 0 5px;
+      cursor: pointer;
+    }
+    table.table th:last-child {
+      width: 100px;
+    }
+    table.table td a {
+      cursor: pointer;
+      display: inline-block;
+      margin: 0 5px;
+      min-width: 24px;
+    }
+    table.table td a.add {
+      color: #27C46B;
+    }
+    table.table td a.edit {
+      color: #FFC107;
+    }
+    table.table td a.delete {
+      color: #E34724;
+    }
+    table.table td i {
+      font-size: 19px;
+    }
+    table.table td a.add i {
+      font-size: 24px;
+      margin-right: -1px;
+      position: relative;
+      top: 3px;
+    }
+    table.table .form-control {
+      height: 32px;
+      line-height: 32px;
+      box-shadow: none;
+      border-radius: 2px;
+    }
+    table.table .form-control.error {
+      border-color: #f50000;
+    }
+    table.table td .add {
+      display: none;
+    }
+    thead {
+      text-align: center;
+    }
+  </style>
+  <script>
+    $(document).ready(function(){
+      $(".date").each(function (index, element) {
+        let elem = $(element);
+        let timeFormat = elem.text().slice(0, 19);
+        elem.text(timeFormat)
+      });
+
+      $('[data-toggle="tooltip"]').tooltip();
+      var actions = $("table td:last-child").html();
+
+      // Append table with add row form on add new button click
+      $(".add-new").click(function () {
+        $(this).attr("disabled", "disabled");
+        const index = $("table tbody tr:last-child").index();
+        const row = '<tr>' +
+                '<td><input type="number" class="form-control" disabled placeholder="id"></td>' +
+                '<td><input type="text" class="form-control" th:field="*{firstName}"></td>' +
+                '<td><input type="text" class="form-control" th:field="*{lastName}"></td>' +
+                '<td><input type="text" class="form-control" th:field="*{email}"></td>' +
+                '<td><input type="text" class="form-control" th:field="*{phoneNumber}"></td>' +
+                '<td>' + actions + '</td>' +
+                '</tr>';
+
+        $("table").append(row);
+        $("table tbody tr").eq(index + 1).find(".add, .edit").toggle();
+        $('[data-toggle="tooltip"]').tooltip();
+      });
+
+      // Add row on add button click
+      $(document).on("click", ".add", function(){
+        let empty = false;
+        const input = $(this).parents("tr").find('input[type="text"]');
+        const id = $(this).parent().siblings().data("id");
+
+        input.each(function(){
+          if (!$(this).val()){
+            $(this).addClass("error");
+            empty = true;
+          } else {
+            $(this).removeClass("error");
+          }
+        });
+
+        // push input data to userUpdateObj
+        const userUpdateObj = {};
+        $(this).parents("tr").each(function (index, element) {
+          let elem = $(element);
+          userUpdateObj.firstName = elem.find("td input[name='firstName']").val();
+          userUpdateObj.lastName = elem.find("td input[name='lastName']").val();
+          userUpdateObj.phoneNumber = elem.find("td input[name='phoneNumber']").val();
+          userUpdateObj.role = elem.find("td input[name='role']").val();
+        });
+        console.log(userUpdateObj);
+
+        // edit call
+        editRequest(id, userUpdateObj);
+
+        $(this).parents("tr").find(".error").first().focus();
+        if (!empty) {
+          input.each(function () {
+            console.log($(this).parent("td").html($(this).val()));
+            $(this).parent("td").html($(this).val());
+          });
+          $(this).parents("tr").find(".add, .edit").toggle();
+          $(".add-new").removeAttr("disabled");
+        }
+      });
+
+      // Edit row on edit button click
+      $(document).on("click", ".edit", function () {
+        // create input fields
+        $(this).parents("tr").find("td:not(:last-child):not(:first-child):not(:nth-child(4))").each(function () {
+          $(this).html(`<input type="text" class="form-control edit-form" value="${$(this).text()}">`);
+        });
+        // add name attributes to each input field
+        $(this).parents("tr").each(function (index, element) {
+          let elem = $(element);
+          elem.find('td:eq(1) input').attr("name", "firstName");
+          elem.find('td:eq(2) input').attr("name", "lastName");
+          // elem.find('td:eq(3) input').attr("name", "email");
+          elem.find('td:eq(4) input').attr("name", "phoneNumber");
+          elem.find('td:eq(5) input').attr("name", "role");
+        });
+
+
+        $(this).parents("tr").find(".add, .edit").toggle();
+        $(".add-new").attr("disabled", "disabled");
+      });
+
+      // Delete row on delete button click
+      $(document).on("click", ".delete", function(){
+        const id = $(this).parent().siblings().data("id");
+        console.log(id);
+        deleteRequest(id);
+        $(".add-new").removeAttr("disabled");
+      });
+    }); // document ready
+
+    // function displayUserList() {
+    //   // const url = /*[[ @{}} */;
+    //   $.get("/admin/users", function(response) {
+    //     if (isEmpty(response) === false) {
+    //       let userListHtml = "";
+    //       $(response.userList).each(function(user) {
+    //         userListHtml += `
+    //             <td>${user.id}</td>
+    //             <td>${user.firstName}</td>
+    //             <td>${user.lastName}</td>
+    //             <td>${user.email}</td>
+    //             <td>${user.phoneNumber}</td>
+    //         `;
+    //       });
+    //       $(".user-list").html(userListHtml);
+    //     }
+    //   }, "json");
+    // }
+
+    // function addRequest() {
+    //   const form = $('#addUserForm');
+    //   $.ajax({
+    //     url: '/admin/users/addUser',
+    //     method: 'POST',
+    //     data: form.serialize(),
+    //     success: function() {
+    //       console.log('user has been added');
+    //       // $(this).parents("tr").remove();
+    //     },
+    //     error: function (error) {
+    //       console.log(error);
+    //     }
+    //   });
+    // }
+
+    function editRequest(id, userUpdateObj) {
+      $.ajax({
+        url: `/admin/users/edit/${id}`,
+        method: 'POST',
+        contentType : 'application/json; charset=utf-8',
+        data: JSON.stringify(userUpdateObj),
+        success: function() {
+          console.log('user has been edited');
+        },
+        error: function (error) {
+          console.log(error);
+        }
+      });
+    }
+
+    function deleteRequest(id) {
+      $.ajax({
+        url: `/admin/users/delete/${id}`,
+        method: 'DELETE',
+        success: function() {
+          console.log('record has been deleted');
+          $(this).parents("tr").remove();
+        },
+        error: function (error) {
+          console.log(error);
+        }
+      });
+    }
+  </script>
+</head>
+<body>
+<!--<div sec:authorize="hasRole('ROLE_ADMIN')">-->
+  <main>
+    <div class="wrapper">
+
+      <div th:replace="fragments/admin-sidebar :: adminSidebar"></div>
+
+      <div class="container-lg">
+        <div class="table-responsive">
+          <div class="table-wrapper">
+            <div class="table-title">
+              <div class="row">
+                <div class="col-sm-8"><h2><b>Review Details</b></h2></div>
+                <div class="col-sm-4">
+                  <button type="button" class="btn btn-info add-new"><i class="fa fa-plus"></i> Add New</button>
+                </div>
+              </div>
+            </div>
+            <table class="table table-bordered">
+
+                <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Booking Id</th>
+                  <th>Comment</th>
+                  <th>Rating</th>
+                  <th>Date Written</th>
+                  <th>Modify</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:if="${reviewList.isEmpty()}">
+                  <td>No Records found</td>
+                </tr>
+                <tr class="user-list">
+
+                  <tr th:each="review : ${reviewList}">
+                  <td th:attr="data-id=${review.id}" th:text="${review.id}"></td>
+                  <td th:text="${review.booking.id}"></td>
+                  <td th:text="${review.comment}"></td>
+                  <td th:text="${review.rating}"></td>
+                  <td class="date" th:text="${review.createdAtDate}"></td>
+                  <td>
+                    <a class="add" title="Add" data-toggle="tooltip"><i class="material-icons">&#xE03B;</i></a>
+                    <a class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
+                    <a id="reviewDelete" class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a>
+                  </td>
+                </tr>
+
+                </tbody>
+              </form>
+
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+<!--</div>-->
+</body>
+</html>
