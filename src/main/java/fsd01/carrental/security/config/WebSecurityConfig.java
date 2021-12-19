@@ -1,5 +1,6 @@
 package fsd01.carrental.security.config;
 
+import fsd01.carrental.security.UserRole;
 import fsd01.carrental.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,17 +40,27 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .csrf().disable()
+//                .csrf().disable()
                 .authorizeRequests()
-                    .antMatchers("/", "/index", "/css/*", "/js/*", "/register", "/login")
-                    .permitAll()
+                    .antMatchers(
+                            "/booking",
+                            "/booking/**",
+                            "/profile",
+                            "/password",
+                            "/past-booking",
+                            "upcoming-bookings",
+                            "/reviews",
+                            "/reviews/**"
+                    ).authenticated()
+//                    .antMatchers("/admin", "/admin/**").hasRole("ADMIN")
                     .anyRequest().permitAll()
-//                .anyRequest().authenticated()
+//                .exceptionHandling()
+//                    .accessDeniedPage("/login")
                 .and()
                 .formLogin()
                     .loginPage("/login")
                     .usernameParameter("email")
-                    .defaultSuccessUrl("/")
+                    .defaultSuccessUrl("/index")
                     .permitAll()
                 .and()
                 .logout()

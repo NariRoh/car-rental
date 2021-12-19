@@ -60,7 +60,7 @@ public class AdminController {
         return "redirect:admin/user-board";
     }
 
-    @GetMapping("cars")
+    @GetMapping("/cars")
     public ModelAndView showCarList() {
         ModelAndView mav = new ModelAndView("admin/car-board");
         HashMap<Car, String> carsWithImage = new HashMap<>();
@@ -92,11 +92,11 @@ public class AdminController {
     @ResponseBody
     public String deleteCar(@PathVariable("id") Long id) {
 //        comment it out so we don't accidentally delete car data
-        carService.removeCar(id);
+//        carService.removeCar(id);
         return "redirect:admin/car-board";
     }
 
-    @GetMapping("reservations")
+    @GetMapping("/reservations")
     public ModelAndView showReservationList() {
         ModelAndView mav = new ModelAndView("admin/booking-board");
         List<Booking> bookingList = bookingService.getBookingList();

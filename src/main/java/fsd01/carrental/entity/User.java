@@ -3,10 +3,13 @@ package fsd01.carrental.entity;
 import fsd01.carrental.security.UserRole;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -33,12 +36,13 @@ public class User implements UserDetails {
 
     private String phoneNumber;
 
-    @Enumerated
-    private UserRole role;
+    private UserRole role = UserRole.CUSTOMER;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(new SimpleGrantedAuthority(role.name()));
+        return authorities;
     }
 
     @Override
