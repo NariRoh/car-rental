@@ -8,6 +8,7 @@ import fsd01.carrental.service.BookingService;
 import fsd01.carrental.service.CarService;
 import fsd01.carrental.service.UserService;
 import lombok.AllArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -25,7 +26,6 @@ public class AdminController {
     private CarService carService;
     private BookingService bookingService;
 
-    //  TODO: set 'access denied' for not logged-in & invalid access
     @GetMapping("users")
     public ModelAndView showUserList() {
         ModelAndView mav = new ModelAndView("admin/user-board");
