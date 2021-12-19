@@ -3,9 +3,11 @@ package fsd01.carrental.controller;
 import fsd01.carrental.dtos.UserUpdateDTO;
 import fsd01.carrental.entity.Booking;
 import fsd01.carrental.entity.Car;
+import fsd01.carrental.entity.Review;
 import fsd01.carrental.entity.User;
 import fsd01.carrental.service.BookingService;
 import fsd01.carrental.service.CarService;
+import fsd01.carrental.service.ReviewService;
 import fsd01.carrental.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -25,6 +27,7 @@ public class AdminController {
     private UserService userService;
     private CarService carService;
     private BookingService bookingService;
+    private ReviewService reviewService;
 
     @GetMapping("users")
     public ModelAndView showUserList() {
@@ -103,6 +106,17 @@ public class AdminController {
 
         mav.addObject("bookingList", bookingList);
         mav.addObject("booking", new Booking());
+
+        return mav;
+    }
+
+    @GetMapping("/reviews")
+    public ModelAndView showReviewList() {
+        ModelAndView mav = new ModelAndView("admin/review-board");
+        List<Review> reviewList = reviewService.getReviewList();
+
+        mav.addObject("reviewList", reviewList);
+//        mav.addObject("review", new Review());
 
         return mav;
     }
