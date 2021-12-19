@@ -1,6 +1,7 @@
 package fsd01.carrental.controller;
 
 import fsd01.carrental.entity.Car;
+import fsd01.carrental.entity.Review;
 import fsd01.carrental.repository.CarRepository;
 import fsd01.carrental.repository.ReviewRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Base64;
 import java.util.HashMap;
+import java.util.List;
 
 @Controller
 public class CarController {
@@ -41,7 +43,7 @@ public class CarController {
                         seatsParams(seatsOptions)[0],
                         seatsParams(seatsOptions)[1])
         ) {
-            for (Integer rating : reviewRepository.getReviewsOfCar(car.getId())) {
+            for (Integer rating : reviewRepository.getRatingsOfCar(car.getId())) {
                 total += rating;
                 counter ++;
             }
@@ -64,6 +66,9 @@ public class CarController {
         HashMap<Car, String> carWithImage = new HashMap<Car, String>();
         carWithImage.put(carRepository.findCarById(id), Base64.getEncoder().encodeToString(carRepository.findCarById(id).getImgData()));
         mav.addObject("car", carWithImage);
+        List<Review> reviews = reviewRepository.getReviewsOfCar(id);
+        mav.addObject("reviews", reviews);
+        mav.addObject("noRatings", reviews.size());
         return mav;
     }
 
@@ -74,7 +79,7 @@ public class CarController {
         int counter = 0;
         HashMap<Car, String> carsWithImage = new HashMap();
         for (Car car : carRepository.getListOfCars()) {
-            for (Integer rating : reviewRepository.getReviewsOfCar(car.getId())) {
+            for (Integer rating : reviewRepository.getRatingsOfCar(car.getId())) {
                 total += rating;
                 counter ++;
             }
