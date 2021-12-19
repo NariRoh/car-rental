@@ -294,16 +294,11 @@
                 <thead>
                 <tr>
                   <th>#</th>
-                  <th>Renter First Name</th>
-                  <th>Renter First Name</th>
-                  <th>Renter First Name</th>
-                  <th>Renter First Name</th>
-
-                  <th>Renter First Name</th>
-                  <th>Renter Last Name</th>
+                  <th>Strip Charge Id</th>
+                  <th>Pick up Date Time</th>
+                  <th>Drop off Date Time</th>
+                  <th>Total</th>
                   <th>Renter Email</th>
-                  <th>Phone Number</th>
-        <!--          <th>Role</th>-->
                   <th>Modify</th>
                 </tr>
                 </thead>
@@ -315,13 +310,11 @@
 
                   <tr th:each="booking : ${bookingList}">
                   <td th:attr="data-id=${booking.id}" th:text="${booking.id}"></td>
-<!--                  <td th:text="${booking.car.model}"></td>-->
-                  <td th:text="${booking.user.firstName}"></td>
-                  <td th:text="${booking.user.lastName}"></td>
-                  <td th:text="${booking.pickupDate}"></td>
-                  <td th:text="${booking.dropOffDate}"></td>
+                  <td th:text="${booking.stripeChargeId}"></td>
+                  <td th:text="${#dates.format(booking.pickupDate, 'yyyy-MM-dd HH:mm')}"></td>
+                  <td th:text="${#dates.format(booking.dropOffDate, 'yyyy-MM-dd HH:mm')}"></td>
                   <td th:text="${booking.total}"></td>
-        <!--          <td th:text="${user.role}"></td>-->
+                  <td th:text="${booking.renterEmail}"></td>
                   <td>
                     <a class="add" title="Add" data-toggle="tooltip"><i class="material-icons">&#xE03B;</i></a>
                     <a class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
