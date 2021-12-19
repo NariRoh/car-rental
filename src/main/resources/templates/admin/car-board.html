@@ -1,393 +1,443 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>Cars</title>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round|Open+Sans">
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Cars</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round|Open+Sans">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
 
-  <link rel="stylesheet" href="/css/admin-sidebar.css">
+    <link rel="stylesheet" href="/css/admin-sidebar.css">
 
-  <style>
-    body {
-      color: #404E67;
-      background: #F5F7FA;
-      font-family: 'Open Sans', sans-serif;
-    }
-    .hidden {
-      display: none;
-    }
-    #preview img {
-      width: 400px;
-      height: 300px;
-    }
-    .table-wrapper {
-      /*width: fit-content;*/
-      margin: 30px auto;
-      background: #fff;
-      padding: 20px;
-      box-shadow: 0 1px 1px rgba(0,0,0,.05);
-    }
-    .table-title {
-      padding-bottom: 10px;
-      margin: 0 0 10px;
-    }
-    .table-title h2 {
-      margin: 6px 0 0;
-      font-size: 22px;
-    }
-    .table-title .add-new {
-      float: right;
-      height: 30px;
-      font-weight: bold;
-      font-size: 12px;
-      text-shadow: none;
-      min-width: 100px;
-      border-radius: 50px;
-      line-height: 13px;
-    }
-    .table-title .add-new i {
-      margin-right: 4px;
-    }
-    table.table {
-      /*table-layout: fixed;*/
-    }
-    table.table tr th, table.table tr td {
-      border-color: #e9e9e9;
-    }
-    table.table th i {
-      font-size: 13px;
-      margin: 0 5px;
-      cursor: pointer;
-    }
-    table.table th:last-child {
-      width: 100px;
-    }
-    table.table td a {
-      cursor: pointer;
-      display: inline-block;
-      margin: 0 5px;
-      min-width: 24px;
-    }
-    table.table td a.add,
-    table.table td a.create {
-      color: #27C46B;
-    }
-    table.table td a.edit {
-      color: #FFC107;
-    }
-    table.table td a.delete,
-    table.table td a.remove {
-      color: #E34724;
-    }
-    table.table td i {
-      font-size: 19px;
-    }
-    table.table td a.add i,
-    table.table td a.create i {
-      font-size: 24px;
-      margin-right: -1px;
-      position: relative;
-      top: 3px;
-    }
-    table.table .form-control {
-      height: 32px;
-      line-height: 32px;
-      box-shadow: none;
-      border-radius: 2px;
-    }
-    table.table .form-control.error {
-      border-color: #f50000;
-    }
-    table.table td .add,
-    table.table td .create,
-    table.table td .remove {
-      display: none;
-    }
-    thead {
-      text-align: center;
-    }
-  </style>
+    <style>
+        body {
+            color: #404E67;
+            background: #F5F7FA;
+            font-family: 'Open Sans', sans-serif;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        #preview img {
+            width: 400px;
+            height: 300px;
+        }
+
+        .table-wrapper {
+            /*width: fit-content;*/
+            margin: 30px auto;
+            background: #fff;
+            padding: 20px;
+            box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
+        }
+
+        .table-title {
+            padding-bottom: 10px;
+            margin: 0 0 10px;
+        }
+
+        .table-title h2 {
+            margin: 6px 0 0;
+            font-size: 22px;
+        }
+
+        .table-title .add-new {
+            float: right;
+            height: 30px;
+            font-weight: bold;
+            font-size: 12px;
+            text-shadow: none;
+            min-width: 100px;
+            border-radius: 50px;
+            line-height: 13px;
+        }
+
+        .table-title .add-new i {
+            margin-right: 4px;
+        }
+
+        table.table {
+            /*table-layout: fixed;*/
+        }
+
+        table.table tr th, table.table tr td {
+            border-color: #e9e9e9;
+        }
+
+        table.table th i {
+            font-size: 13px;
+            margin: 0 5px;
+            cursor: pointer;
+        }
+
+        table.table th:last-child {
+            width: 100px;
+        }
+
+        table.table td a {
+            cursor: pointer;
+            display: inline-block;
+            margin: 0 5px;
+            min-width: 24px;
+        }
+
+        table.table td a.add,
+        table.table td a.create {
+            color: #27C46B;
+        }
+
+        table.table td a.edit {
+            color: #FFC107;
+        }
+
+        table.table td a.delete,
+        table.table td a.remove {
+            color: #E34724;
+        }
+
+        table.table td i {
+            font-size: 19px;
+        }
+
+        table.table td a.add i,
+        table.table td a.create i {
+            font-size: 24px;
+            margin-right: -1px;
+            position: relative;
+            top: 3px;
+        }
+
+        table.table .form-control {
+            height: 32px;
+            line-height: 32px;
+            box-shadow: none;
+            border-radius: 2px;
+        }
+
+        table.table .form-control.error {
+            border-color: #f50000;
+        }
+
+        table.table td .add,
+        table.table td .create,
+        table.table td .remove {
+            display: none;
+        }
+
+        thead {
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
 
-  <main>
+<main>
     <div class="wrapper">
 
-      <div th:replace="fragments/admin-sidebar :: adminSidebar"></div>
+        <div th:replace="fragments/admin-sidebar :: adminSidebar"></div>
 
-      <div class="container-lg">
-        <div class="table-responsive">
-          <div class="table-wrapper">
-            <div class="table-title">
-              <div class="row">
-                <div class="col-sm-8"><h2><b>Car Details</b></h2></div>
-                <div class="col-sm-4">
-                  <button type="button" class="btn btn-info add-new"><i class="fa fa-plus"></i> Add New</button>
-                </div>
-              </div>
-            </div>
-            <table class="table table-bordered">
-
-                <thead>
-                <tr>
-                  <th>#</th>
-                  <th>Model</th>
-                  <th>Make</th>
-                  <th>Fuel Type</th>
-                  <th>Mileage</th>
-                  <th>Daily<br>Rate</th>
-                  <th>Monthly<br>Rate</th>
-                  <th>Hourly<br>Rate</th>
-                  <th>Seats</th>
-                  <th>Transmission</th>
-                  <th>Photo</th>
-                  <th>Modify</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:if="${carList.isEmpty()}">
-                  <td>No Records found</td>
-                </tr>
-                <tr class="car-list" th:each="car: ${carList}">
-
-                  <td th:attr="data-id=${car.key.id}" th:text="${car.key.id}"></td>
-                  <td th:text="${car.key.model}"></td>
-                  <td th:text="${car.key.make}"></td>
-                  <td th:text="${car.key.fuelType}"></td>
-                  <td th:text="${car.key.mileage}"></td>
-                  <td th:text="${car.key.dailyRate}"></td>
-                  <td th:text="${car.key.monthlyLeasingRate}"></td>
-                  <td th:text="${car.key.hourlyRate}"></td>
-                  <td th:text="${car.key.seats}"></td>
-                  <td th:text="${car.key.transmission}"></td>
-                  <td>
-
-                    <a id="editPhoto" title="Edit Photo" data-toggle="tooltip">
-                    <i class="material-icons" data-toggle="modal" data-target="#uploadModal">&#xe3b6;</i></a>
-
-                    <!-- Modal -->
-                    <div id="uploadModal" class="modal fade" role="dialog">
-                      <div class="modal-dialog">
-
-                        <!-- Modal content-->
-                        <div class="modal-content">
-                          <div class="modal-body">
-                            <div class="modal-header">
-                              <h4 class="modal-title">Upload car photo</h4>
-                              <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <div class="container-lg">
+            <div class="table-responsive">
+                <div class="table-wrapper">
+                    <div class="table-title">
+                        <div class="row">
+                            <div class="col-sm-8"><h2><b>Car Details</b></h2></div>
+                            <div class="col-sm-4">
+                                <button type="button" class="btn btn-info add-new"><i class="fa fa-plus"></i> Add New
+                                </button>
                             </div>
-                            <!--                            <form method='post' action='' enctype="multipart/form-data">-->
-                            Select image : <input type='file' name='file' id='file' class='form-control' ><br>
-                            Image Type : <input type='text' class='form-control' th:value="${car.key.imgType} == null ? '' : ${car.key.imgType}"><br>
-                            <!-- Preview-->
-                            <div id="preview" class="hidden">
-                              <img th:src="${car.value} == null ? _ : @{'data:' +${car.key.imgType} + ';base64,'+${car.value}}" />
-                            </div>
-                            <input type='button' class='btn btn-info' value='Upload' id='btn_upload'>
-                          </div>
                         </div>
-                      </div>
                     </div>
-                  </td>
-                  <td>
-                    <a class="add" title="Add" data-toggle="tooltip"><i class="material-icons">&#xE03B;</i></a>
-                    <a class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
-                    <a id="carDelete" class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a>
-                  </td>
-                </tr>
+                    <form id="carForm"></form>
 
-                </tbody>
-              </form>
+                    <table class="table table-bordered">
 
-            </table>
-          </div>
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Model</th>
+                            <th>Make</th>
+                            <th>Fuel Type</th>
+                            <th>Mileage</th>
+                            <th>Daily<br>Rate</th>
+                            <th>Monthly<br>Rate</th>
+                            <th>Hourly<br>Rate</th>
+                            <th>Seats</th>
+                            <th>Transmission</th>
+                            <th>Photo</th>
+                            <th>Modify</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:if="${carList.isEmpty()}">
+                            <td>No Records found</td>
+                        </tr>
+                        <tr class="car-list" th:each="car: ${carList}">
+
+                            <td th:attr="data-id=${car.key.id}" th:text="${car.key.id}"></td>
+                            <td th:text="${car.key.model}"></td>
+                            <td th:text="${car.key.make}"></td>
+                            <td th:text="${car.key.fuelType}"></td>
+                            <td th:text="${car.key.mileage}"></td>
+                            <td th:text="${car.key.dailyRate}"></td>
+                            <td th:text="${car.key.monthlyLeasingRate}"></td>
+                            <td th:text="${car.key.hourlyRate}"></td>
+                            <td th:text="${car.key.seats}"></td>
+                            <td th:text="${car.key.transmission}"></td>
+                            <td>
+
+                                <a id="editPhoto" title="Edit Photo" data-toggle="tooltip">
+                                    <i class="material-icons" data-toggle="modal"
+                                       data-target="#uploadModal">&#xe3b6;</i></a>
+
+                                <!-- Modal -->
+                                <div id="uploadModal" class="modal fade" role="dialog">
+                                    <div class="modal-dialog">
+
+                                        <!-- Modal content-->
+                                        <div class="modal-content">
+                                            <div class="modal-body">
+                                                <div class="modal-header">
+                                                    <h4 class="modal-title">Upload car photo</h4>
+                                                    <button type="button" class="close" data-dismiss="modal">&times;
+                                                    </button>
+                                                </div>
+                                                <!--                            <form method='post' action='' enctype="multipart/form-data">-->
+                                                Select image : <input type='file' name='file' id='file'
+                                                                      class='form-control'><br>
+                                                Image Type : <input type='text' class='form-control'
+                                                                    th:value="${car.key.imgType} == null ? '' : ${car.key.imgType}"><br>
+                                                <!-- Preview-->
+                                                <div id="preview" class="hidden">
+                                                    <img th:src="${car.value} == null ? _ : @{'data:' +${car.key.imgType} + ';base64,'+${car.value}}"/>
+                                                </div>
+                                                <input type='button' class='btn btn-info' value='Upload'
+                                                       id='btn_upload'>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <a class="add" title="Add" data-toggle="tooltip"><i class="material-icons">&#xE03B;</i></a>
+                                <a class="edit" title="Edit" data-toggle="tooltip"><i
+                                        class="material-icons">&#xE254;</i></a>
+                                <a id="carDelete" class="delete" title="Delete" data-toggle="tooltip"><i
+                                        class="material-icons">&#xE872;</i></a>
+                            </td>
+                        </tr>
+
+                        </tbody>
+                        </form>
+
+                    </table>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-  </main>
-  <script>
-    $(document).ready(function(){
+</main>
+<script>
+    $(document).ready(function () {
 
-      $('[data-toggle="tooltip"]').tooltip();
-      var actions = $("table td:last-child").html();
+        $('[data-toggle="tooltip"]').tooltip();
+        // var actions = $("table td:last-child").html();
 
-      // Append table with add row form on add new button click
-      $(".add-new").click(function () {
-        $(this).attr("disabled", "disabled");
-        const index = $("table tbody tr:last-child").index();
-        const row = '<tr>' +
-                '<form th:object="${car}" method="POST">' +
-                '<td><input type="text" class="form-control" disabled placeholder="id"></td>' +
-                '<td><input type="text" class="form-control" th:field="*{model}"></td>' +
-                '<td><input type="text" class="form-control" th:field="*{make}"></td>' +
-                '<td><input type="text" class="form-control" th:field="*{fuelType}"></td>' +
-                '<td><input type="text" class="form-control" th:field="*{mileage}"></td>' +
-                '<td><input type="text" class="form-control" th:field="*{dailyRate}"></td>' +
-                '<td><input type="text" class="form-control" th:field="*{monthlyLeasingRate}"></td>' +
-                '<td><input type="text" class="form-control" th:field="*{hourlyRate}"></td>' +
-                '<td><input type="text" class="form-control" th:field="*{seats}"></td>' +
-                '<td><input type="text" class="form-control" th:field="*{transmission}"></td>' +
+        // Append table with add row form on add new button click
+        $(".add-new").click(function () {
+            $(this).attr("disabled", "disabled");
+            const index = $("table tbody tr:last-child").index();
+            const row = '<tr>' +
+                '<td><input type="number" class="form-control" disabled placeholder="id"></td>' +
+                '<td><input type="text" class="form-control" name="model" form="carForm"></td>' +
+                '<td><input type="text" class="form-control" name="make" form="carForm"></td>' +
+                '<td><input type="text" class="form-control" name="fuelType" form="carForm"></td>' +
+                '<td><input type="text" class="form-control" name="mileage" form="carForm"></td>' +
+                '<td><input type="text" class="form-control" name="dailyRate" form="carForm"></td>' +
+                '<td><input type="text" class="form-control" name="monthlyLeasingRate" form="carForm"></td>' +
+                '<td><input type="text" class="form-control" name="hourlyRate" form="carForm"></td>' +
+                '<td><input type="text" class="form-control" name="seats" form="carForm"></td>' +
+                '<td><input type="text" class="form-control" name="transmission" form="carForm"></td>' +
                 '<td>' +
-                '</form>' +
                 '<a class="addPhoto" title="Add Photo" data-toggle="tooltip">' +
                 '<i class="material-icons">&#xe3b6;</i>' +
                 ' </a>' +
                 '</td>' +
                 '<td>' +
-                '<a class="create" title="Create" data-toggle="tooltip"><i class="material-icons">&#xE03B;</i></a>' +
+                '<a class="create" id="createCar" title="Create" data-toggle="tooltip"><i class="material-icons">&#xE03B;</i></a>' +
                 '<a class="remove" id="removeRow" title="Remove" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a>' +
                 '</td>' +
                 '</tr>';
-        $("table").append(row);
-        $("table tbody tr").eq(index + 1).find(".create, .edit").toggle();
-        $("table tbody tr").eq(index + 1).find(".delete, .remove").toggle();
-        $('[data-toggle="tooltip"]').tooltip();
+            $("table").append(row);
+            $("table tbody tr").eq(index + 1).find(".create, .edit").toggle();
+            $("table tbody tr").eq(index + 1).find(".delete, .remove").toggle();
+            // $('[data-toggle="tooltip"]').tooltip({trigger: 'hover'});
 
-          $("#removeRow").click(function () {
-              console.log('clicked')
-              console.log(this)
-              $(this).closest("tr").remove();
-              $(".add-new").removeAttr("disabled");
-          });
-      });
+            $("#removeRow").click(function () {
+                $(this).closest("tr").remove();
+                $(".add-new").removeAttr("disabled");
+                // $(this).tooltip('hide');
+            });
 
+            $("#createCar").click(function () {
+                let empty = false;
+                const input = $(this).parents("tr").find('input[type="text"]');
 
-      // display photo inside modal
-      $("#editPhoto").click(function () {
-        $('#preview').removeClass('hidden');
-      });
+                input.each(function () {
+                    if (!$(this).val()) {
+                        $(this).addClass("error");
+                        empty = true;
+                    } else {
+                        $(this).removeClass("error");
+                    }
+                });
 
-      // Add row on add button click
-      $(document).on("click", ".add", function(){
-        let empty = false;
-        const input = $(this).parents("tr").find('input[type="text"]');
-        const id = $(this).parent().siblings().data("id");
-
-        input.each(function(){
-          if (!$(this).val()){
-            $(this).addClass("error");
-            empty = true;
-          } else {
-            $(this).removeClass("error");
-          }
+                $(this).parents("tr").find(".error").first().focus();
+                if (!empty) {
+                    input.each(function () {
+                        $(this).parent("td").html($(this).val());
+                    });
+                    addRequest();
+                    // $(this).parents("tr").find(".creat, .edit").toggle();
+                    // $(this).parents("tr").find(".remove, .delete").toggle();
+                    $(".add-new").removeAttr("disabled");
+                }
+            });
         });
 
-        // push input data to userUpdateObj
-        const carUpdateObj = {};
-        $(this).parents("tr").each(function (index, element) {
-          let elem = $(element);
-          carUpdateObj.model = elem.find("td input[name='model']").val();
-          carUpdateObj.make = elem.find("td input[name='make']").val();
-          carUpdateObj.fuelType = elem.find("td input[name='fuelType']").val();
-          carUpdateObj.mileage = elem.find("td input[name='mileage']").val();
-          carUpdateObj.dailyRate = elem.find("td input[name='dailyRate']").val();
-          carUpdateObj.monthlyLeasingRate = elem.find("td input[name='monthlyLeasingRate']").val();
-          carUpdateObj.hourlyRate = elem.find("td input[name='hourlyRate']").val();
-          carUpdateObj.seats = elem.find("td input[name='seats']").val();
-          carUpdateObj.transmission = elem.find("td input[name='transmission']").val();
-        });
-        console.log(carUpdateObj);
-
-        // edit call
-        editRequest(id, carUpdateObj);
-
-        $(this).parents("tr").find(".error").first().focus();
-        if (!empty) {
-            console.log('empty')
-          input.each(function () {
-            console.log($(this).parent("td").html($(this).val()));
-            $(this).parent("td").html($(this).val());
-          });
-          $(this).parents("tr").find(".add, .edit").toggle();
-          $(".add-new").removeAttr("disabled");
-        }
-      });
-
-      // Edit row on edit button click
-      $(document).on("click", ".edit", function () {
-        // create input fields
-        $(this).parents("tr").find("td:not(:last-child):not(:first-child):not(:nth-child(11))").each(function () {
-          $(this).html(`<input type="text" class="form-control edit-form" value="${$(this).text()}">`);
-        });
-        // add name attributes to each input field
-        $(this).parents("tr").each(function (index, element) {
-          let elem = $(element);
-          elem.find('td:eq(1) input').attr("name", "model");
-            elem.find('td:eq(2) input').attr("name", "make");
-            elem.find('td:eq(3) input').attr("name", "fuelType");
-            elem.find('td:eq(4) input').attr("name", "mileage");
-            elem.find('td:eq(5) input').attr("name", "dailyRate");
-            elem.find('td:eq(6) input').attr("name", "monthlyLeasingRate");
-            elem.find('td:eq(7) input').attr("name", "hourlyRate");
-            elem.find('td:eq(8) input').attr("name", "seats");
-            elem.find('td:eq(9) input').attr("name", "transmission");
+        // display photo inside modal
+        $("#editPhoto").click(function () {
+            $('#preview').removeClass('hidden');
         });
 
+        // Add row on add button click
+        $(document).on("click", ".add", function () {
+            let empty = false;
+            const input = $(this).parents("tr").find('input[type="text"]');
+            const id = $(this).parent().siblings().data("id");
 
-        $(this).parents("tr").find(".add, .edit").toggle();
-        $(".add-new").attr("disabled", "disabled");
-      });
+            input.each(function () {
+                if (!$(this).val()) {
+                    $(this).addClass("error");
+                    empty = true;
+                } else {
+                    $(this).removeClass("error");
+                }
+            });
 
-      // Delete row on delete button click
-      $(document).on("click", ".delete", function(){
-        const id = $(this).parent().siblings().data("id");
-        console.log(id);
-        deleteRequest(id);
-        $(".add-new").removeAttr("disabled");
-      });
+            // push input data to userUpdateObj
+            const carUpdateObj = {};
+            $(this).parents("tr").each(function (index, element) {
+                let elem = $(element);
+                carUpdateObj.model = elem.find("td input[name='model']").val();
+                carUpdateObj.make = elem.find("td input[name='make']").val();
+                carUpdateObj.fuelType = elem.find("td input[name='fuelType']").val();
+                carUpdateObj.mileage = elem.find("td input[name='mileage']").val();
+                carUpdateObj.dailyRate = elem.find("td input[name='dailyRate']").val();
+                carUpdateObj.monthlyLeasingRate = elem.find("td input[name='monthlyLeasingRate']").val();
+                carUpdateObj.hourlyRate = elem.find("td input[name='hourlyRate']").val();
+                carUpdateObj.seats = elem.find("td input[name='seats']").val();
+                carUpdateObj.transmission = elem.find("td input[name='transmission']").val();
+            });
+            console.log(carUpdateObj);
+
+            // edit call
+            editRequest(id, carUpdateObj);
+
+            $(this).parents("tr").find(".error").first().focus();
+            if (!empty) {
+                input.each(function () {
+                    console.log($(this).parent("td").html($(this).val()));
+                    $(this).parent("td").html($(this).val());
+                });
+                $(this).parents("tr").find(".add, .edit").toggle();
+                $(".add-new").removeAttr("disabled");
+            }
+        });
+
+        // Edit row on edit button click
+        $(document).on("click", ".edit", function () {
+            // create input fields
+            $(this).parents("tr").find("td:not(:last-child):not(:first-child):not(:nth-child(11))").each(function () {
+                $(this).html(`<input type="text" class="form-control edit-form" value="${$(this).text()}">`);
+            });
+            // add name attributes to each input field
+            $(this).parents("tr").each(function (index, element) {
+                let elem = $(element);
+                elem.find('td:eq(1) input').attr("name", "model");
+                elem.find('td:eq(2) input').attr("name", "make");
+                elem.find('td:eq(3) input').attr("name", "fuelType");
+                elem.find('td:eq(4) input').attr("name", "mileage");
+                elem.find('td:eq(5) input').attr("name", "dailyRate");
+                elem.find('td:eq(6) input').attr("name", "monthlyLeasingRate");
+                elem.find('td:eq(7) input').attr("name", "hourlyRate");
+                elem.find('td:eq(8) input').attr("name", "seats");
+                elem.find('td:eq(9) input').attr("name", "transmission");
+            });
+
+            $(this).parents("tr").find(".add, .edit").toggle();
+            $(".add-new").attr("disabled", "disabled");
+        });
+
+        // Delete row on delete button click
+        $(document).on("click", ".delete", function () {
+            const id = $(this).parent().siblings().data("id");
+            console.log(id);
+            deleteRequest(id);
+            $(".add-new").removeAttr("disabled");
+        });
     }); // document ready
 
     function addRequest() {
-      const form = $('#addUserForm');
-      $.ajax({
-        url: '/admin/cars/add',
-        method: 'POST',
-        data: form.serialize(),
-        success: function() {
-          console.log('Car has been added');
-          // $(this).parents("tr").remove();
-        },
-        error: function (error) {
-          console.log(error);
-        }
-      });
+        const form = $('#carForm');
+        console.log(form.serialize())
+        // $.ajax({
+        //   url: '/admin/cars/add',
+        //   method: 'POST',
+        //   data: form.serialize(),
+        //   success: function() {
+        //     console.log('Car has been added');
+        //   },
+        //   error: function (error) {
+        //     console.log(error);
+        //   }
+        // });
     }
 
     function editRequest(id, carUpdateObj) {
-      $.ajax({
-        url: `/admin/cars/edit/${id}`,
-        method: 'POST',
-        contentType : 'application/json; charset=utf-8',
-        data: JSON.stringify(carUpdateObj),
-        success: function() {
-          console.log('Car has been edited');
-        },
-        error: function (error) {
-          console.log(error);
-        }
-      });
+        $.ajax({
+            url: `/admin/cars/edit/${id}`,
+            method: 'POST',
+            contentType: 'application/json; charset=utf-8',
+            data: JSON.stringify(carUpdateObj),
+            success: function () {
+                console.log('Car has been edited');
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        });
     }
 
     function deleteRequest(id) {
-      $.ajax({
-        url: `/admin/cars/delete/${id}`,
-        method: 'DELETE',
-        success: function() {
-          console.log('record has been deleted');
-          $(this).parents("tr").remove();
-        },
-        error: function (error) {
-          console.log(error);
-        }
-      });
+        $.ajax({
+            url: `/admin/cars/delete/${id}`,
+            method: 'DELETE',
+            success: function () {
+                console.log('record has been deleted');
+                $(this).parents("tr").remove();
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        });
     }
-  </script>
+</script>
 </body>
 </html>

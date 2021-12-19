@@ -92,7 +92,7 @@ public class AdminController {
     @ResponseBody
     public String deleteCar(@PathVariable("id") Long id) {
 //        comment it out so we don't accidentally delete car data
-//        carService.removeCar(id);
+        carService.removeCar(id);
         return "redirect:admin/car-board";
     }
 
