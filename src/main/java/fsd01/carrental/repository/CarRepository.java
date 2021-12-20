@@ -16,6 +16,9 @@ public interface CarRepository extends JpaRepository<Car, Long> {
     @Query("select c from Car c")
     List<Car> getListOfCars();
 
+    @Query("select c from Car c order by ?1 asc")
+    List<Car> getListOfCarsByField(String field);
+
     @Query("select c.id from Car c")
     List<Long> getListOfCarIds();
 

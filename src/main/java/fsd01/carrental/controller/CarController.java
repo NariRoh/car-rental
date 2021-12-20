@@ -4,6 +4,7 @@ import fsd01.carrental.entity.Car;
 import fsd01.carrental.entity.Review;
 import fsd01.carrental.repository.CarRepository;
 import fsd01.carrental.repository.ReviewRepository;
+import fsd01.carrental.service.CarService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
@@ -22,11 +24,16 @@ public class CarController {
     private CarRepository carRepository;
 
     @Autowired
+    private CarService carService;
+
+    @Autowired
     private ReviewRepository reviewRepository;
 
     @GetMapping({"/cars"})
     public ModelAndView showCarList(
-            @RequestParam(required = false) String priceRangeOptions, String transmissionOptions, String mileageOptions, String fuelTypeOptions, String seatsOptions
+            String priceRangeOptions,
+            String transmissionOptions, String mileageOptions,
+            String fuelTypeOptions, String seatsOptions
     ) {
         ModelAndView mav = new ModelAndView("cars");
         int total = 0;
@@ -72,13 +79,37 @@ public class CarController {
         return mav;
     }
 
-    @GetMapping("/pricing")
-    public ModelAndView showPricingPage() {
+//    @GetMapping("/pricing")
+//    public ModelAndView showPricingPage() {
+//        ModelAndView mav = new ModelAndView("pricing");
+//        int total = 0;
+//        int counter = 0;
+//        HashMap<Car, String> carsWithImage = new HashMap();
+//        for (Car car : carRepository.getListOfCars()) {
+//            for (Integer rating : reviewRepository.getRatingsOfCar(car.getId())) {
+//                total += rating;
+//                counter ++;
+//            }
+//            if (counter == 0) {
+//                car.setRating(0);
+//            } else {
+//                car.setRating((int)Math.ceil(total/counter));
+//            }
+//            total = 0;
+//            counter = 0;
+//            carsWithImage.put(car, Base64.getEncoder().encodeToString(car.getImgData()));
+//        }
+//        mav.addObject("cars", carsWithImage);
+//        return mav;
+//    }
+
+    @GetMapping("/pricing/{field}")
+    public ModelAndView showPricingPage(@PathVariable("field") String field) {
         ModelAndView mav = new ModelAndView("pricing");
         int total = 0;
         int counter = 0;
-        HashMap<Car, String> carsWithImage = new HashMap();
-        for (Car car : carRepository.getListOfCars()) {
+        List<Car> carList = carService.findAllWithSort(field);
+        for (Car car : carList) {
             for (Integer rating : reviewRepository.getRatingsOfCar(car.getId())) {
                 total += rating;
                 counter ++;
@@ -90,14 +121,13 @@ public class CarController {
             }
             total = 0;
             counter = 0;
-            carsWithImage.put(car, Base64.getEncoder().encodeToString(car.getImgData()));
+            car.setImgString(Base64.getEncoder().encodeToString(car.getImgData()));
         }
-        mav.addObject("cars", carsWithImage);
+        mav.addObject("cars", carList);
         return mav;
     }
 
     private double[] priceRangeParam(String priceRangeOptions) {
-        System.out.println("in price range func" + priceRangeOptions);
         double[] priceRange = new double[2];
 
         if (priceRangeOptions == null) {
@@ -129,7 +159,6 @@ public class CarController {
                 priceRange[1] = 1000000;
             }
         }
-
         return priceRange;
     }
 

@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -61,5 +62,9 @@ public class CarService {
     public Page<Car> findPaginated(int pageNo, int pageSize) {
         Pageable pageable = PageRequest.of(pageNo - 1, pageSize);
         return this.carRepository.findAll(pageable);
+    }
+
+    public List<Car> findAllWithSort(String field) {
+        return carRepository.findAll(Sort.by(field));
     }
 }

@@ -54,8 +54,16 @@
                     <img class="img rounded"
                          th:src="${car.value} == null ? _ : @{'data:' +${car.key.imgType} + ';base64,'+${car.value}}"/>
                     <div class="text text-center">
-                        <span class="subheading" th:text="${car.key.make}"></span>
-                        <h2 th:text="${car.key.model}"></h2>
+                        <div class="row">
+                            <div class="col-md-2"></div>
+                            <div class="col-md-8">
+                                <span class="subheading" th:text="${car.key.make}"></span>
+                                <h2 th:text="${car.key.model}"></h2>
+                            </div>
+                            <div class="col-md-2">
+                                <a th:href="@{/booking/{id}(id=${car.key.id})}" class="btn btn-primary py-2 mr-1">Book now</a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

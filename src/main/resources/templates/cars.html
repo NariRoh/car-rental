@@ -8,10 +8,12 @@
       <script type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>
 
       <script>
-          $( document ).ready(function() {
+          $(document).ready(function() {
+
               $('[data-onload]').each(function(){
                   eval($(this).data('onload'));
               });
+
           });
       </script>
 
@@ -190,17 +192,17 @@
     						</div>
                             <p class="rated">
                                 <input class="hiddenRating d-none" type="number" th:value="${car.key.rating}" data-onload="
-											for (let i = 0; i < $(this).val(); i++) {
-												let newStar = $('<span/>');
-												newStar.addClass('ion-ios-star');
-												$(this).parent().append(newStar);
-											}
-											for (let i = 0; i < 5-$(this).val(); i++) {
-												let newStar = $('<span/>');
-												newStar.addClass('ion-ios-star grey');
-												$(this).parent().append(newStar);
-											}
-										">
+                                    for (let i = 0; i < $(this).val(); i++) {
+                                        let newStar = $('<span/>');
+                                        newStar.addClass('ion-ios-star');
+                                        $(this).parent().append(newStar);
+                                    }
+                                    for (let i = 0; i < 5-$(this).val(); i++) {
+                                        let newStar = $('<span/>');
+                                        newStar.addClass('ion-ios-star grey');
+                                        $(this).parent().append(newStar);
+                                    }
+								">
                             </p>
     						<p class="d-flex mb-0 d-block">
                                 <a th:href="@{/booking/{id}(id=${car.key.id})}" class="btn btn-primary py-2 mr-1">Book now</a>

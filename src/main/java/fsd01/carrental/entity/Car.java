@@ -48,4 +48,7 @@ public class Car {
 
     @Transient
     private int rating;
+
+    @Transient
+    private String imgString;
 }
