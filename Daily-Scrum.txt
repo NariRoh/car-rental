@@ -1,3 +1,26 @@
+2021-12-19
+
+Chris
+1. Done / not done since the last scrum:
+- Email confirmation
+- Pagination
+2. To do until the next Scrum:
+- Done project!
+3. Need assistance/figure things out
+- Nothing for now
+
+Nari
+1. Done / not done since last scrum:
+- finished stripe payment
+- finished admin crud
+- imported database to heroku server
+2. To do until next Scrum:
+- nothing
+3. Need assistance / figure things out
+- nothing
+
+-----------------------------------------------------------------------------------------------
+
 2021-12-17
 
 Chris
