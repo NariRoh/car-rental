@@ -2,6 +2,7 @@ package fsd01.carrental.service;
 
 import fsd01.carrental.dtos.PasswordDTO;
 import fsd01.carrental.dtos.UserUpdateDTO;
+import fsd01.carrental.entity.Booking;
 import fsd01.carrental.entity.User;
 import fsd01.carrental.dtos.UserDTO;
 import fsd01.carrental.repository.UserRepository;
@@ -11,6 +12,9 @@ import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -152,6 +156,11 @@ public class UserService implements UserDetailsService {
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         return userRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found."));
+    }
+
+    public Page<User> findPaginated(int pageNo, int pageSize) {
+        Pageable pageable = PageRequest.of(pageNo - 1, pageSize);
+        return this.userRepository.findAll(pageable);
     }
 
 }

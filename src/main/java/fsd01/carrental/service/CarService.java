@@ -1,10 +1,14 @@
 package fsd01.carrental.service;
 
+import fsd01.carrental.entity.Booking;
 import fsd01.carrental.entity.Car;
 import fsd01.carrental.repository.CarRepository;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -52,5 +56,10 @@ public class CarService {
         carRepository.save(car);
 
         log.info(">>>>>> Updating car : {}", car.toString());
+    }
+
+    public Page<Car> findPaginated(int pageNo, int pageSize) {
+        Pageable pageable = PageRequest.of(pageNo - 1, pageSize);
+        return this.carRepository.findAll(pageable);
     }
 }

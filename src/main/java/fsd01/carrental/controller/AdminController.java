@@ -10,10 +10,10 @@ import fsd01.carrental.service.CarService;
 import fsd01.carrental.service.ReviewService;
 import fsd01.carrental.service.UserService;
 import lombok.AllArgsConstructor;
-import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Base64;
 import java.util.HashMap;
@@ -29,14 +29,24 @@ public class AdminController {
     private BookingService bookingService;
     private ReviewService reviewService;
 
-    @GetMapping("users")
-    public ModelAndView showUserList() {
-        ModelAndView mav = new ModelAndView("admin/user-board");
-        List<User> userList = userService.getUserList();
-        mav.addObject("userList", userList);
-        mav.addObject("user", new User());
+    @GetMapping("/users")
+    public String showUserList(Model model) {
+        model.addAttribute("user", new User());;
+        return findUsersPaginated(1, model);
+    }
 
-        return mav;
+    @GetMapping("/users/page/{pageNo}")
+    public String findUsersPaginated(@PathVariable (value = "pageNo") int pageNo, Model model) {
+        int pageSize = 10;
+
+        Page<User> page = userService.findPaginated(pageNo, pageSize);
+        List<User> listUsers = page.getContent();
+
+        model.addAttribute("currentPage", pageNo);
+        model.addAttribute("totalPages", page.getTotalPages());
+        model.addAttribute("totalItems", page.getTotalElements());
+        model.addAttribute("userList", listUsers);
+        return "admin/user-board";
     }
 
     @RequestMapping(value = "/users/delete/{id}", method = RequestMethod.DELETE)
@@ -64,17 +74,27 @@ public class AdminController {
     }
 
     @GetMapping("/cars")
-    public ModelAndView showCarList() {
-        ModelAndView mav = new ModelAndView("admin/car-board");
+    public String showCarList(Model model) {
+        model.addAttribute("car", new Car());
+        return findCarsPaginated(1, model);
+    }
+
+    @GetMapping("/cars/page/{pageNo}")
+    public String findCarsPaginated(@PathVariable (value = "pageNo") int pageNo, Model model) {
+        int pageSize = 10;
+
+        Page<Car> page = carService.findPaginated(pageNo, pageSize);
+        List<Car> listCars = page.getContent();
         HashMap<Car, String> carsWithImage = new HashMap<>();
-        for (Car car : carService.getCarList()) {
+        for (Car car : listCars) {
             carsWithImage.put(car, Base64.getEncoder().encodeToString(car.getImgData()));
         }
 
-        mav.addObject("carList", carsWithImage);
-        mav.addObject("car", new Car());
-
-        return mav;
+        model.addAttribute("currentPage", pageNo);
+        model.addAttribute("totalPages", page.getTotalPages());
+        model.addAttribute("totalItems", page.getTotalElements());
+        model.addAttribute("carList", carsWithImage);
+        return "admin/car-board";
     }
 
     @RequestMapping(value = "/cars/add", method = RequestMethod.POST)
@@ -100,25 +120,43 @@ public class AdminController {
     }
 
     @GetMapping("/reservations")
-    public ModelAndView showReservationList() {
-        ModelAndView mav = new ModelAndView("admin/booking-board");
-        List<Booking> bookingList = bookingService.getBookingList();
+        public String showPastBookings(Model model) {
+        model.addAttribute("booking", new Booking());
+        return findBookingsPaginated(1, model);
+    }
 
-        mav.addObject("bookingList", bookingList);
-        mav.addObject("booking", new Booking());
+    @GetMapping("/reservations/page/{pageNo}")
+        public String findBookingsPaginated(@PathVariable (value = "pageNo") int pageNo, Model model) {
+        int pageSize = 10;
 
-        return mav;
+        Page<Booking> page = bookingService.findPaginated(pageNo, pageSize);
+        List<Booking> listBookings = page.getContent();
+
+        model.addAttribute("currentPage", pageNo);
+        model.addAttribute("totalPages", page.getTotalPages());
+        model.addAttribute("totalItems", page.getTotalElements());
+        model.addAttribute("bookingList", listBookings);
+        return "admin/booking-board";
     }
 
     @GetMapping("/reviews")
-    public ModelAndView showReviewList() {
-        ModelAndView mav = new ModelAndView("admin/review-board");
-        List<Review> reviewList = reviewService.getReviewList();
+    public String showReviewList(Model model) {
+        model.addAttribute("booking", new Booking());
+        return findReviewsPaginated(1, model);
+    }
 
-        mav.addObject("reviewList", reviewList);
-//        mav.addObject("review", new Review());
+    @GetMapping("/reviews/page/{pageNo}")
+    public String findReviewsPaginated(@PathVariable (value = "pageNo") int pageNo, Model model) {
+        int pageSize = 10;
 
-        return mav;
+        Page<Review> page = reviewService.findPaginated(pageNo, pageSize);
+        List<Review> reviewList = page.getContent();
+
+        model.addAttribute("currentPage", pageNo);
+        model.addAttribute("totalPages", page.getTotalPages());
+        model.addAttribute("totalItems", page.getTotalElements());
+        model.addAttribute("reviewList", reviewList);
+        return "admin/review-board";
     }
 
 }

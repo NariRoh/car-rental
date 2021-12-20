@@ -32,6 +32,8 @@
                 <table class="table">
                     <thead>
                     <tr>
+                        <th scope="col">Booking ID</th>
+                        <th scope="col">Booked Car</th>
                         <th scope="col">Rating</th>
                         <th scope="col">Comment</th>
                     </tr>
@@ -39,6 +41,8 @@
 
                     <tbody class="propertyTable">
                     <tr th:each="review: ${reviews}">
+                        <th th:text="${review.booking.id}"></th>
+                        <th><span th:text="${review.booking.car.make}"></span> <span th:text="${review.booking.car.model}"></span></th>
                         <th th:text="${review.rating}"></th>
                         <th th:text="${review.comment}"></th>
                     </tr>

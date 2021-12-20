@@ -154,6 +154,36 @@
                                 </button>
                             </div>
                         </div>
+
+
+                        <br>
+
+                        <div class="row">
+                            <div class="col-sm-8">
+                <span>
+                  Total Items: [[${totalItems}]]
+                </span>
+                            </div>
+
+                            <div class="col-sm-4">
+                <span th:each="i: ${#numbers.sequence(1, totalPages)}">
+                  <a th:if="${currentPage != i}" th:href="@{'/admin/cars/page/' + ${i}}">[[${i}]]</a>
+                  <span th:unless="${currentPage != i}">[[${i}]]</span>
+                </span>
+
+                                <a th:if="${currentPage < totalPages}"
+                                   th:href="@{'/admin/cars/page/' + ${currentPage + 1}}">Next</a>
+                                <span th:unless="${currentPage < totalPages}">Next</span>
+
+                                <a th:if="${currentPage < totalPages}"
+                                   th:href="@{'/admin/cars/page/' + ${currentPage + 1}}">Last</a>
+                                <span th:unless="${currentPage < totalPages}">Last</span>
+                            </div>
+
+
+                        </div>
+
+
                     </div>
                     <form id="carForm"></form>
 

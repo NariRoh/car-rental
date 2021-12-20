@@ -573,7 +573,6 @@
                 total = hours * hourlyRate;
 
                 $('#rentalPrice').val(total);
-                // $('#totalCost').val(total);
 
                 $('#dropOffDate').val(null);
             }
@@ -591,7 +590,6 @@
                 total = days * dailyRate;
 
                 $('#rentalPrice').val(total);
-                // $('#totalCost').val(total);
 
                 $('#pickupTime').val(null);
                 $('#dropoffTime').val(null);
@@ -610,7 +608,6 @@
                 total = months * monthlyRate;
 
                 $('#rentalPrice').val(total);
-                // $('#totalCost').val(total);
 
                 $('#pickupTime').val(null);
                 $('#dropoffTime').val(null);
@@ -621,12 +618,19 @@
                 return;
             }
 
+            function roundNumber(number, decimals) {
+                var newnumber = new Number(number+'').toFixed(parseInt(decimals));
+                return parseFloat(newnumber);
+            }
+
             // calculate tax and total payment
             const SALES_TAX_RATE = 0.14975;
             const rentalPriceVal = $('#rentalPrice').val();
 
-            const salesTax = parseFloat(rentalPriceVal * SALES_TAX_RATE).toFixed(2);
-            const totalPayment = parseInt(rentalPriceVal) + parseFloat(salesTax);
+            const salesTax = roundNumber(rentalPriceVal * SALES_TAX_RATE, 2);
+            let totalPayment = parseInt(rentalPriceVal) + salesTax;
+
+            totalPayment = roundNumber(totalPayment, 2);
 
             // FIXME: daily & monthly cost incorrect
             // display total cost in payment step

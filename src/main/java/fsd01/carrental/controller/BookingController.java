@@ -69,6 +69,7 @@ public class BookingController {
         stripeService.createCharge(booking);
         booking.setUser(user);
         booking.setCar(bookingCar);
+//        booking.setTotal(Math.round(booking.getTotal()));
         bookingRepository.save(booking);
 
         Mail mail = new Mail();
