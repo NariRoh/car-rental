@@ -16,7 +16,7 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
     @Query("select b from Booking b")
     List<Booking> getListOfBookings();
 
-    @Query("select b from Booking b WHERE b.dropOffDate <= current_date and b.user.id = ?1")
+    @Query("select b from Booking b WHERE b.dropOffDate < current_date and b.user.id = ?1")
     List<Booking> getListOfPastBookings(Long id);
 
     @Query("select b from Booking b WHERE b.dropOffDate > current_date and b.user.id = ?1")
